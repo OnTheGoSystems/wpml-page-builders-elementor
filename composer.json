@@ -1,0 +1,36 @@
+{
+  "name": "wpml/page-builders-elementor",
+  "description": "A library used by WPML to handle Elementor",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "OnTheGoSystems",
+      "email": "hello@wpml.org"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/phpunit/util/"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "ssh://git@git.onthegosystems.com:10022/shared/otgs-unit-tests-framework.git"
+    }
+  ],
+  "require": {
+    "roave/security-advisories": "dev-master",
+    "wpml/page-builders": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.7",
+    "otgs/unit-tests-framework": "~1.2.0"
+  }
+}
