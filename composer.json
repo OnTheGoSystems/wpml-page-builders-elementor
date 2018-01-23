@@ -16,6 +16,7 @@
   },
   "autoload-dev": {
     "classmap": [
+      "tests/phpunit/stubs/",
       "tests/phpunit/util/"
     ]
   },

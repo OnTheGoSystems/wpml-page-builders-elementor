@@ -23,8 +23,11 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 		$absolute_to_permalinks = \Mockery::mock('overload:WPML_Absolute_To_Permalinks');
 		$translate_link_targets = \Mockery::mock('overload:WPML_Translate_Link_Targets');
 		$string_registration = \Mockery::mock('overload:WPML_PB_String_Registration');
+		$string_registration_factory = \Mockery::mock('overload:WPML_String_Registration_Factory');
 		$hooks_strategy = \Mockery::mock('overload:WPML_PB_API_Hooks_Strategy');
 		$string_factory = \Mockery::mock('overload:WPML_ST_String_Factory');
+
+		$string_registration_factory->shouldReceive('create')->andReturn($string_registration);
 
 		$sitepress = $this->getMockBuilder( 'SitePress' )
 			->setMethods( array( 'get_active_languages' ) )
