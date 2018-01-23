@@ -1,0 +1,40 @@
+---
+build:
+  cache:
+    directories:
+      - vendor/
+  nodes:
+    phpcs:
+      environment:
+        php: 5.6
+      tests:
+        override:
+          -
+            on_node: 1
+            idle_timeout: 4800
+            command: "phpcs-run ./"
+
+    phpunit:
+      environment:
+        php: 5.6
+      tests:
+        override:
+          -
+            on_node: 2
+            idle_timeout: 4800
+            command: "./vendor/bin/phpunit --coverage-clover ./coverage.xml"
+            coverage:
+              file: coverage.xml
+              format: php-clover
+    php70:
+      environment:
+        php: 7.0
+    php71:
+      environment:
+        php: 7.1
+  tests:
+    override:
+      -
+        on_node: 1
+        idle_timeout: 4800
+        command: "./vendor/bin/phpunit"
