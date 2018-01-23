@@ -2,7 +2,7 @@
   "name": "wpml/page-builders-elementor",
   "description": "A library used by WPML to handle Elementor",
   "type": "library",
-  "license": "GPL-3.0+",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "OnTheGoSystems",
