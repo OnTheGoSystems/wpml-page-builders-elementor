@@ -20,12 +20,6 @@
       "tests/phpunit/util/"
     ]
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "ssh://git@git.onthegosystems.com:10022/shared/otgs-unit-tests-framework.git"
-    }
-  ],
   "require": {
     "roave/security-advisories": "dev-master",
     "wpml/page-builders": "dev-master"
