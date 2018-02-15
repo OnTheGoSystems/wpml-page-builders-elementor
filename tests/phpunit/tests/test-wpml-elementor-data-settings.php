@@ -18,6 +18,19 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 		$subject->add_hooks();
 	}
 
+	/**
+	 * @test
+	 */
+	public function it_add_hook_which_save_plain_text() {
+		$elementor_db = $this->getMockBuilder( 'WPML_Elementor_DB' )
+		                     ->disableOriginalConstructor()
+		                     ->getMock();
+
+		$subject = new WPML_Elementor_Data_Settings( $elementor_db );
+		\WP_Mock::expectActionAdded( 'wpml_page_builder_string_translated', array( $subject, 'save_post_body_as_plain_text' ), 11, 5 );
+		$subject->add_hooks();
+	}
+
 	public function it_marks_css_field_as_empty() {
 		$subject = new WPML_Elementor_Data_Settings();
 		$this->assertEquals( '', $subject->mark_css_field_as_empty( rand_str( 10 ), null, null, '_elementor_css' ) );
