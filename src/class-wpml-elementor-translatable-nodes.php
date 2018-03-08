@@ -366,6 +366,26 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'animated-headline'   => array(
+				'conditions' => array( $this->type => 'animated-headline' ),
+				'fields'     => array(
+					array(
+						'field'       => 'before_text',
+						'type'        => __( 'Animated Headline: Before text', 'wpml-string-translation' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'highlighted_text',
+						'type'        => __( 'Animated Headline: Highlighted text', 'wpml-string-translation' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'rotating_text',
+						'type'        => __( 'Animated Headline: Rotating text', 'wpml-string-translation' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
 			'flip-box'    => array(
 				'conditions' => array( $this->type => 'flip-box' ),
 				'fields'     => array(
