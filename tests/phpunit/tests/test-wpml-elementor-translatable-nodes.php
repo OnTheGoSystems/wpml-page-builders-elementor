@@ -102,6 +102,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[6];
 				}
 
+				if ( 'icon-box' === $type ) {
+					$string = $strings[2];
+				}
+
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
 				$this->assertEquals( $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
@@ -204,7 +208,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Icon box' => array( 'icon-box', array(
 				array( 'field' => 'title_text', 'type' => 'Icon Box: Title text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text', 'type' => 'Icon Box: Description text', 'editor_type' => 'VISUAL' ) ),
+				array( 'field' => 'description_text', 'type' => 'Icon Box: Description text', 'editor_type' => 'VISUAL' ),
+				'link' => array( 'field' => 'url', 'type' => 'Icon Box: Link', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),

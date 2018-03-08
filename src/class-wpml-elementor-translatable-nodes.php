@@ -349,6 +349,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Icon Box: Description text', 'wpml-string-translation' ),
 						'editor_type' => 'VISUAL'
 					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Icon Box: Link', 'wpml-string-translation' ),
+						'editor_type' => 'LINK'
+					),
 				),
 			),
 			'image-box'   => array(
