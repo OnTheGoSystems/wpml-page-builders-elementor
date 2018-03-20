@@ -27,10 +27,10 @@ class WPML_Elementor_Accordion extends WPML_Elementor_Module_With_Items  {
 	protected function get_title( $field ) {
 		switch( $field ) {
 			case 'tab_title':
-				return esc_html__( 'Accordion: Title', 'wpml-string-translation' );
+				return esc_html__( 'Accordion: Title', 'sitepress' );
 
 			case 'tab_content':
-				return esc_html__( 'Accordion: Content', 'wpml-string-translation' );
+				return esc_html__( 'Accordion: Content', 'sitepress' );
 
 			default:
 				return '';

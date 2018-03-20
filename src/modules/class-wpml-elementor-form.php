@@ -27,10 +27,10 @@ class WPML_Elementor_Form extends WPML_Elementor_Module_With_Items {
 	protected function get_title( $field ) {
 		switch( $field ) {
 			case 'field_label':
-				return esc_html__( 'Form: Field label', 'wpml-string-translation' );
+				return esc_html__( 'Form: Field label', 'sitepress' );
 
 			case 'placeholder':
-				return esc_html__( 'Form: Field placeholder', 'wpml-string-translation' );
+				return esc_html__( 'Form: Field placeholder', 'sitepress' );
 
 			default:
 				return '';

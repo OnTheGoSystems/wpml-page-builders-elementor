@@ -27,10 +27,10 @@ class WPML_Elementor_Icon_List extends WPML_Elementor_Module_With_Items {
 	protected function get_title( $field ) {
 		switch( $field ) {
 			case 'text':
-				return esc_html__( 'Icon List: Text', 'wpml-string-translation' );
+				return esc_html__( 'Icon List: Text', 'sitepress' );
 
 			case 'url':
-				return esc_html__( 'Icon List: Link URL', 'wpml-string-translation' );
+				return esc_html__( 'Icon List: Link URL', 'sitepress' );
 
 			default:
 				return '';

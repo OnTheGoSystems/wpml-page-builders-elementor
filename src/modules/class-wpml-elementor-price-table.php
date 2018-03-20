@@ -26,7 +26,7 @@ class WPML_Elementor_Price_Table extends WPML_Elementor_Module_With_Items  {
 	 */
 	protected function get_title( $field ) {
 		if ( 'item_text' === $field ) {
-			return esc_html__( 'Price table: text', 'wpml-string-translation' );
+			return esc_html__( 'Price table: text', 'sitepress' );
 		}
 
 		return '';
