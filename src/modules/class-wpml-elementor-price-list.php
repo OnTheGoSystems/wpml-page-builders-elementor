@@ -26,15 +26,15 @@ class WPML_Elementor_Price_List extends WPML_Elementor_Module_With_Items {
 	 */
 	protected function get_title( $field ) {
 		if ( 'title' === $field ) {
-			return esc_html__( 'Price list: title', 'wpml-string-translation' );
+			return esc_html__( 'Price list: title', 'sitepress' );
 		}
 
 		if ( 'item_description' === $field ) {
-			return esc_html__( 'Pricing list: description', 'wpml-string-translation' );
+			return esc_html__( 'Pricing list: description', 'sitepress' );
 		}
 
 		if ( 'url' === $field ) {
-			return esc_html__( 'Pricing list: link', 'wpml-string-translation' );
+			return esc_html__( 'Pricing list: link', 'sitepress' );
 		}
 
 		return '';

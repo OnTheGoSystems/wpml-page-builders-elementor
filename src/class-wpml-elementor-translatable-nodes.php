@@ -161,7 +161,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'title',
-						'type'        => __( 'Heading', 'wpml-string-translation' ),
+						'type'        => __( 'Heading', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -171,7 +171,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'editor',
-						'type'        => __( 'Text editor', 'wpml-string-translation' ),
+						'type'        => __( 'Text editor', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 				),
@@ -181,7 +181,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Icon: Link URL', 'wpml-string-translation' ),
+						'type'        => __( 'Icon: Link URL', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -191,12 +191,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'link',
-						'type'        => __( 'Video: Link', 'wpml-string-translation' ),
+						'type'        => __( 'Video: Link', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'vimeo_link',
-						'type'        => __( 'Video: Vimeo link', 'wpml-string-translation' ),
+						'type'        => __( 'Video: Vimeo link', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -206,27 +206,27 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'button_text',
-						'type'        => __( 'Login: Button text', 'wpml-string-translation' ),
+						'type'        => __( 'Login: Button text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'user_label',
-						'type'        => __( 'Login: User label', 'wpml-string-translation' ),
+						'type'        => __( 'Login: User label', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'user_placeholder',
-						'type'        => __( 'Login: User placeholder', 'wpml-string-translation' ),
+						'type'        => __( 'Login: User placeholder', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'password_label',
-						'type'        => __( 'Login: Password label', 'wpml-string-translation' ),
+						'type'        => __( 'Login: Password label', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'password_placeholder',
-						'type'        => __( 'Login: Password placeholder', 'wpml-string-translation' ),
+						'type'        => __( 'Login: Password placeholder', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -236,12 +236,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'text',
-						'type'        => __( 'Button', 'wpml-string-translation' ),
+						'type'        => __( 'Button', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Button: Link URL', 'wpml-string-translation' ),
+						'type'        => __( 'Button: Link URL', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -251,7 +251,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'html',
-						'type'        => __( 'HTML', 'wpml-string-translation' ),
+						'type'        => __( 'HTML', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 				),
@@ -261,12 +261,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'caption',
-						'type'        => __( 'Image: Caption', 'wpml-string-translation' ),
+						'type'        => __( 'Image: Caption', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Image: Link URL', 'wpml-string-translation' ),
+						'type'        => __( 'Image: Link URL', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -276,12 +276,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'alert_title',
-						'type'        => __( 'Alert title', 'wpml-string-translation' ),
+						'type'        => __( 'Alert title', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'alert_description',
-						'type'        => __( 'Alert description', 'wpml-string-translation' ),
+						'type'        => __( 'Alert description', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 				),
@@ -291,17 +291,17 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'testimonial_content',
-						'type'        => __( 'Testimonial content', 'wpml-string-translation' ),
+						'type'        => __( 'Testimonial content', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 					array(
 						'field'       => 'testimonial_name',
-						'type'        => __( 'Testimonial name', 'wpml-string-translation' ),
+						'type'        => __( 'Testimonial name', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'testimonial_job',
-						'type'        => __( 'Testimonial job', 'wpml-string-translation' ),
+						'type'        => __( 'Testimonial job', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -311,12 +311,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'title',
-						'type'        => __( 'Progress: Title', 'wpml-string-translation' ),
+						'type'        => __( 'Progress: Title', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'inner_text',
-						'type'        => __( 'Progress: Inner text', 'wpml-string-translation' ),
+						'type'        => __( 'Progress: Inner text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -326,12 +326,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'starting_number',
-						'type'        => __( 'Starting number', 'wpml-string-translation' ),
+						'type'        => __( 'Starting number', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'title',
-						'type'        => __( 'Title', 'wpml-string-translation' ),
+						'type'        => __( 'Title', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -341,17 +341,17 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'title_text',
-						'type'        => __( 'Icon Box: Title text', 'wpml-string-translation' ),
+						'type'        => __( 'Icon Box: Title text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'description_text',
-						'type'        => __( 'Icon Box: Description text', 'wpml-string-translation' ),
+						'type'        => __( 'Icon Box: Description text', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Icon Box: Link', 'wpml-string-translation' ),
+						'type'        => __( 'Icon Box: Link', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -361,12 +361,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'title_text',
-						'type'        => __( 'Image Box: Title text', 'wpml-string-translation' ),
+						'type'        => __( 'Image Box: Title text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'description_text',
-						'type'        => __( 'Image Box: Description text', 'wpml-string-translation' ),
+						'type'        => __( 'Image Box: Description text', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 				),
@@ -376,17 +376,17 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'before_text',
-						'type'        => __( 'Animated Headline: Before text', 'wpml-string-translation' ),
+						'type'        => __( 'Animated Headline: Before text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'highlighted_text',
-						'type'        => __( 'Animated Headline: Highlighted text', 'wpml-string-translation' ),
+						'type'        => __( 'Animated Headline: Highlighted text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'rotating_text',
-						'type'        => __( 'Animated Headline: Rotating text', 'wpml-string-translation' ),
+						'type'        => __( 'Animated Headline: Rotating text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -396,32 +396,32 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'title_text_a',
-						'type'        => __( 'Flip Box: Title text side A', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Title text side A', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'description_text_a',
-						'type'        => __( 'Flip Box: Description text side A', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Description text side A', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 					array(
 						'field'       => 'title_text_b',
-						'type'        => __( 'Flip Box: Title text side B', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Title text side B', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'description_text_b',
-						'type'        => __( 'Flip Box: Description text side B', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Description text side B', 'sitepress' ),
 						'editor_type' => 'VISUAL'
 					),
 					array(
 						'field'       => 'button_text',
-						'type'        => __( 'Flip Box: Button text', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Button text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Flip Box: Button link', 'wpml-string-translation' ),
+						'type'        => __( 'Flip Box: Button link', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -461,37 +461,37 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'            => array(
 					array(
 						'field'       => 'heading',
-						'type'        => __( 'Price Table: Heading', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Heading', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'sub_heading',
-						'type'        => __( 'Price Table: Sub heading', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Sub heading', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'period',
-						'type'        => __( 'Price Table: Period', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Period', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'button_text',
-						'type'        => __( 'Price Table: Button text', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Button text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'footer_additional_info',
-						'type'        => __( 'Price Table: Footer additional info', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Footer additional info', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'ribbon_title',
-						'type'        => __( 'Price Table: Ribbon title', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Ribbon title', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					'link' => array(
 						'field'       => 'url',
-						'type'        => __( 'Price Table: Button link', 'wpml-string-translation' ),
+						'type'        => __( 'Price Table: Button link', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
@@ -502,42 +502,42 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'            => array(
 					array(
 						'field'       => 'form_name',
-						'type'        => __( 'Form: name', 'wpml-string-translation' ),
+						'type'        => __( 'Form: name', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'button_text',
-						'type'        => __( 'Form: Button text', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Button text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'email_subject',
-						'type'        => __( 'Form: Email subject', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Email subject', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'email_from_name',
-						'type'        => __( 'Form: Email from name', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Email from name', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'success_message',
-						'type'        => __( 'Form: Success message', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Success message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'error_message',
-						'type'        => __( 'Form: Error message', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Error message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'required_message',
-						'type'        => __( 'Form: Required message', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Required message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'invalid_message',
-						'type'        => __( 'Form: Invalid message', 'wpml-string-translation' ),
+						'type'        => __( 'Form: Invalid message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -548,7 +548,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'classic_read_more_text',
-						'type'        => __( 'Posts: Read more text', 'wpml-string-translation' ),
+						'type'        => __( 'Posts: Read more text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
