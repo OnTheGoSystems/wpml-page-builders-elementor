@@ -33,7 +33,7 @@ class WPML_Elementor_Form extends WPML_Elementor_Module_With_Items {
 				return esc_html__( 'Form: Field placeholder', 'sitepress' );
 
 			case 'field_html':
-				return esc_html__( 'Form: Field html', 'wpml-string-translation' );
+				return esc_html__( 'Form: Field HTML', 'sitepress' );
 
 			default:
 				return '';
