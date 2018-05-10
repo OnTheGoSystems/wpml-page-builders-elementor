@@ -553,6 +553,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'menu-anchor' => array(
+				'conditions' => array( $this->type => 'menu-anchor' ),
+				'fields'     => array(
+					array(
+						'field'       => 'anchor',
+						'type'        => __( 'Menu Anchor', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
 		);
 
 		$this->nodes_to_translate = apply_filters( 'wpml_elementor_widgets_to_translate', $this->nodes_to_translate );

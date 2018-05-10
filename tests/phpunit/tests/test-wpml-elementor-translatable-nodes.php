@@ -325,6 +325,18 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Menu Anchor' => array(
+				'menu-anchor',
+				array(
+					array(
+						'field'       => 'anchor',
+						'type'        => 'Menu Anchor',
+						'editor_type' => 'LINE'
+					)
+				),
+				'',
+				array(),
+			),
 		);
 	}
 
