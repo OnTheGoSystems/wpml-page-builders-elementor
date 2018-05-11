@@ -38,7 +38,7 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 				if ( ! is_array( $field ) ) {
 					$strings[] = new WPML_PB_String(
 						$item[ $field ],
-						$this->get_string_name( $node_id, $item[ $field ], $field ),
+						$this->get_string_name( $node_id, $item[ $field ], $field, $element['widgetType'], $item['_id'] ),
 						$this->get_title( $field ),
 						$this->get_editor_type( $field )
 					);
@@ -46,7 +46,7 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 					foreach ( $field as $inner_field ) {
 						$strings[] = new WPML_PB_String(
 							$item[ $key ][ $inner_field ],
-							$this->get_string_name( $node_id, $item[ $key ][ $inner_field ], $inner_field ),
+							$this->get_string_name( $node_id, $item[ $key ][ $inner_field ], $inner_field, $item['_id'] ),
 							$this->get_title( $inner_field ),
 							$this->get_editor_type( $inner_field )
 						);
@@ -68,14 +68,14 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 		foreach ( $this->get_items( $element ) as $key => $item ) {
 			foreach( $this->get_fields() as $field_key => $field ) {
 				if ( ! is_array( $field ) ) {
-					if ( $this->get_string_name( $node_id, $item[ $field ], $field ) === $string->get_name() ) {
+					if ( $this->get_string_name( $node_id, $item[ $field ], $field, $element['widgetType'], $item['_id'] ) === $string->get_name() ) {
 						$item[ $field ] = $string->get_value();
 						$item['index'] = $key;
 						return $item;
 					}
 				} else {
 					foreach ( $field as $inner_field ) {
-						if ( $this->get_string_name( $node_id, $item[ $field_key ][ $inner_field ], $inner_field ) === $string->get_name() ) {
+						if ( $this->get_string_name( $node_id, $item[ $field_key ][ $inner_field ], $inner_field, $element['widgetType'], $item['_id'] ) === $string->get_name() ) {
 							$item[ $field_key ][ $inner_field ] = $string->get_value();
 							$item['index'] = $key;
 							return $item;
@@ -91,11 +91,12 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 	 * @param string $value
 	 * @param string $type
 	 * @param string $key
+	 * @param string $item_id
 	 *
 	 * @return string
 	 */
-	private function get_string_name( $node_id, $value, $type, $key = '' ) {
-		return md5( $value ) . '-' . $type . $key . '-' . $node_id;
+	private function get_string_name( $node_id, $value, $type, $key = '', $item_id = '' ) {
+		return $key . '-' . $type . '-' . $node_id . '-' . $item_id;
 	}
 
 	/**

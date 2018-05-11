@@ -43,6 +43,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			}
 		}
 
+		$sub_items[ '_id' ] = mt_rand( 1, 10 );
 		$settings[ $items_field ][] = $sub_items;
 
 		$element = array(
@@ -124,10 +125,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 				if ( is_numeric( $item_key ) ) {
 					$this->assertEquals( $element['settings'][ $items_field ][0][ $item['field'] ], $string->get_value() );
+					$this->assertEquals( $element['widgetType'] . '-' . $item['field'] . '-' . $node_id . '-' . $sub_items[ '_id' ], $string->get_name() );
 				} else {
 					$this->assertEquals( $element['settings'][ $items_field ][0][ $item_key ][ $item['field'] ], $string->get_value() );
 				}
-				$this->assertEquals( md5( $item['value'] ) . '-' . $item['field'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $item['type'], $string->get_title() );
 				$this->assertEquals( $item['editor_type'], $string->get_editor_type() );
 				$key++;
