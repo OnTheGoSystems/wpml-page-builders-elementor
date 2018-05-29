@@ -286,6 +286,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'blockquote'       => array(
+				'conditions' => array( $this->type => 'blockquote' ),
+				'fields'     => array(
+					array(
+						'field'       => 'blockquote_content',
+						'type'        => __( 'Blockquote: Content', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'tweet_button_label',
+						'type'        => __( 'Blockquote: Tweet button label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
 			'testimonial' => array(
 				'conditions' => array( $this->type => 'testimonial' ),
 				'fields'     => array(
@@ -367,7 +382,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'description_text',
 						'type'        => __( 'Image Box: Description text', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'LINE'
 					),
 				),
 			),
@@ -422,6 +437,36 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					'link' => array(
 						'field'       => 'url',
 						'type'        => __( 'Flip Box: Button link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'call-to-action'    => array(
+				'conditions' => array( $this->type => 'call-to-action' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Call to action: title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description',
+						'type'        => __( 'Call to action: description', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'button',
+						'type'        => __( 'Call to action: button', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'ribbon_title',
+						'type'        => __( 'Call to action: ribbon title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Call to action: link', 'sitepress' ),
 						'editor_type' => 'LINK'
 					),
 				),
