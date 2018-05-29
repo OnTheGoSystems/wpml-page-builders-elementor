@@ -106,6 +106,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[2];
 				}
 
+				if ( 'call-to-action' === $type ) {
+					$string = $strings[4];
+				}
+
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
 				$this->assertEquals( $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
@@ -187,6 +191,12 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Blockquote' => array( 'blockquote', array(
+				array( 'field' => 'blockquote_content', 'type' => 'Blockquote: Content', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'tweet_button_label', 'type' => 'Blockquote: Tweet button label', 'editor_type' => 'LINE' ) ),
+				'',
+				array(),
+			),
 			'Testimonial' => array( 'testimonial', array(
 				array( 'field' => 'testimonial_content', 'type' => 'Testimonial content', 'editor_type' => 'VISUAL' ),
 				array( 'field' => 'testimonial_name', 'type' => 'Testimonial name', 'editor_type' => 'LINE' ),
@@ -215,7 +225,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Image box' => array( 'image-box', array(
 				array( 'field' => 'title_text', 'type' => 'Image Box: Title text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'VISUAL' ) ),
+				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'LINE' ) ),
 				'',
 				array(),
 			),
@@ -233,6 +243,15 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array( 'field' => 'description_text_b', 'type' => 'Flip Box: Description text side B', 'editor_type' => 'VISUAL' ),
 				array( 'field' => 'button_text', 'type' => 'Flip Box: Button text', 'editor_type' => 'LINE' ),
 				'link' => array( 'field' => 'url', 'type' => 'Flip Box: Button link', 'editor_type' => 'LINK' ) ),
+				'',
+				array(),
+			),
+			'Call to action' => array( 'call-to-action', array(
+				array( 'field' => 'title', 'type' => 'Call to action: title', 'editor_type' => 'LINE' ),
+				array( 'field' => 'description', 'type' => 'Call to action: description', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'button', 'type' => 'Call to action: button', 'editor_type' => 'LINE' ),
+				array( 'field' => 'ribbon_title', 'type' => 'Call to action: ribbon title', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Call to action: link', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),
