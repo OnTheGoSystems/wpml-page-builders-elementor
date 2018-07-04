@@ -15,27 +15,19 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 	 * @test
 	 */
 	public function it_creates() {
-		global $sitepress;
+		$elementor_factory = new WPML_Elementor_Integration_Factory();
 
-		$bb_factory = new WPML_Elementor_Integration_Factory();
+		$action_filter_loader = \Mockery::mock( 'overload:WPML_Action_Filter_Loader' );
+		$action_filter_loader->shouldReceive( 'load' )
+		                     ->once()
+		                     ->with( array( 'WPML_Elementor_Translate_IDs_Factory' ) );
 
-		$absolute_links = \Mockery::mock('overload:AbsoluteLinks');
-		$absolute_to_permalinks = \Mockery::mock('overload:WPML_Absolute_To_Permalinks');
-		$translate_link_targets = \Mockery::mock('overload:WPML_Translate_Link_Targets');
-		$string_registration = \Mockery::mock('overload:WPML_PB_String_Registration');
-		$string_registration_factory = \Mockery::mock('overload:WPML_String_Registration_Factory');
-		$hooks_strategy = \Mockery::mock('overload:WPML_PB_API_Hooks_Strategy');
-		$string_factory = \Mockery::mock('overload:WPML_ST_String_Factory');
+		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
 
-		$string_registration_factory->shouldReceive('create')->andReturn($string_registration);
+		$string_registration_factory = \Mockery::mock( 'overload:WPML_String_Registration_Factory' );
+		$string_registration_factory->shouldReceive( 'create' )
+		                            ->andReturn( $string_registration );
 
-		$sitepress = $this->getMockBuilder( 'SitePress' )
-			->setMethods( array( 'get_active_languages' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$bb_factory->create();
-
-		$this->assertInstanceOf( 'WPML_Page_Builders_Integration', $bb_factory->create() );
+		$this->assertInstanceOf( 'WPML_Page_Builders_Integration', $elementor_factory->create() );
 	}
 }
