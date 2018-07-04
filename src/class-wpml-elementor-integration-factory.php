@@ -9,6 +9,10 @@ class WPML_Elementor_Integration_Factory {
 	 * @return WPML_Page_Builders_Integration
 	 */
 	public function create() {
+
+		$action_filter_loader = new WPML_Action_Filter_Loader();
+		$action_filter_loader->load( array( 'WPML_Elementor_Translate_IDs_Factory' ) );
+
 		$nodes                = new WPML_Elementor_Translatable_Nodes();
 		$elementor_db_factory = new WPML_Elementor_DB_Factory();
 		$data_settings        = new WPML_Elementor_Data_Settings( $elementor_db_factory->create() );
