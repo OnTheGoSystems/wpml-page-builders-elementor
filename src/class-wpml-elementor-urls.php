@@ -2,6 +2,12 @@
 
 class WPML_Elementor_URLs implements IWPML_Action {
 
+	/** @var WPML_Translation_Element_Factory  */
+	private $element_factory;
+
+	/** @var WPML_Language_Domains  */
+	private $domains;
+
 	public function __construct(
 		WPML_Translation_Element_Factory $element_factory,
 		WPML_Language_Domains $domains = null
