@@ -20,7 +20,10 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 		$action_filter_loader = \Mockery::mock( 'overload:WPML_Action_Filter_Loader' );
 		$action_filter_loader->shouldReceive( 'load' )
 		                     ->once()
-		                     ->with( array( 'WPML_Elementor_Translate_IDs_Factory' ) );
+		                     ->with( array(
+		                     	'WPML_Elementor_Translate_IDs_Factory',
+		                     	'WPML_Elementor_URLs_Factory',
+		                     ) );
 
 		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
 
