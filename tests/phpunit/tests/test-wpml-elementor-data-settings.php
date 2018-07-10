@@ -62,7 +62,7 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 	 * @test
 	 */
 	public function it_gets_field_to_copy() {
-		$fields_to_copy = array( '_elementor_version', '_elementor_edit_mode', '_elementor_css' );
+		$fields_to_copy = array( '_elementor_version', '_elementor_edit_mode', '_elementor_css', '_elementor_template_type' );
 
 		$subject = new WPML_Elementor_Data_Settings();
 		$this->assertEquals( $fields_to_copy, $subject->get_fields_to_copy() );
