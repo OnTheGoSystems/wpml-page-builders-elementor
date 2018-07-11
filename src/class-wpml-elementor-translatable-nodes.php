@@ -404,6 +404,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Animated Headline: Rotating text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					array(
+						'field'       => 'after_text',
+						'type'        => __( 'Animated Headline: After text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 				),
 			),
 			'flip-box'    => array(
