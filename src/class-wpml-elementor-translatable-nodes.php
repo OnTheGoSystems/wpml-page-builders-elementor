@@ -511,6 +511,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Accordion',
 			),
+			'testimonial-carousel'   => array(
+				'conditions'        => array( $this->type => 'testimonial-carousel' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Testimonial_Carousel',
+			),
 			'tabs'        => array(
 				'conditions'        => array( $this->type => 'tabs' ),
 				'fields'            => array(),
