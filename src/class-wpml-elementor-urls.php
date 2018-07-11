@@ -25,7 +25,7 @@ class WPML_Elementor_URLs implements IWPML_Action {
 	public function adjust_edit_with_elementor_url( $url, $elementor_document ) {
 		$post = $elementor_document->get_main_post();
 
-		$post_element  = $this->element_factory->create( $post->ID, WPML_Translation_Element_Factory::ELEMENT_TYPE_POST );
+		$post_element  = $this->element_factory->create_post( $post->ID );
 		$post_language = $post_element->get_language_code();
 
 		if ( $post_language ) {

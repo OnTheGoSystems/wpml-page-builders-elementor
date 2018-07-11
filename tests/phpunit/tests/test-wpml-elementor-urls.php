@@ -54,8 +54,8 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$post_element->shouldReceive( 'get_language_code' )->andReturn( 'fr' );
 
 		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
-		$element_factory->shouldReceive( 'create' )
-		                ->with( $post->ID, WPML_Translation_Element_Factory::ELEMENT_TYPE_POST )
+		$element_factory->shouldReceive( 'create_post' )
+		                ->with( $post->ID )
 		                ->andReturn( $post_element );
 
 		$domains = \Mockery::mock( 'WPML_Language_Domains' );
