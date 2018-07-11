@@ -241,7 +241,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			'Animated Headline' => array( 'animated-headline', array(
 				array( 'field' => 'before_text', 'type' => 'Animated Headline: Before text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'highlighted_text', 'type' => 'Animated Headline: Highlighted text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'rotating_text', 'type' => 'Animated Headline: Rotating text', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'rotating_text', 'type' => 'Animated Headline: Rotating text', 'editor_type' => 'LINE' ),
+				array( 'field' => 'after_text', 'type' => 'Animated Headline: After text', 'editor_type' => 'LINE' ) ),
 				'',
 				array(),
 			),
