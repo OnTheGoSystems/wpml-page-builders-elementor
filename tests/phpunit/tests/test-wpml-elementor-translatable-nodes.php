@@ -217,6 +217,14 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Countdown' => array( 'countdown', array(
+				array( 'field' => 'label_days', 'type' => 'Countdown: Label days', 'editor_type' => 'LINE' ),
+				array( 'field' => 'label_hours', 'type' => 'Countdown: Label hours', 'editor_type' => 'LINE' ),
+				array( 'field' => 'label_minutes', 'type' => 'Countdown: Label minutes', 'editor_type' => 'LINE' ),
+				array( 'field' => 'label_seconds', 'type' => 'Countdown: Label seconds', 'editor_type' => 'LINE' ) ),
+				'',
+				array(),
+			),
 			'Icon box' => array( 'icon-box', array(
 				array( 'field' => 'title_text', 'type' => 'Icon Box: Title text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'description_text', 'type' => 'Icon Box: Description text', 'editor_type' => 'VISUAL' ),
