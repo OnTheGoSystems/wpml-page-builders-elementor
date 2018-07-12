@@ -12,6 +12,6 @@ class WPML_Elementor_URLs_Factory implements IWPML_Backend_Action_Loader {
 
 		$element_factory = new WPML_Translation_Element_Factory( $sitepress );
 
-		return new WPML_Elementor_URLs( $element_factory, $domains );
+		return new WPML_Elementor_URLs( $element_factory, $domains, $sitepress );
 	}
 }
