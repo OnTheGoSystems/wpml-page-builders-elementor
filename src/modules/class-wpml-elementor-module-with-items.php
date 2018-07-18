@@ -44,6 +44,11 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 					);
 				} else {
 					foreach ( $field as $inner_field ) {
+
+						if ( ! isset( $item[ $key ][ $inner_field ] ) ) {
+							continue;
+						}
+
 						$strings[] = new WPML_PB_String(
 							$item[ $key ][ $inner_field ],
 							$this->get_string_name( $node_id, $item[ $key ][ $inner_field ], $inner_field, $item['_id'] ),
