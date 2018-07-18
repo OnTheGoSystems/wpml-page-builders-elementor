@@ -13,7 +13,7 @@ class Test_WPML_Elementor_Form extends OTGS_TestCase {
 	 */
 	public function it_get_fields() {
 
-		$expected = array( 'field_label', 'placeholder', 'field_html' );
+		$expected = array( 'field_label', 'placeholder', 'field_html', 'acceptance_text', 'field_options' );
 		$subject = new WPML_Elementor_Form();
 		$this->assertEquals( $expected, $subject->get_fields() );
 	}
