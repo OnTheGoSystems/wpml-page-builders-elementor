@@ -36,6 +36,11 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 		foreach ( $this->get_items( $element ) as $item ) {
 			foreach( $this->get_fields() as $key => $field ) {
 				if ( ! is_array( $field ) ) {
+
+					if ( ! isset( $item[ $field ] ) ) {
+						continue;
+					}
+
 					$strings[] = new WPML_PB_String(
 						$item[ $field ],
 						$this->get_string_name( $node_id, $item[ $field ], $field, $element['widgetType'], $item['_id'] ),
