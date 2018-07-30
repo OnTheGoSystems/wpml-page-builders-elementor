@@ -63,7 +63,13 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	 * @return array
 	 */
 	public function get_fields_to_copy() {
-		return array( '_elementor_version', '_elementor_edit_mode', '_elementor_css', '_elementor_template_type' );
+		return array(
+			'_elementor_version',
+			'_elementor_edit_mode',
+			'_elementor_css',
+			'_elementor_template_type',
+			'_elementor_template_widget_type',
+		);
 	}
 
 	/**
