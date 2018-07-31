@@ -427,7 +427,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'rotating_text',
 						'type'        => __( 'Animated Headline: Rotating text', 'sitepress' ),
-						'editor_type' => 'LINE'
+						'editor_type' => 'AREA'
 					),
 					array(
 						'field'       => 'after_text',
