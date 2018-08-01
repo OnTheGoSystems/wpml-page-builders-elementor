@@ -9,12 +9,12 @@ class WPML_Elementor_Integration_Factory {
 	 * @return WPML_Page_Builders_Integration
 	 */
 	public function create() {
-
 		$action_filter_loader = new WPML_Action_Filter_Loader();
 		$action_filter_loader->load(
 			array(
 				'WPML_Elementor_Translate_IDs_Factory',
 				'WPML_Elementor_URLs_Factory',
+				'WPML_Elementor_Media_Translation_Factory',
 			)
 		);
 
