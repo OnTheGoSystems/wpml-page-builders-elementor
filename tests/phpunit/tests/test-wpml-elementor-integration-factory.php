@@ -52,6 +52,7 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
 
 		\Mockery::mock( 'overload:WPML_Media_Image_Translate' );
+		\Mockery::mock( 'overload:WPML_Media_Attachment_By_URL_Factory' );
 
 		$media_translation = \Mockery::mock( 'overload:WPML_Elementor_Media_Translation' )
 			->shouldReceive( 'add_hooks' )
