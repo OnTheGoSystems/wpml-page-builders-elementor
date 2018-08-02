@@ -9,6 +9,7 @@ class WPML_Elementor_Integration_Factory {
 	 * @return WPML_Page_Builders_Integration
 	 */
 	public function create() {
+		global $sitepress;
 
 		$action_filter_loader = new WPML_Action_Filter_Loader();
 		$action_filter_loader->load(
@@ -27,6 +28,16 @@ class WPML_Elementor_Integration_Factory {
 
 		$register_strings   = new WPML_Elementor_Register_Strings( $nodes, $data_settings, $string_registration );
 		$update_translation = new WPML_Elementor_Update_Translation( $nodes, $data_settings );
+
+		if ( class_exists( 'WPML_Media_Image_Translate' ) ) {
+			$media_translation = new WPML_Elementor_Media_Translation(
+				$data_settings,
+				new WPML_Media_Image_Translate( $sitepress, new WPML_Media_Attachment_By_URL_Factory() ),
+				new WPML_Translation_Element_Factory( $sitepress )
+			);
+
+			$media_translation->add_hooks();
+		}
 
 		return new WPML_Page_Builders_Integration( $register_strings, $update_translation, $data_settings );
 	}
