@@ -50,8 +50,12 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 	public function translate_global_widget_ids( $data_array, $post_id ) {
 		foreach ( $data_array as &$data ) {
-			if ( isset( $data['elType'] ) && 'widget' === $data['elType'] && 'global' === $data['widgetType'] ) {
-				$data['templateID'] = $this->translate_id( $data['templateID'] );
+			if ( isset( $data['elType'] ) && 'widget' === $data['elType'] ) {
+				if ( 'global' === $data['widgetType'] ) {
+					$data['templateID'] = $this->translate_id( $data['templateID'] );
+				} elseif ( 'template' === $data['widgetType'] ) {
+					$data['settings']['template_id'] = $this->translate_id( $data['settings']['template_id'] );
+				}
 			}
 			$data['elements'] = $this->translate_global_widget_ids( $data['elements'], $post_id );
 		}
