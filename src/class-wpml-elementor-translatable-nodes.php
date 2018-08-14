@@ -252,7 +252,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'html',
 						'type'        => __( 'HTML', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 				),
 			),
