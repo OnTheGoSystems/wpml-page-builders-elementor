@@ -13,7 +13,7 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 			$this->get_sitepress_mock()
 		);
 
-		$this->expectFilterAdded( 'elementor/document/urls/edit ', array(
+		$this->expectFilterAdded( 'elementor/document/urls/edit', array(
 			$subject,
 			'adjust_edit_with_elementor_url'
 		), 10, 2 );
@@ -33,7 +33,7 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 			$this->get_sitepress_mock()
 		);
 
-		$this->expectFilterAdded( 'elementor/document/urls/edit ', array(
+		$this->expectFilterAdded( 'elementor/document/urls/edit', array(
 			$subject,
 			'adjust_edit_with_elementor_url'
 		), 10, 2, 0 );

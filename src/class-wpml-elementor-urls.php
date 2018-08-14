@@ -22,7 +22,7 @@ class WPML_Elementor_URLs implements IWPML_Action {
 
 	public function add_hooks() {
 		if ( $this->domains ) {
-			add_filter( 'elementor/document/urls/edit ', array( $this, 'adjust_edit_with_elementor_url' ), 10, 2 );
+			add_filter( 'elementor/document/urls/edit', array( $this, 'adjust_edit_with_elementor_url' ), 10, 2 );
 		}
 	}
 
