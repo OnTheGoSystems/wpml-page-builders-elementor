@@ -150,7 +150,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array(),
 			),
 			'HTML' => array( 'html', array(
-				array( 'field' => 'html', 'type' => 'HTML', 'editor_type' => 'VISUAL' ) ),
+				array( 'field' => 'html', 'type' => 'HTML', 'editor_type' => 'AREA' ) ),
 				'',
 				array(),
 			),
