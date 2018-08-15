@@ -47,9 +47,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		foreach ( $this->nodes_to_translate as $node_type => $node_data ) {
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
-					$field_key = $field['field'];
+					$field_key = isset( $field['field'] ) ? $field['field'] : '';
 
-					if ( is_numeric( $key ) && isset( $element[ $this->settings_field ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $field_key ] ) ) {
+					if ( $field_key && is_numeric( $key ) && isset( $element[ $this->settings_field ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $field_key ] ) ) {
 						$string    = new WPML_PB_String(
 							$element[ $this->settings_field ][ $field_key ],
 							$this->get_string_name( $node_id, $field, $element ),
@@ -57,7 +57,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$field['editor_type']
 						);
 						$strings[] = $string;
-					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
+					} else if ( $field_key && isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
 						$string    = new WPML_PB_String(
 							$element[ $this->settings_field ][ $key ][ $field_key ],
 							$this->get_string_name( $node_id, $field, $element ),
@@ -65,6 +65,18 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$field['editor_type']
 						);
 						$strings[] = $string;
+					} else if ( is_array( $field ) ) {
+						foreach ( $field as $sub_field_key => $sub_field ) {
+							if ( isset( $element[ $this->settings_field ][ $key ][ $sub_field['field'] ] ) ) {
+								$string    = new WPML_PB_String(
+									$element[ $this->settings_field ][ $key ][ $sub_field['field'] ],
+									$this->get_string_name( $node_id, $sub_field, $element ),
+									$sub_field['type'],
+									$sub_field['editor_type']
+								);
+								$strings[] = $string;
+							}
+						}
 					}
 				}
 				if ( isset( $node_data['integration-class'] ) ) {
@@ -97,13 +109,23 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
-					$field_key = $field['field'];
-
-					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
+					if (  isset( $field['field'] ) && $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
+						$field_key = isset( $field['field'] ) ? $field['field'] : '';
 						if ( is_numeric( $key ) ) {
 							$element[ $this->settings_field ][ $field_key ] = $string->get_value();
 						} else {
 							$element[ $this->settings_field ][ $key ][ $field_key ] = $string->get_value();
+						}
+					} else if ( is_array( $field ) ) {
+						foreach ( $field as $field_data ) {
+							$field_key = $field_data['field'];
+							if ( $this->get_string_name( $node_id, $field_data, $element ) === $string->get_name() ) {
+								if ( is_numeric( $key ) ) {
+									$element[ $this->settings_field ][ $field_key ] = $string->get_value();
+								} else {
+									$element[ $this->settings_field ][ $key ][ $field_key ] = $string->get_value();
+								}
+							}
 						}
 					}
 				}
@@ -640,6 +662,23 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'field'       => 'anchor',
 						'type'        => __( 'Menu Anchor', 'sitepress' ),
 						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'wp-widget-text' => array(
+				'conditions' => array( $this->type => 'wp-widget-text' ),
+				'fields'     => array(
+					'wp' => array(
+						array(
+							'field'       => 'title',
+							'type'        => __( 'WP Widget Text: Title', 'sitepress' ),
+							'editor_type' => 'LINE'
+						),
+						array(
+							'field'       => 'text',
+							'type'        => __( 'WP Widget Text: Text', 'sitepress' ),
+							'editor_type' => 'VISUAL'
+						),
 					),
 				),
 			),

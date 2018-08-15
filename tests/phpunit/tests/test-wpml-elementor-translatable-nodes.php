@@ -385,4 +385,56 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$this->assertEquals( $translation, $element['settings']['editor'] );
 	}
+
+	/**
+	 * @test
+	 */
+	public function it_gets_wp_widget_text_node() {
+		$node_id = 'my-node';
+		$title = 'my-title';
+		$text = 'my-text';
+
+		$element = array(
+			'widgetType' => 'wp-widget-text',
+			'settings' => array(
+				'wp' => array(
+					'title' => $title,
+					'text' => $text,
+				)
+			)
+		);
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$strings = $subject->get( $node_id, $element );
+		$this->assertCount( count( $element['settings']['wp'] ), $strings );
+		$this->assertEquals( $title, $strings[0]->get_value() );
+		$this->assertEquals( $text, $strings[1]->get_value() );
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_updates_wp_widget_text_node() {
+		$title = 'my-title';
+		$text = 'my-text';
+
+		$node_id = mt_rand();
+		$element = array(
+			'widgetType' => 'wp-widget-text',
+			'settings' => array(
+				'wp' => array(
+					'title' => $title,
+					'text' => $text,
+				)
+			)
+		);
+		$translation = rand_str();
+
+		$string = new WPML_PB_String( $translation, 'title-wp-widget-text-' . $node_id, 'anything', 'anything' );
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$element = $subject->update( $node_id, $element, $string );
+
+		$this->assertEquals( $translation, $element['settings']['wp']['title'] );
+	}
 }
