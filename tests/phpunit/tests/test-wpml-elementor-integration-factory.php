@@ -24,6 +24,7 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 		                     	'WPML_Elementor_Translate_IDs_Factory',
 		                     	'WPML_Elementor_URLs_Factory',
 			                     'WPML_Elementor_Media_Translation_Factory',
+			                     'WPML_Elementor_Adjust_Global_Widget_ID_Factory',
 		                     ) );
 
 		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
