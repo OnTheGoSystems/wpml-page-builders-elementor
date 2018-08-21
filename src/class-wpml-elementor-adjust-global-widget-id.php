@@ -43,6 +43,10 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 			$this->elementor_settings->get_meta_field()
 		);
 
+		if ( ! $custom_field_data ) {
+			return;
+		}
+
 		$custom_field_data = $this->elementor_settings->convert_data_to_array( $custom_field_data );
 
 		$custom_field_data_adjusted = $this->set_global_widget_id_for_language( $custom_field_data, $language );
