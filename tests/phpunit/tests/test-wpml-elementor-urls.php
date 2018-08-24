@@ -5,38 +5,18 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 	/**
 	 * @test
 	 */
-	public function it_adds_hooks_when_domains_exist() {
+	public function it_adds_hooks() {
 
 		$subject = new WPML_Elementor_URLs(
 			\Mockery::mock( 'WPML_Translation_Element_Factory' ),
-			\Mockery::mock( 'WPML_Language_Domains' ),
-			$this->get_sitepress_mock()
+			\Mockery::mock( 'IWPML_URL_Converter_Strategy' ),
+			\Mockery::mock( 'IWPML_Current_Language' )
 		);
 
-		$this->expectFilterAdded( 'elementor/document/urls/edit ', array(
+		$this->expectFilterAdded( 'elementor/document/urls/edit', array(
 			$subject,
 			'adjust_edit_with_elementor_url'
 		), 10, 2 );
-
-		$subject->add_hooks();
-
-	}
-
-	/**
-	 * @test
-	 */
-	public function it_does_not_add_hooks_when_domains_do_not_exist() {
-
-		$subject = new WPML_Elementor_URLs(
-			\Mockery::mock( 'WPML_Translation_Element_Factory' ),
-			null,
-			$this->get_sitepress_mock()
-		);
-
-		$this->expectFilterAdded( 'elementor/document/urls/edit ', array(
-			$subject,
-			'adjust_edit_with_elementor_url'
-		), 10, 2, 0 );
 
 		$subject->add_hooks();
 
@@ -50,34 +30,34 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$original_url   = 'http://my-site.com/wp-admin/post.php?post=6&action=elementor';
 		$translated_url = 'http://fr.my-site.com/wp-admin/post.php?post=6&action=elementor';
 
+		$post_language = 'fr';
+
 		$post = (object) array( 'ID' => 123 );
 
 		$post_element = \Mockery::mock( 'WPML_Post_Element' );
-		$post_element->shouldReceive( 'get_language_code' )->andReturn( 'fr' );
+		$post_element->shouldReceive( 'get_language_code' )->andReturn( $post_language );
 
 		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
 		$element_factory->shouldReceive( 'create_post' )
 		                ->with( $post->ID )
 		                ->andReturn( $post_element );
 
-		$domains = \Mockery::mock( 'WPML_Language_Domains' );
-		$domains->shouldReceive( 'get' )->with( 'fr' )->andReturn( 'fr.my-site.com' );
+		$language_converter = \Mockery::mock( 'IWPML_URL_Converter_Strategy' );
+		$language_converter->shouldReceive( 'convert_admin_url_string' )
+		                   ->with( $original_url, $post_language )
+		                   ->andReturn( $translated_url );
+
+		$current_language = \Mockery::mock( 'IWPML_Current_Language' );
 
 		$subject = new WPML_Elementor_URLs(
 			$element_factory,
-			$domains,
-			$this->get_sitepress_mock()
+			$language_converter,
+			$current_language
 		);
 
 		$elementor_document = \Mockery::mock( 'Elementor_Document' ); // Note: this is not the real class name
 		$elementor_document->shouldReceive( 'get_main_post' )->andReturn( $post );
 
-		\WP_Mock::userFunction( 'wpml_parse_url',
-			array(
-				'args'   => $original_url,
-				'return' => parse_url( $original_url ),
-			)
-		);
 		$this->assertEquals( $translated_url, $subject->adjust_edit_with_elementor_url( $original_url, $elementor_document ) );
 	}
 
@@ -88,45 +68,36 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$original_url   = 'http://my-site.com/wp-admin/post.php?post=6&action=elementor';
 		$translated_url = 'http://fr.my-site.com/wp-admin/post.php?post=6&action=elementor';
 
+		$site_language = 'fr';
+
 		$post = (object) array( 'ID' => 123 );
 
 		$post_element = \Mockery::mock( 'WPML_Post_Element' );
 		$post_element->shouldReceive( 'get_language_code' )->andReturn( '' );
-
-		$sitepress = $this->get_sitepress_mock();
-		$sitepress->method( 'get_current_language' )
-			->willReturn( 'fr' );
 
 		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
 		$element_factory->shouldReceive( 'create_post' )
 		                ->with( $post->ID )
 		                ->andReturn( $post_element );
 
-		$domains = \Mockery::mock( 'WPML_Language_Domains' );
-		$domains->shouldReceive( 'get' )->with( 'fr' )->andReturn( 'fr.my-site.com' );
+		$language_converter = \Mockery::mock( 'IWPML_URL_Converter_Strategy' );
+		$language_converter->shouldReceive( 'convert_admin_url_string' )
+		                   ->with( $original_url, $site_language )
+		                   ->andReturn( $translated_url );
+
+		$current_language = \Mockery::mock( 'IWPML_Current_Language' );
+		$current_language->shouldReceive( 'get_current_language' )->andReturn( $site_language );
 
 		$subject = new WPML_Elementor_URLs(
 			$element_factory,
-			$domains,
-			$sitepress
+			$language_converter,
+			$current_language
 		);
 
 		$elementor_document = \Mockery::mock( 'Elementor_Document' ); // Note: this is not the real class name
 		$elementor_document->shouldReceive( 'get_main_post' )->andReturn( $post );
 
-		\WP_Mock::userFunction( 'wpml_parse_url',
-			array(
-				'args'   => $original_url,
-				'return' => parse_url( $original_url ),
-			)
-		);
 		$this->assertEquals( $translated_url, $subject->adjust_edit_with_elementor_url( $original_url, $elementor_document ) );
 	}
 
-	private function get_sitepress_mock() {
-		return $this->getMockBuilder( 'SitePress' )
-			->setMethods( array( 'get_current_language' ) )
-			->disableOriginalConstructor()
-			->getMock();
-	}
 }

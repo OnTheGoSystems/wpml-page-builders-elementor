@@ -22,11 +22,12 @@
   },
   "require": {
     "roave/security-advisories": "dev-master",
-    "wpml/page-builders": "dev-wpmlpb-149",
+    "wpml/page-builders": "dev-master",
     "jakeasmith/http_build_url": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.7",
-    "otgs/unit-tests-framework": "~1.2.0"
+    "otgs/unit-tests-framework": "~1.2.0",
+    "wpml/page-builders": "dev-master"
   }
 }
