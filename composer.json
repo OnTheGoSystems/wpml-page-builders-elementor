@@ -27,6 +27,6 @@
   "require-dev": {
     "phpunit/phpunit": "~5.7",
     "otgs/unit-tests-framework": "~1.2.0",
-    "wpml/page-builders": "dev-master"
+    "wpml/page-builders": "dev-develop"
   }
 }
