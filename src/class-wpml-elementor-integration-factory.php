@@ -15,6 +15,7 @@ class WPML_Elementor_Integration_Factory {
 				'WPML_Elementor_Translate_IDs_Factory',
 				'WPML_Elementor_URLs_Factory',
 				'WPML_Elementor_Media_Translation_Factory',
+				'WPML_PB_Elementor_Handle_Custom_Fields_Factory',
 				'WPML_Elementor_Adjust_Global_Widget_ID_Factory',
 			)
 		);

@@ -22,6 +22,7 @@
   },
   "require": {
     "roave/security-advisories": "dev-master",
+    "wpml/page-builders": "dev-master",
     "jakeasmith/http_build_url": "^1.0"
   },
   "require-dev": {
