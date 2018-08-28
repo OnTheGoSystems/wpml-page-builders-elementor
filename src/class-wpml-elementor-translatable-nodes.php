@@ -447,7 +447,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'description_text_a',
 						'type'        => __( 'Flip Box: Description text side A', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					array(
 						'field'       => 'title_text_b',
@@ -457,7 +457,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'description_text_b',
 						'type'        => __( 'Flip Box: Description text side B', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					array(
 						'field'       => 'button_text',

@@ -248,9 +248,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Flip box' => array( 'flip-box', array(
 				array( 'field' => 'title_text_a', 'type' => 'Flip Box: Title text side A', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text_a', 'type' => 'Flip Box: Description text side A', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'description_text_a', 'type' => 'Flip Box: Description text side A', 'editor_type' => 'AREA' ),
 				array( 'field' => 'title_text_b', 'type' => 'Flip Box: Title text side B', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text_b', 'type' => 'Flip Box: Description text side B', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'description_text_b', 'type' => 'Flip Box: Description text side B', 'editor_type' => 'AREA' ),
 				array( 'field' => 'button_text', 'type' => 'Flip Box: Button text', 'editor_type' => 'LINE' ),
 				'link' => array( 'field' => 'url', 'type' => 'Flip Box: Button link', 'editor_type' => 'LINK' ) ),
 				'',
