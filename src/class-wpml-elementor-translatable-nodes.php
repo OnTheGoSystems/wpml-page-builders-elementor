@@ -387,7 +387,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'description_text',
 						'type'        => __( 'Icon Box: Description text', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					'link' => array(
 						'field'       => 'url',

@@ -227,7 +227,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Icon box' => array( 'icon-box', array(
 				array( 'field' => 'title_text', 'type' => 'Icon Box: Title text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text', 'type' => 'Icon Box: Description text', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'description_text', 'type' => 'Icon Box: Description text', 'editor_type' => 'AREA' ),
 				'link' => array( 'field' => 'url', 'type' => 'Icon Box: Link', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
