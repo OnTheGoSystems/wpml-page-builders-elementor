@@ -11,6 +11,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 	public function add_hooks() {
 		add_filter( 'elementor/theme/get_location_templates/template_id', array( $this, 'translate_theme_location_template_id' ) );
+		add_filter( 'elementor/theme/get_location_templates/sub_id', array( $this, 'translate_location_condition_sub_id' ), 10, 2 );
 		add_filter( 'elementor/documents/get/post_id', array(
 			$this,
 			'translate_template_id'
@@ -20,6 +21,37 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 	public function translate_theme_location_template_id( $template_id ) {
 		return $this->translate_id( $template_id );
+	}
+
+	/**
+	 * @param int|string $sub_id
+	 * @param array      $parsed_condition
+	 *
+	 * @return int|string
+	 */
+	public function translate_location_condition_sub_id( $sub_id, $parsed_condition ) {
+		/**
+		 * `$sub_name` gives a context for the `$sub_id`, it can be either:
+		 * - `child_of`
+		 * - `in_{taxonomy}`
+		 * - `{post_type}`
+		 * - `{taxonomy}`
+		 */
+		$sub_name = isset( $parsed_condition['sub_name'] ) ? $parsed_condition['sub_name'] : null;
+
+		if ( (int) $sub_id > 0 && $sub_name ) {
+			$element_type = $sub_name;
+
+			if ( 'child_of' === $sub_name ) {
+				$element_type = get_post_type( $sub_id );
+			} elseif ( 0 === strpos( $sub_name, 'in_' ) ) {
+				$element_type = preg_replace( '/^in_/', '', $sub_name );
+			}
+
+			$sub_id = $this->translate_id( $sub_id, $element_type );
+		}
+
+		return $sub_id;
 	}
 
 	public function translate_template_id( $template_id ) {
@@ -63,7 +95,17 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 		return $data_array;
 	}
 
-	private function translate_id( $template_id ) {
-		return apply_filters( 'wpml_object_id', $template_id, get_post_type( $template_id ), true );
+	/**
+	 * @param int    $element_id
+	 * @param string $element_type
+	 *
+	 * @return int
+	 */
+	private function translate_id( $element_id, $element_type = null ) {
+		if ( ! $element_type ) {
+			$element_type = get_post_type( $element_id );
+		}
+
+		return apply_filters( 'wpml_object_id', $element_id, $element_type, true );
 	}
 }

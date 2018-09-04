@@ -13,6 +13,10 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 			$subject,
 			'translate_theme_location_template_id'
 		), 10 );
+		$this->expectFilterAdded( 'elementor/theme/get_location_templates/sub_id', array(
+			$subject,
+			'translate_location_condition_sub_id'
+		), 10, 2 );
 		$this->expectFilterAdded( 'elementor/documents/get/post_id', array(
 			$subject,
 			'translate_template_id'
@@ -50,6 +54,102 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 
 		$this->assertEquals( $translated_id, $subject->translate_theme_location_template_id( $template_id ) );
 
+	}
+
+	/**
+	 * @test
+	 * @dataProvider dp_not_translate_location_condition_sub_id
+	 * @group wpmlcore-5647
+	 *
+	 * @param mixed $sub_id
+	 * @param array $parsed_conditions
+	 */
+	public function it_should_not_translate_location_condition_sub_id( $sub_id, $parsed_conditions ) {
+		\WP_Mock::userFunction( 'get_post_type', array( 'times' => 0 ) );
+
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+
+		$this->assertEquals( $sub_id, $subject->translate_location_condition_sub_id( $sub_id, $parsed_conditions ) );
+	}
+
+	public function dp_not_translate_location_condition_sub_id() {
+		$sub_id = mt_rand( 1, 10 );
+
+		return array(
+			'missing sub_name'          => array( $sub_id, array() ),
+			'sub_id is not a valid int' => array( 'something', array() ),
+			'sub_id equals 0'           => array( 0, array() ),
+		);
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5647
+	 */
+	public function it_should_translate_location_condition_sub_id_for_singular_post_or_taxonomy_term_archive() {
+		$sub_id           = mt_rand( 1, 10 );
+		$translate_id     = mt_rand( 11, 20 );
+		$post_type        = 'hotel';
+		$parsed_conditions = array( 'sub_name' => $post_type );
+
+		\WP_Mock::userFunction( 'get_post_type',
+			array(
+				'times' => 0,
+			)
+		);
+
+		\WP_Mock::onFilter( 'wpml_object_id' )
+		        ->with( $sub_id, $post_type, true )
+		        ->reply( $translate_id );
+
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+
+		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5647
+	 */
+	public function it_should_translate_location_condition_sub_id_as_child_of() {
+		$sub_id           = mt_rand( 1, 10 );
+		$translate_id     = mt_rand( 11, 20 );
+		$post_type        = 'hotel';
+		$parsed_conditions = array( 'sub_name' => 'child_of' );
+
+		\WP_Mock::userFunction( 'get_post_type',
+			array(
+				'args'   => $sub_id,
+				'return' => $post_type
+			)
+		);
+
+		\WP_Mock::onFilter( 'wpml_object_id' )
+		        ->with( $sub_id, $post_type, true )
+		        ->reply( $translate_id );
+
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+
+		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5647
+	 */
+	public function it_should_translate_location_condition_sub_id_in_taxonomy_term() {
+		$sub_id           = mt_rand( 1, 10 );
+		$translate_id     = mt_rand( 11, 20 );
+		$taxonomy         = 'city';
+		$parsed_conditions = array( 'sub_name' => 'in_' . $taxonomy );
+
+		\WP_Mock::onFilter( 'wpml_object_id' )
+		        ->with( $sub_id, $taxonomy, true )
+		        ->reply( $translate_id );
+
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+
+		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
 	}
 
 	/**
