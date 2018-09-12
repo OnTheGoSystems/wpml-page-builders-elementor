@@ -385,4 +385,804 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$this->assertEquals( $translation, $element['settings']['editor'] );
 	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5803
+	 */
+	public function it_gets_single_repeater_field() {
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$field_id = 1;
+
+		$nodes = array(
+			'my-custom-module'      => array(
+				'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field',
+			),
+		);
+
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		       ->with( $this->get_translatable_nodes() )
+		       ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings' => array(
+				'items' => array(
+					array(
+						'text' => 'my_text',
+						'_id' => $field_id,
+					),
+				),
+			),
+		);
+
+		$node_id = 123;
+
+		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+
+		$this->assertEquals( array( $string ), $subject->get( $node_id, $element_data ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5803
+	 */
+	public function it_gets_multiple_repeater_field() {
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$field_id = 1;
+
+		$nodes = array(
+			'my-custom-module'      => array(
+				'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+				'fields'            => array(),
+				'integration-class' => array( 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field', 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field_2' ),
+			),
+		);
+
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		       ->with( $this->get_translatable_nodes() )
+		       ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings' => array(
+				'items' => array(
+					array(
+						'text' => 'my_text',
+						'_id' => $field_id,
+					),
+				),
+				'items_2' => array(
+					array(
+						'text' => 'my_text_2',
+						'_id' => $field_id,
+					),
+				),
+			),
+		);
+
+		$node_id = 123;
+
+		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+		$string2 = new WPML_PB_String( 'my_text_2', 'my-custom-module-text-123-1', 'title', 'LINE' );
+
+		$this->assertEquals( array( $string, $string2 ), $subject->get( $node_id, $element_data ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5803
+	 */
+	public function it_updates_single_repeater_field() {
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$field_id = 1;
+
+		$nodes = array(
+			'my-custom-module'      => array(
+				'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field',
+			),
+		);
+
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		       ->with( $this->get_translatable_nodes() )
+		       ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings' => array(
+				'items' => array(
+					array(
+						'text' => 'my_text',
+						'_id' => $field_id,
+					),
+				),
+			),
+		);
+
+		$node_id = 123;
+		$new_string_value = 'the_value';
+
+		$expected_element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings' => array(
+				'items' => array(
+					array(
+						'text' => $new_string_value,
+						'_id' => $field_id,
+						'index' => 0,
+					),
+				),
+			),
+		);
+
+		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+		$string->set_value( $new_string_value );
+
+		$this->assertEquals( $expected_element_data, $subject->update( $node_id, $element_data, $string ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5803
+	 */
+	public function it_updates_multiple_repeater_field() {
+		$subject    = new WPML_Elementor_Translatable_Nodes();
+		$field_id   = 1;
+		$field_id_2 = 2;
+
+		$nodes = array(
+			'my-custom-module' => array(
+				'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+				'fields'            => array(),
+				'integration-class' => array(
+					'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field',
+					'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field_2'
+				),
+			),
+		);
+
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		       ->with( $this->get_translatable_nodes() )
+		       ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings'   => array(
+				'items'   => array(
+					array(
+						'text' => 'my_text',
+						'_id'  => $field_id,
+					),
+				),
+				'items_2' => array(
+					array(
+						'text' => 'my_text_2',
+						'_id'  => $field_id_2,
+					),
+				),
+			),
+		);
+
+		$new_string_text   = 'first_string';
+
+		$expected_element_data = array(
+			'widgetType' => 'my-custom-module',
+			'settings'   => array(
+				'items'   => array(
+					array(
+						'text'  => $new_string_text,
+						'_id'   => $field_id,
+						'index' => 0,
+					),
+				),
+				'items_2' => array(
+					array(
+						'text'  => 'my_text_2',
+						'_id'   => $field_id_2,
+					),
+				),
+			),
+		);
+
+		$node_id = 123;
+
+		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+		$string->set_value( $new_string_text );
+
+		$this->assertEquals( $expected_element_data, $subject->update( $node_id, $element_data, $string ) );
+	}
+
+	private function get_translatable_nodes() {
+		return array(
+			'heading'     => array(
+				'conditions' => array( 'widgetType' => 'heading' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Heading', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'text-editor' => array(
+				'conditions' => array( 'widgetType' => 'text-editor' ),
+				'fields'     => array(
+					array(
+						'field'       => 'editor',
+						'type'        => __( 'Text editor', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+				),
+			),
+			'icon'        => array(
+				'conditions' => array( 'widgetType' => 'icon' ),
+				'fields'     => array(
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Icon: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'video'       => array(
+				'conditions' => array( 'widgetType' => 'video' ),
+				'fields'     => array(
+					array(
+						'field'       => 'link',
+						'type'        => __( 'Video: Link', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'vimeo_link',
+						'type'        => __( 'Video: Vimeo link', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'login'       => array(
+				'conditions' => array( 'widgetType' => 'login' ),
+				'fields'     => array(
+					array(
+						'field'       => 'button_text',
+						'type'        => __( 'Login: Button text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'user_label',
+						'type'        => __( 'Login: User label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'user_placeholder',
+						'type'        => __( 'Login: User placeholder', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'password_label',
+						'type'        => __( 'Login: Password label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'password_placeholder',
+						'type'        => __( 'Login: Password placeholder', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'button'      => array(
+				'conditions' => array( 'widgetType' => 'button' ),
+				'fields'     => array(
+					array(
+						'field'       => 'text',
+						'type'        => __( 'Button', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Button: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'html'        => array(
+				'conditions' => array( 'widgetType' => 'html' ),
+				'fields'     => array(
+					array(
+						'field'       => 'html',
+						'type'        => __( 'HTML', 'sitepress' ),
+						'editor_type' => 'AREA'
+					),
+				),
+			),
+			'image'       => array(
+				'conditions' => array( 'widgetType' => 'image' ),
+				'fields'     => array(
+					array(
+						'field'       => 'caption',
+						'type'        => __( 'Image: Caption', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Image: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'alert'       => array(
+				'conditions' => array( 'widgetType' => 'alert' ),
+				'fields'     => array(
+					array(
+						'field'       => 'alert_title',
+						'type'        => __( 'Alert title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'alert_description',
+						'type'        => __( 'Alert description', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+				),
+			),
+			'blockquote'       => array(
+				'conditions' => array( 'widgetType' => 'blockquote' ),
+				'fields'     => array(
+					array(
+						'field'       => 'blockquote_content',
+						'type'        => __( 'Blockquote: Content', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'tweet_button_label',
+						'type'        => __( 'Blockquote: Tweet button label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'testimonial' => array(
+				'conditions' => array( 'widgetType' => 'testimonial' ),
+				'fields'     => array(
+					array(
+						'field'       => 'testimonial_content',
+						'type'        => __( 'Testimonial content', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'testimonial_name',
+						'type'        => __( 'Testimonial name', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'testimonial_job',
+						'type'        => __( 'Testimonial job', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'progress'    => array(
+				'conditions' => array( 'widgetType' => 'progress' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Progress: Title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'inner_text',
+						'type'        => __( 'Progress: Inner text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'counter'     => array(
+				'conditions' => array( 'widgetType' => 'counter' ),
+				'fields'     => array(
+					array(
+						'field'       => 'starting_number',
+						'type'        => __( 'Starting number', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'countdown'     => array(
+				'conditions' => array( 'widgetType' => 'countdown' ),
+				'fields'     => array(
+					array(
+						'field'       => 'label_days',
+						'type'        => __( 'Countdown: Label days', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'label_hours',
+						'type'        => __( 'Countdown: Label hours', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'label_minutes',
+						'type'        => __( 'Countdown: Label minutes', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'label_seconds',
+						'type'        => __( 'Countdown: Label seconds', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'icon-box'    => array(
+				'conditions' => array( 'widgetType' => 'icon-box' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title_text',
+						'type'        => __( 'Icon Box: Title text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description_text',
+						'type'        => __( 'Icon Box: Description text', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Icon Box: Link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'image-box'   => array(
+				'conditions' => array( 'widgetType' => 'image-box' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title_text',
+						'type'        => __( 'Image Box: Title text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description_text',
+						'type'        => __( 'Image Box: Description text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'animated-headline'   => array(
+				'conditions' => array( 'widgetType' => 'animated-headline' ),
+				'fields'     => array(
+					array(
+						'field'       => 'before_text',
+						'type'        => __( 'Animated Headline: Before text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'highlighted_text',
+						'type'        => __( 'Animated Headline: Highlighted text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'rotating_text',
+						'type'        => __( 'Animated Headline: Rotating text', 'sitepress' ),
+						'editor_type' => 'AREA'
+					),
+					array(
+						'field'       => 'after_text',
+						'type'        => __( 'Animated Headline: After text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'flip-box'    => array(
+				'conditions' => array( 'widgetType' => 'flip-box' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title_text_a',
+						'type'        => __( 'Flip Box: Title text side A', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description_text_a',
+						'type'        => __( 'Flip Box: Description text side A', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'title_text_b',
+						'type'        => __( 'Flip Box: Title text side B', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description_text_b',
+						'type'        => __( 'Flip Box: Description text side B', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'button_text',
+						'type'        => __( 'Flip Box: Button text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Flip Box: Button link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'call-to-action'    => array(
+				'conditions' => array( 'widgetType' => 'call-to-action' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Call to action: title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'description',
+						'type'        => __( 'Call to action: description', 'sitepress' ),
+						'editor_type' => 'VISUAL'
+					),
+					array(
+						'field'       => 'button',
+						'type'        => __( 'Call to action: button', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'ribbon_title',
+						'type'        => __( 'Call to action: ribbon title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Call to action: link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+			),
+			'toggle'      => array(
+				'conditions'        => array( 'widgetType' => 'toggle' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Toggle',
+			),
+			'accordion'   => array(
+				'conditions'        => array( 'widgetType' => 'accordion' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Accordion',
+			),
+			'testimonial-carousel'   => array(
+				'conditions'        => array( 'widgetType' => 'testimonial-carousel' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Testimonial_Carousel',
+			),
+			'tabs'        => array(
+				'conditions'        => array( 'widgetType' => 'tabs' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Tabs',
+			),
+			'price-list'  => array(
+				'conditions'        => array( 'widgetType' => 'price-list' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Price_List',
+			),
+			'icon-list'   => array(
+				'conditions'        => array( 'widgetType' => 'icon-list' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Icon_List',
+			),
+			'slides'      => array(
+				'conditions'        => array( 'widgetType' => 'slides' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_Elementor_Slides',
+			),
+			'price-table' => array(
+				'conditions'        => array( 'widgetType' => 'price-table' ),
+				'fields'            => array(
+					array(
+						'field'       => 'heading',
+						'type'        => __( 'Price Table: Heading', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'sub_heading',
+						'type'        => __( 'Price Table: Sub heading', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'period',
+						'type'        => __( 'Price Table: Period', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'button_text',
+						'type'        => __( 'Price Table: Button text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'footer_additional_info',
+						'type'        => __( 'Price Table: Footer additional info', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'ribbon_title',
+						'type'        => __( 'Price Table: Ribbon title', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Price Table: Button link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+				'integration-class' => 'WPML_Elementor_Price_Table',
+			),
+			'form'        => array(
+				'conditions'        => array( 'widgetType' => 'form' ),
+				'fields'            => array(
+					array(
+						'field'       => 'form_name',
+						'type'        => __( 'Form: name', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'button_text',
+						'type'        => __( 'Form: Button text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'email_subject',
+						'type'        => __( 'Form: Email subject', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'email_from_name',
+						'type'        => __( 'Form: Email from name', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'success_message',
+						'type'        => __( 'Form: Success message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'error_message',
+						'type'        => __( 'Form: Error message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'required_message',
+						'type'        => __( 'Form: Required message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'invalid_message',
+						'type'        => __( 'Form: Invalid message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+				'integration-class' => 'WPML_Elementor_Form',
+			),
+			'posts'       => array(
+				'conditions' => array( 'widgetType' => 'posts' ),
+				'fields'     => array(
+					array(
+						'field'       => 'classic_read_more_text',
+						'type'        => __( 'Posts: Read more text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+			'menu-anchor' => array(
+				'conditions' => array( 'widgetType' => 'menu-anchor' ),
+				'fields'     => array(
+					array(
+						'field'       => 'anchor',
+						'type'        => __( 'Menu Anchor', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
+		);
+	}
+}
+
+if ( ! class_exists( 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field' ) ) {
+	class WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field extends WPML_Elementor_Module_With_Items {
+
+		/**
+		 * @return string
+		 */
+		public function get_items_field() {
+			return 'items';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function get_fields() {
+			return array( 'text' );
+		}
+
+		/**
+		 * @param string $field
+		 *
+		 * @return string
+		 */
+		protected function get_title( $field ) {
+			$title = '';
+
+			if ( 'text' === $field ) {
+				$title = 'title';
+			}
+
+			return $title;
+		}
+
+		/**
+		 * @param string $field
+		 *
+		 * @return string
+		 */
+		protected function get_editor_type( $field ) {
+			$editor = '';
+
+			if ( 'text' === $field ) {
+				$editor = 'LINE';
+			}
+
+			return $editor;
+		}
+	}
+}
+
+if ( ! class_exists( 'WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field_2' ) ) {
+	class WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field_2 extends WPML_Elementor_Module_With_Items {
+
+		/**
+		 * @return string
+		 */
+		public function get_items_field() {
+			return 'items_2';
+		}
+
+		/**
+		 * @return array
+		 */
+		public function get_fields() {
+			return array( 'text' );
+		}
+
+		/**
+		 * @param string $field
+		 *
+		 * @return string
+		 */
+		protected function get_title( $field ) {
+			$title = '';
+
+			if ( 'text' === $field ) {
+				$title = 'title';
+			}
+
+			return $title;
+		}
+
+		/**
+		 * @param string $field
+		 *
+		 * @return string
+		 */
+		protected function get_editor_type( $field ) {
+			$editor = '';
+
+			if ( 'text' === $field ) {
+				$editor = 'LINE';
+			}
+
+			return $editor;
+		}
+	}
 }
