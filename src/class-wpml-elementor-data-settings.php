@@ -42,7 +42,9 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	}
 
 	public function save_post_body_as_plain_text( $type, $post_id, $original_post, $string_translations, $lang ) {
-		$this->elementor_db->save_plain_text( $post_id );
+		if ( get_post_meta( $post_id, $this->get_meta_field() ) ) {
+			$this->elementor_db->save_plain_text( $post_id );
+		}
 	}
 
 	/**
