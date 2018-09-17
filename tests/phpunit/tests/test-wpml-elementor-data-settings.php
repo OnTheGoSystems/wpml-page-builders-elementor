@@ -142,4 +142,43 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 
 		$this->assertEquals( $expected, $subject->add_data_custom_field_to_md5( $custom_field_values, $post_id ) );
 	}
+
+	/**
+	 * @test
+	 */
+	public function it_saves_post_body_as_plain_text_when_elementor_page() {
+		$post_id = 123;
+
+		$elementor_db = \Mockery::mock( 'WPML_Elementor_DB' );
+		$elementor_db->shouldReceive( 'save_plain_text' )->once()->with( $post_id );
+
+		\WP_Mock::userFunction( 'get_post_meta', array(
+			'args' => array( $post_id, '_elementor_data' ),
+			'return' => true,
+		));
+
+		$subject = new WPML_Elementor_Data_Settings( $elementor_db );
+		$subject->save_post_body_as_plain_text( '', $post_id, '', '', '' );
+
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_does_not_saves_post_body_as_plain_text_when_not_an_elementor_page() {
+		$post_id = 123;
+
+		$elementor_db = \Mockery::mock( 'WPML_Elementor_DB' );
+		$elementor_db->shouldReceive( 'save_plain_text' )->never()->with( $post_id );
+
+		\WP_Mock::userFunction( 'get_post_meta', array(
+			'args' => array( $post_id, '_elementor_data' ),
+			'return' => false,
+		));
+
+		$subject = new WPML_Elementor_Data_Settings( $elementor_db );
+		$subject->save_post_body_as_plain_text( '', $post_id, '', '', '' );
+
+	}
+
 }
