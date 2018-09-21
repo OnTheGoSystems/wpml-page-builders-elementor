@@ -27,6 +27,15 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 	public function add_hooks() {
 		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'adjust_ids' ) );
 		add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'restore_current_language' ) );
+
+		if ( is_admin() ) {
+			add_filter(
+				'wpml_should_use_display_as_translated_snippet',
+				array( $this, 'should_use_display_as_translated_snippet' ),
+				PHP_INT_MAX,
+				2
+			);
+		}
 	}
 
 	public function adjust_ids() {
@@ -91,6 +100,27 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 
 	public function restore_current_language() {
 		$this->sitepress->switch_lang( $this->current_language );
+	}
+
+	/**
+	 * The snippet is a WHERE condition which is added to a DB query.
+	 * This will include the source element in the query results in case the element
+	 * does not exist in the current language.
+	 *
+	 * @see WPML_Query_Filter::display_as_translated_snippet
+	 *
+	 * @param bool  $display_as_translated
+	 * @param array $post_types
+	 *
+	 * @return bool
+	 */
+	public function should_use_display_as_translated_snippet( $display_as_translated, $post_types ) {
+		if ( isset( $_GET['action'] ) && 'elementor' === $_GET['action']
+		     && in_array( 'elementor_library', array_keys( $post_types ), true ) ) {
+			return true;
+		}
+
+		return $display_as_translated;
 	}
 
 }
