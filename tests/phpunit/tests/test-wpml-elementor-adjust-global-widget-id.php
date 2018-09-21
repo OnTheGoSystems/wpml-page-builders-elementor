@@ -5,10 +5,20 @@
  */
 class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 
+	public function tearDown() {
+		unset( $_GET );
+		parent::tearDown();
+	}
+
 	/**
 	 * @test
+	 * @group wpmlcore-5793
 	 */
-	public function it_adds_hooks() {
+	public function it_adds_hooks_on_admin() {
+		\WP_Mock::userFunction( 'is_admin' , array(
+			'return' => true,
+		));
+
 		$subject = new WPML_Elementor_Adjust_Global_Widget_ID(
 			\Mockery::mock( 'IWPML_Page_Builders_Data_Settings' ),
 			\Mockery::mock( 'WPML_Translation_Element_Factory' ),
@@ -23,6 +33,41 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 			$subject,
 			'restore_current_language'
 		), 10 );
+
+		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
+			$subject, 'should_use_display_as_translated_snippet'
+		), PHP_INT_MAX, 2 );
+
+		$subject->add_hooks();
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5793
+	 */
+	public function it_adds_hooks_on_frontend() {
+		\WP_Mock::userFunction( 'is_admin' , array(
+			'return' => false,
+		));
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID(
+			\Mockery::mock( 'IWPML_Page_Builders_Data_Settings' ),
+			\Mockery::mock( 'WPML_Translation_Element_Factory' ),
+			\Mockery::mock( 'SitePress' )
+		);
+
+		$this->expectActionAdded( 'elementor/editor/before_enqueue_scripts', array(
+			$subject,
+			'adjust_ids'
+		), 10 );
+		$this->expectActionAdded( 'elementor/editor/after_enqueue_scripts', array(
+			$subject,
+			'restore_current_language'
+		), 10 );
+
+		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
+			$subject, 'should_use_display_as_translated_snippet'
+		), PHP_INT_MAX, 2, 0 );
 
 		$subject->add_hooks();
 	}
@@ -192,4 +237,52 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		) );
 	}
 
+	/**
+	 * @test
+	 * @dataProvider dp_not_use_display_as_translated_snippet
+	 * @group wpmlcore-5793
+	 *
+	 * @param $_get
+	 * @param $post_types
+	 */
+	public function it_should_not_alter_use_display_as_translated_snippet( $_get, $post_types ) {
+		$_GET = $_get;
+
+		$settings        = \Mockery::mock( 'IWPML_Page_Builders_Data_Settings' );
+		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$sitepress       = \Mockery::mock( 'SitePress' );
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
+
+		$this->assertFalse( $subject->should_use_display_as_translated_snippet( false, $post_types ) );
+		$this->assertTrue( $subject->should_use_display_as_translated_snippet( true, $post_types ) );
+	}
+
+	public function dp_not_use_display_as_translated_snippet() {
+		return array(
+			array( array(), array( 'elementor_library' => array() ) ),
+			array( array( 'action' => 'something' ), array( 'elementor_library' => array() ) ),
+			array( array( 'action' => 'elementor' ), array( 'something' => array() ) ),
+		);
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-5793
+	 */
+	public function it_should_force_to_use_display_as_translated_snippet() {
+		$_GET = array( 'action' => 'elementor' );
+		$post_types = array(
+			'something'         => array(),
+			'elementor_library'	=> array(),
+		);
+
+		$settings        = \Mockery::mock( 'IWPML_Page_Builders_Data_Settings' );
+		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$sitepress       = \Mockery::mock( 'SitePress' );
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
+
+		$this->assertTrue( $subject->should_use_display_as_translated_snippet( false, $post_types ) );
+	}
 }
