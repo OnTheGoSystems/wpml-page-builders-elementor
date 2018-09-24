@@ -119,4 +119,11 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 		$custom_fields_values[] = get_post_meta( $post_id, $this->get_meta_field(), true );
 		return $custom_fields_values;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function should_copy_post_body() {
+		return false;
+	}
 }
