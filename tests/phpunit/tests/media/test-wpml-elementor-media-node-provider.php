@@ -16,7 +16,10 @@ class Test_WPML_Elementor_Media_Node_Provider extends OTGS_TestCase {
 		$GLOBALS['sitepress'] = $this->getMockBuilder( 'SitePress' )->disableOriginalConstructor()->getMock();
 		$this->mock_external_classes();
 
-		$subject = new WPML_Elementor_Media_Node_Provider();
+		$media_translate = $this->getMockBuilder( 'WPML_Page_Builders_Media_Translate' )
+		                        ->disableOriginalConstructor()->getMock();
+
+		$subject = new WPML_Elementor_Media_Node_Provider( $media_translate );
 
 		$this->assertInstanceOf( $class_name, $subject->get( $type ) );
 		$this->assertSame( $subject->get( $type ), $subject->get( $type ) );
@@ -37,7 +40,6 @@ class Test_WPML_Elementor_Media_Node_Provider extends OTGS_TestCase {
 	}
 
 	private function mock_external_classes() {
-		$this->getMockBuilder( 'WPML_Page_Builders_Media_Translate' )->getMock();
 		$this->getMockBuilder( 'WPML_Translation_Element_Factory' )->getMock();
 		$this->getMockBuilder( 'WPML_Media_Image_Translate' )->getMock();
 		$this->getMockBuilder( 'WPML_Media_Attachment_By_URL_Factory' )->getMock();
