@@ -647,7 +647,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'fields'     => array(
 					array(
 						'field'       => 'classic_read_more_text',
-						'type'        => __( 'Posts: Read more text', 'sitepress' ),
+						'type'        => __( 'Posts: Classic Read more text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'cards_read_more_text',
+						'type'        => __( 'Posts: Cards Read more text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),

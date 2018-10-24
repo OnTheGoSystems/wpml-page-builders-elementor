@@ -349,7 +349,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Posts' => array( 'posts',
 				array(
-					array( 'field' => 'classic_read_more_text', 'type' => 'Posts: Read more text', 'editor_type' => 'LINE' ),
+					array( 'field' => 'classic_read_more_text', 'type' => 'Posts: Classic Read more text', 'editor_type' => 'LINE' ),
+					array( 'field' => 'cards_read_more_text', 'type' => 'Posts: Cards Read more text', 'editor_type' => 'LINE' ),
 				),
 				'',
 				array(),
