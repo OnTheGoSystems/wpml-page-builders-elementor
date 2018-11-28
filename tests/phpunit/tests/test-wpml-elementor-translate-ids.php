@@ -13,7 +13,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 			$subject,
 			'translate_theme_location_template_id'
 		), 10 );
-		$this->expectFilterAdded( 'elementor/theme/get_location_templates/sub_id', array(
+		$this->expectFilterAdded( 'elementor/theme/get_location_templates/condition_sub_id', array(
 			$subject,
 			'translate_location_condition_sub_id'
 		), 10, 2 );
