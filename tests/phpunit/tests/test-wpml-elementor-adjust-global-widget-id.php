@@ -33,6 +33,10 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 			$subject,
 			'restore_current_language'
 		), 10 );
+		$this->expectActionAdded( 'elementor/frontend/the_content', array(
+			$subject,
+			'replace_css_class_id_with_origina'
+		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
 			$subject, 'should_use_display_as_translated_snippet'
@@ -63,6 +67,10 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		$this->expectActionAdded( 'elementor/editor/after_enqueue_scripts', array(
 			$subject,
 			'restore_current_language'
+		), 10 );
+		$this->expectActionAdded( 'elementor/frontend/the_content', array(
+			$subject,
+			'replace_css_class_id_with_origina'
 		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
@@ -284,5 +292,60 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
 
 		$this->assertTrue( $subject->should_use_display_as_translated_snippet( false, $post_types ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-6006
+	 */
+	public function it_should_replace_css_class_id_with_original() {
+		$source_id_1     = 123;
+		$translated_id_1 = 234;
+		$source_id_2     = 345;
+		$translated_id_2 = 456;
+
+		$content = '<div class="wrapper">
+	<div data-id="b7135e3" class="elementor-element elementor-element-b7135e3 elementor-widget elementor-widget-global elementor-global-' . $translated_id_1 . ' elementor-widget-button" data-element_type="button.default">
+		<span class="elementor-button-text">Click here (translated)</span>
+	</div>
+	<div data-id="fl48r65s" class="elementor-global-' . $translated_id_2 . '">
+		<span class="elementor-button-text">Another text (translated)</span>
+	</div>
+</div>';
+
+		$expected_content = '<div class="wrapper">
+	<div data-id="b7135e3" class="elementor-element elementor-element-b7135e3 elementor-widget elementor-widget-global elementor-global-' . $source_id_1 . ' elementor-widget-button" data-element_type="button.default">
+		<span class="elementor-button-text">Click here (translated)</span>
+	</div>
+	<div data-id="fl48r65s" class="elementor-global-' . $source_id_2 . '">
+		<span class="elementor-button-text">Another text (translated)</span>
+	</div>
+</div>';
+
+		$source_1 = \Mockery::mock( 'WPML_Post_Element' );
+		$source_1->shouldReceive( 'get_id' )->andReturn( $source_id_1 );
+
+		$source_2 = \Mockery::mock( 'WPML_Post_Element' );
+		$source_2->shouldReceive( 'get_id' )->andReturn( $source_id_2 );
+
+		$translation_1 = \Mockery::mock( 'WPML_Post_Element' );
+		$translation_1->shouldReceive( 'get_source_element' )->andReturn( $source_1 );
+
+		$translation_2 = \Mockery::mock( 'WPML_Post_Element' );
+		$translation_2->shouldReceive( 'get_source_element' )->andReturn( $source_2 );
+
+		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$element_factory->shouldReceive( 'create_post' )->with( $translated_id_1 )->andReturn( $translation_1 );
+		$element_factory->shouldReceive( 'create_post' )->with( $translated_id_2 )->andReturn( $translation_2 );
+
+		$settings        = \Mockery::mock( 'IWPML_Page_Builders_Data_Settings' );
+		$sitepress       = \Mockery::mock( 'SitePress' );
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
+
+		$this->assertEquals(
+			$expected_content,
+			$subject->replace_css_class_id_with_original( $content )
+		);
 	}
 }
