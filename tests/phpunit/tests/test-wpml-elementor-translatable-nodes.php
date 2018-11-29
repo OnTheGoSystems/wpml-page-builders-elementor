@@ -830,7 +830,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					array(
 						'field'       => 'description_text',
 						'type'        => __( 'Icon Box: Description text', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					'link' => array(
 						'field'       => 'url',
@@ -890,7 +890,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					array(
 						'field'       => 'description_text_a',
 						'type'        => __( 'Flip Box: Description text side A', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					array(
 						'field'       => 'title_text_b',
@@ -900,7 +900,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					array(
 						'field'       => 'description_text_b',
 						'type'        => __( 'Flip Box: Description text side B', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA'
 					),
 					array(
 						'field'       => 'button_text',
@@ -1071,7 +1071,12 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'fields'     => array(
 					array(
 						'field'       => 'classic_read_more_text',
-						'type'        => __( 'Posts: Read more text', 'sitepress' ),
+						'type'        => __( 'Posts: Classic Read more text', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'cards_read_more_text',
+						'type'        => __( 'Posts: Cards Read more text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),

@@ -8,6 +8,7 @@ class Test_WPML_Elementor_Update_Media_Factory extends OTGS_TestCase {
 	public function setUp() {
 		parent::setUp();
 		\Mockery::mock( 'alias:WPML_Page_Builders_Update_Media' );
+		\Mockery::mock( 'alias:WPML_Media_Usage_Factory' );
 	}
 
 	/**
