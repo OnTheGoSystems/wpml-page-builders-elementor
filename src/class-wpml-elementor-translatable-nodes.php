@@ -6,6 +6,7 @@
 class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translatable_Nodes {
 
 	const SETTINGS_FIELD = 'settings';
+	const TYPE           = 'widgetType';
 
 	/**
 	 * @var string
@@ -172,11 +173,10 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		return $conditions_meet;
 	}
 
-	public function initialize_nodes_to_translate() {
-
-		$this->nodes_to_translate = array(
+	public static function get_nodes_to_translate() {
+		return array(
 			'heading'     => array(
-				'conditions' => array( $this->type => 'heading' ),
+				'conditions' => array( self::TYPE => 'heading' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title',
@@ -186,7 +186,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'text-editor' => array(
-				'conditions' => array( $this->type => 'text-editor' ),
+				'conditions' => array( self::TYPE => 'text-editor' ),
 				'fields'     => array(
 					array(
 						'field'       => 'editor',
@@ -196,7 +196,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'icon'        => array(
-				'conditions' => array( $this->type => 'icon' ),
+				'conditions' => array( self::TYPE => 'icon' ),
 				'fields'     => array(
 					'link' => array(
 						'field'       => 'url',
@@ -206,7 +206,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'video'       => array(
-				'conditions' => array( $this->type => 'video' ),
+				'conditions' => array( self::TYPE => 'video' ),
 				'fields'     => array(
 					array(
 						'field'       => 'link',
@@ -221,7 +221,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'login'       => array(
-				'conditions' => array( $this->type => 'login' ),
+				'conditions' => array( self::TYPE => 'login' ),
 				'fields'     => array(
 					array(
 						'field'       => 'button_text',
@@ -251,7 +251,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'button'      => array(
-				'conditions' => array( $this->type => 'button' ),
+				'conditions' => array( self::TYPE => 'button' ),
 				'fields'     => array(
 					array(
 						'field'       => 'text',
@@ -266,7 +266,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'html'        => array(
-				'conditions' => array( $this->type => 'html' ),
+				'conditions' => array( self::TYPE => 'html' ),
 				'fields'     => array(
 					array(
 						'field'       => 'html',
@@ -276,7 +276,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'image'       => array(
-				'conditions' => array( $this->type => 'image' ),
+				'conditions' => array( self::TYPE => 'image' ),
 				'fields'     => array(
 					array(
 						'field'       => 'caption',
@@ -291,7 +291,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'alert'       => array(
-				'conditions' => array( $this->type => 'alert' ),
+				'conditions' => array( self::TYPE => 'alert' ),
 				'fields'     => array(
 					array(
 						'field'       => 'alert_title',
@@ -306,7 +306,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'blockquote'       => array(
-				'conditions' => array( $this->type => 'blockquote' ),
+				'conditions' => array( self::TYPE => 'blockquote' ),
 				'fields'     => array(
 					array(
 						'field'       => 'blockquote_content',
@@ -321,7 +321,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'testimonial' => array(
-				'conditions' => array( $this->type => 'testimonial' ),
+				'conditions' => array( self::TYPE => 'testimonial' ),
 				'fields'     => array(
 					array(
 						'field'       => 'testimonial_content',
@@ -341,7 +341,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'progress'    => array(
-				'conditions' => array( $this->type => 'progress' ),
+				'conditions' => array( self::TYPE => 'progress' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title',
@@ -356,7 +356,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'counter'     => array(
-				'conditions' => array( $this->type => 'counter' ),
+				'conditions' => array( self::TYPE => 'counter' ),
 				'fields'     => array(
 					array(
 						'field'       => 'starting_number',
@@ -371,7 +371,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'countdown'     => array(
-				'conditions' => array( $this->type => 'countdown' ),
+				'conditions' => array( self::TYPE => 'countdown' ),
 				'fields'     => array(
 					array(
 						'field'       => 'label_days',
@@ -396,7 +396,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'icon-box'    => array(
-				'conditions' => array( $this->type => 'icon-box' ),
+				'conditions' => array( self::TYPE => 'icon-box' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title_text',
@@ -416,7 +416,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'image-box'   => array(
-				'conditions' => array( $this->type => 'image-box' ),
+				'conditions' => array( self::TYPE => 'image-box' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title_text',
@@ -431,7 +431,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'animated-headline'   => array(
-				'conditions' => array( $this->type => 'animated-headline' ),
+				'conditions' => array( self::TYPE => 'animated-headline' ),
 				'fields'     => array(
 					array(
 						'field'       => 'before_text',
@@ -456,7 +456,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'flip-box'    => array(
-				'conditions' => array( $this->type => 'flip-box' ),
+				'conditions' => array( self::TYPE => 'flip-box' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title_text_a',
@@ -491,7 +491,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'call-to-action'    => array(
-				'conditions' => array( $this->type => 'call-to-action' ),
+				'conditions' => array( self::TYPE => 'call-to-action' ),
 				'fields'     => array(
 					array(
 						'field'       => 'title',
@@ -521,42 +521,42 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'toggle'      => array(
-				'conditions'        => array( $this->type => 'toggle' ),
+				'conditions'        => array( self::TYPE => 'toggle' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Toggle',
 			),
 			'accordion'   => array(
-				'conditions'        => array( $this->type => 'accordion' ),
+				'conditions'        => array( self::TYPE => 'accordion' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Accordion',
 			),
 			'testimonial-carousel'   => array(
-				'conditions'        => array( $this->type => 'testimonial-carousel' ),
+				'conditions'        => array( self::TYPE => 'testimonial-carousel' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Testimonial_Carousel',
 			),
 			'tabs'        => array(
-				'conditions'        => array( $this->type => 'tabs' ),
+				'conditions'        => array( self::TYPE => 'tabs' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Tabs',
 			),
 			'price-list'  => array(
-				'conditions'        => array( $this->type => 'price-list' ),
+				'conditions'        => array( self::TYPE => 'price-list' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Price_List',
 			),
 			'icon-list'   => array(
-				'conditions'        => array( $this->type => 'icon-list' ),
+				'conditions'        => array( self::TYPE => 'icon-list' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Icon_List',
 			),
 			'slides'      => array(
-				'conditions'        => array( $this->type => 'slides' ),
+				'conditions'        => array( self::TYPE => 'slides' ),
 				'fields'            => array(),
 				'integration-class' => 'WPML_Elementor_Slides',
 			),
 			'price-table' => array(
-				'conditions'        => array( $this->type => 'price-table' ),
+				'conditions'        => array( self::TYPE => 'price-table' ),
 				'fields'            => array(
 					array(
 						'field'       => 'heading',
@@ -597,7 +597,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'integration-class' => 'WPML_Elementor_Price_Table',
 			),
 			'form'        => array(
-				'conditions'        => array( $this->type => 'form' ),
+				'conditions'        => array( self::TYPE => 'form' ),
 				'fields'            => array(
 					array(
 						'field'       => 'form_name',
@@ -643,7 +643,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'integration-class' => 'WPML_Elementor_Form',
 			),
 			'posts'       => array(
-				'conditions' => array( $this->type => 'posts' ),
+				'conditions' => array( self::TYPE => 'posts' ),
 				'fields'     => array(
 					array(
 						'field'       => 'classic_read_more_text',
@@ -658,7 +658,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 			'menu-anchor' => array(
-				'conditions' => array( $this->type => 'menu-anchor' ),
+				'conditions' => array( self::TYPE => 'menu-anchor' ),
 				'fields'     => array(
 					array(
 						'field'       => 'anchor',
@@ -668,7 +668,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				),
 			),
 		);
+	}
 
-		$this->nodes_to_translate = apply_filters( 'wpml_elementor_widgets_to_translate', $this->nodes_to_translate );
+	public function initialize_nodes_to_translate() {
+		$this->nodes_to_translate = apply_filters( 'wpml_elementor_widgets_to_translate', self::get_nodes_to_translate() );
 	}
 }
