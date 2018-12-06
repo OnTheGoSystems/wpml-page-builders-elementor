@@ -35,7 +35,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		), 10 );
 		$this->expectActionAdded( 'elementor/frontend/the_content', array(
 			$subject,
-			'replace_css_class_id_with_origina'
+			'replace_css_class_id_with_original'
 		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
@@ -70,7 +70,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		), 10 );
 		$this->expectActionAdded( 'elementor/frontend/the_content', array(
 			$subject,
-			'replace_css_class_id_with_origina'
+			'replace_css_class_id_with_original'
 		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
