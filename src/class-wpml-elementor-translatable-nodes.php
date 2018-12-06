@@ -651,6 +651,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'editor_type' => 'LINE'
 					),
 					array(
+						'field'       => 'pagination_prev_label',
+						'type'        => __( 'Posts: Previous Label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'pagination_next_label',
+						'type'        => __( 'Posts: Next Label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
 						'field'       => 'cards_read_more_text',
 						'type'        => __( 'Posts: Cards Read more text', 'sitepress' ),
 						'editor_type' => 'LINE'
