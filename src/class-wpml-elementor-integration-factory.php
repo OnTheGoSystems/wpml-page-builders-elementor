@@ -20,6 +20,7 @@ class WPML_Elementor_Integration_Factory {
 				'WPML_Elementor_Adjust_Global_Widget_ID_Factory',
 				'WPML_PB_Elementor_Handle_Custom_Fields_Factory',
 				'WPML_Elementor_Media_Hooks_Factory',
+				'WPML_PB_Fix_Maintenance_Query_Factory',
 			)
 		);
 
