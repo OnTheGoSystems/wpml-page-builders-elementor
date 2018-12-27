@@ -9,7 +9,10 @@ class WPML_PB_Fix_Maintenance_Query {
 	}
 
 	public function fix_global_query() {
-		if ( (int) \Elementor\Maintenance_Mode::get( 'template_id' ) === $GLOBALS['post']->ID ) {
+		if (
+			class_exists( '\Elementor\Maintenance_Mode' ) &&
+			(int) \Elementor\Maintenance_Mode::get( 'template_id' ) === $GLOBALS['post']->ID
+		) {
 			$GLOBALS['wp_the_query'] = $GLOBALS['wp_query'];
 		}
 	}
