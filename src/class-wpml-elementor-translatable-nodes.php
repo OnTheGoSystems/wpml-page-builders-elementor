@@ -620,6 +620,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'editor_type' => 'LINE'
 					),
 					array(
+						'field'       => 'email_content',
+						'type'        => __( 'Form: Email Content', 'sitepress' ),
+						'editor_type' => 'AREA'
+					),
+					array(
+						'field'       => 'email_subject_2',
+						'type'        => __( 'Form: Email subject', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'email_content_2',
+						'type'        => __( 'Form: Email Content', 'sitepress' ),
+						'editor_type' => 'AREA'
+					),
+					array(
 						'field'       => 'success_message',
 						'type'        => __( 'Form: Success message', 'sitepress' ),
 						'editor_type' => 'LINE'
