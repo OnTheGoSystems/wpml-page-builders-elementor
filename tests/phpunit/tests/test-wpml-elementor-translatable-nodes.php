@@ -294,7 +294,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'price_list',
 				array(
 					array( 'field' => 'title', 'value' => rand_str( 10 ), 'type' => 'Price list: title', 'editor_type' => 'LINE' ),
-					array( 'field' => 'item_description', 'value' => rand_str( 10 ), 'type' => 'Pricing list: description', 'editor_type' => 'VISUAL' ),
+					array( 'field' => 'item_description', 'value' => rand_str( 10 ), 'type' => 'Pricing list: description', 'editor_type' => 'AREA' ),
 					'link' => array( 'field' => 'url', 'value' => rand_str( 10 ), 'type' => 'Pricing list: link', 'editor_type' => 'LINK' ),
 
 				),
