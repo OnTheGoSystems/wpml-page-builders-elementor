@@ -258,6 +258,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Button', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					array(
+						'field'       => 'before',
+						'type'        => __( 'Before', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'after',
+						'type'        => __( 'After', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'fallback',
+						'type'        => __( 'Fallback', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 					'link' => array(
 						'field'       => 'url',
 						'type'        => __( 'Button: Link URL', 'sitepress' ),
