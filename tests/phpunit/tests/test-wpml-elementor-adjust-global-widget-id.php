@@ -42,6 +42,10 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 			$subject, 'should_use_display_as_translated_snippet'
 		), PHP_INT_MAX, 2 );
 
+		$this->expectFilterAdded( 'wpml_should_filter_query_where', array(
+			$subject, 'do_not_filter_query_where'
+		) );
+
 		$subject->add_hooks();
 	}
 
@@ -347,5 +351,37 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 			$expected_content,
 			$subject->replace_css_class_id_with_original( $content )
 		);
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-6209
+	 */
+	public function it_should_not_filter_query_where_clause_when_elementor_is_adding_a_widget() {
+		$_POST = array( 'action' => 'elementor_ajax' );
+
+		$settings        = \Mockery::mock( 'IWPML_Page_Builders_Data_Settings' );
+		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$sitepress       = \Mockery::mock( 'SitePress' );
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
+
+		$this->assertFalse( $subject->should_filter_query_where( true ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-6209
+	 */
+	public function it_should_filter_query_where_clause_when_elementor_is_not_adding_a_widget() {
+		$_POST = array( 'action' => 'any_other_action' );
+
+		$settings        = \Mockery::mock( 'IWPML_Page_Builders_Data_Settings' );
+		$element_factory = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$sitepress       = \Mockery::mock( 'SitePress' );
+
+		$subject = new WPML_Elementor_Adjust_Global_Widget_ID( $settings, $element_factory, $sitepress );
+
+		$this->assertTrue( $subject->should_filter_query_where( true ) );
 	}
 }

@@ -37,6 +37,16 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 				2
 			);
 		}
+
+		add_filter( 'wpml_should_filter_query_where', array( $this, 'should_filter_query_where' ) );
+	}
+
+	public function should_filter_query_where( $should_filter ) {
+		if ( isset( $_POST['action'] ) && 'elementor_ajax' === $_POST['action'] ) {
+			$should_filter = false;
+		}
+
+		return $should_filter;
 	}
 
 	public function adjust_ids() {
