@@ -42,7 +42,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 			$subject, 'should_use_display_as_translated_snippet'
 		), PHP_INT_MAX, 2 );
 
-		$this->expectFilterAdded( 'wpml_should_filter_query_where', array(
+		$this->expectFilterAdded( 'wpml_should_filter_wp_query_posts_where', array(
 			$subject, 'do_not_filter_query_where'
 		) );
 

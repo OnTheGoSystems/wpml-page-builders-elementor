@@ -38,7 +38,7 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 			);
 		}
 
-		add_filter( 'wpml_should_filter_query_where', array( $this, 'should_filter_query_where' ) );
+		add_filter( 'wpml_should_filter_wp_query_posts_where', array( $this, 'should_filter_query_where' ) );
 	}
 
 	public function should_filter_query_where( $should_filter ) {
