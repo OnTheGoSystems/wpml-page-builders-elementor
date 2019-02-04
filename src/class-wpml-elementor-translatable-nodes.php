@@ -152,6 +152,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 * @return string
 	 */
 	public function get_string_name( $node_id, $field, $settings ) {
+		if ( 'heading' === $settings[ $this->type ] ) {
+			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ? $settings[ $this->settings_field ]['header_size'] : '';
+			if ( $header_size ) {
+				return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id . '-' . $header_size;
+			}
+		}
+
 		return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id;
 	}
 
