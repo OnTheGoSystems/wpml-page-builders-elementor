@@ -35,7 +35,13 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	 */
 	public function mark_css_field_as_empty( $value, $translated_post_id, $original_post_id, $meta_key ) {
 		if ( '_elementor_css' === $meta_key ) {
-			$value['status'] = '';
+			if ( ! isset( $value['status'] ) ) {
+				$value           = current( $value );
+				$value['status'] = '';
+				$value           = array( $value );
+			} else {
+				$value['status'] = '';
+			}
 		}
 
 		return $value;
