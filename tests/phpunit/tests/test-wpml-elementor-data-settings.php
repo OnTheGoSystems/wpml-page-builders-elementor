@@ -31,11 +31,39 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 		$subject->add_hooks();
 	}
 
-	public function it_marks_css_field_as_empty() {
+	/**
+	 * @test
+	 *
+	 * @group wpmlcore-6319
+	 */
+	public function it_marks_css_field_as_empty_when_status_is_in_another_array_level() {
 		$subject = new WPML_Elementor_Data_Settings();
-		$this->assertEquals( '', $subject->mark_css_field_as_empty( rand_str( 10 ), null, null, '_elementor_css' ) );
+
+		$value         = array( array( 'status' => 'something' ) );
+		$changed_value = array( array( 'status' => '' ) );
+
+		$this->assertEquals( $changed_value, $subject->mark_css_field_as_empty( $value, null, null, '_elementor_css' ) );
 	}
 
+	/**
+	 * @test
+	 *
+	 * @group wpmlcore-6319
+	 */
+	public function it_marks_css_field_as_empty_when_status_is_in_the_single_level() {
+		$subject = new WPML_Elementor_Data_Settings();
+
+		$value         = array( 'status' => 'something' );
+		$changed_value = array( 'status' => '' );
+
+		$this->assertEquals( $changed_value, $subject->mark_css_field_as_empty( $value, null, null, '_elementor_css' ) );
+	}
+
+	/**
+	 * @test
+	 *
+	 * @group wpmlcore-6319
+	 */
 	public function it_does_not_mark_css_field_as_empty() {
 		$subject = new WPML_Elementor_Data_Settings();
 		$value = rand_str( 10 );
