@@ -32,7 +32,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	}
 
 	/**
-	 * @param string|int $node_id
+	 * @param string|int $node_id Translatable node id.
 	 * @param array $element
 	 *
 	 * @return WPML_PB_String[]
@@ -55,7 +55,8 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$element[ $this->settings_field ][ $field_key ],
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
-							$field['editor_type']
+							$field['editor_type'],
+							$this->get_string_wrap( $element )
 						);
 						$strings[] = $string;
 					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
@@ -63,7 +64,8 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$element[ $this->settings_field ][ $key ][ $field_key ],
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
-							$field['editor_type']
+							$field['editor_type'],
+							$this->get_string_wrap( $element )
 						);
 						$strings[] = $string;
 					}
@@ -152,14 +154,25 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 * @return string
 	 */
 	public function get_string_name( $node_id, $field, $settings ) {
-		if ( 'heading' === $settings[ $this->type ] ) {
-			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ? $settings[ $this->settings_field ]['header_size'] : '';
-			if ( $header_size ) {
-				return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id . '-' . $header_size;
-			}
+		return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id;
+	}
+
+	/**
+	 * Get wrap tag for string.
+	 *
+	 * @param array $settings Field settings.
+	 *
+	 * @return string
+	 */
+	public function get_string_wrap( $settings ) {
+		if ( isset( $settings[ $this->type ] ) && 'heading' === $settings[ $this->type ] ) {
+			// h2 must be by default, as Elementor sends empty header size for h2 block.
+			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ? $settings[ $this->settings_field ]['header_size'] : 'h2';
+
+			return $header_size;
 		}
 
-		return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id;
+		return '';
 	}
 
 	/**
