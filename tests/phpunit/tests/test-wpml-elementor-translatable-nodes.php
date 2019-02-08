@@ -112,7 +112,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				}
 
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
-				$this->assertEquals( $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
+				$this->assertEquals( $key . '_' . $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
 				$this->assertEquals( $field['editor_type'], $string->get_editor_type() );
 			}
