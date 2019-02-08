@@ -59,6 +59,8 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						);
 						$strings[] = $string;
 					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
+						$field['field'] = "{$key}_{$field_key}";
+
 						$string    = new WPML_PB_String(
 							$element[ $this->settings_field ][ $key ][ $field_key ],
 							$this->get_string_name( $node_id, $field, $element ),
@@ -101,6 +103,10 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
 					$field_key = $field['field'];
+
+					if ( ! is_numeric( $key ) ) {
+						$field['field'] = "{$key}_{$field_key}";
+					}
 
 					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
 						if ( is_numeric( $key ) ) {
