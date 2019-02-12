@@ -56,7 +56,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
 							$field['editor_type'],
-							$this->get_string_wrap( $element )
+							$this->get_wrap_tag( $element )
 						);
 						$strings[] = $string;
 					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
@@ -65,7 +65,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
 							$field['editor_type'],
-							$this->get_string_wrap( $element )
+							$this->get_wrap_tag( $element )
 						);
 						$strings[] = $string;
 					}
@@ -159,12 +159,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 
 	/**
 	 * Get wrap tag for string.
+	 * Used for SEO, can contain (h1...h6, etc.)
 	 *
 	 * @param array $settings Field settings.
 	 *
 	 * @return string
 	 */
-	public function get_string_wrap( $settings ) {
+	private function get_wrap_tag( $settings ) {
 		if ( isset( $settings[ $this->type ] ) && 'heading' === $settings[ $this->type ] ) {
 			// h2 must be by default, as Elementor sends empty header size for h2 block.
 			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ? $settings[ $this->settings_field ]['header_size'] : 'h2';

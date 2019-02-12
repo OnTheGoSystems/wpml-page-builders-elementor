@@ -17,7 +17,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 	 * @param $fields
 	 */
 	public function it_gets( $type, $fields, $items_field, $items ) {
-		$node_id = rand_str( 10 );
+		$node_id  = rand_str( 10 );
 		$settings = array();
 
 		foreach ( $fields as $key => $field ) {
@@ -26,8 +26,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			} else {
 				$settings[ $key ] = array(
 					$field['field'] => rand_str( 10 ),
-					'type' => $field['type'],
-					'editor_type' => $field['editor_type'],
+					'type'          => $field['type'],
+					'editor_type'   => $field['editor_type'],
 				);
 			}
 		}
@@ -43,13 +43,17 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			}
 		}
 
-		$sub_items[ '_id' ] = mt_rand( 1, 10 );
+		$sub_items['_id'] = mt_rand( 1, 10 );
 		$settings[ $items_field ][] = $sub_items;
 
+		if ( 'heading' === $type ) {
+			$settings['header_size'] = 'h1';
+		}
+
 		$element = array(
-			'id' => $node_id,
+			'id'         => $node_id,
 			'widgetType' => $type,
-			'settings' => $settings,
+			'settings'   => $settings,
 		);
 
 		\WP_Mock::wpPassthruFunction( '__' );
@@ -82,9 +86,12 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			if ( is_numeric( $key ) ) {
 				$string = $strings[ $key ];
 				$this->assertEquals( $element['settings'][ $field['field'] ], $string->get_value() );
-				$this->assertEquals( $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
+				$this->assertEquals( $field['field'] . '-' . $element['widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
 				$this->assertEquals( $field['editor_type'], $string->get_editor_type() );
+				if ( 'heading' === $type ) {
+					$this->assertEquals( $element['settings']['header_size'], $string->get_wrap_tag() );
+				}
 			} else {
 				$string = $strings[0];
 				if ( 'button' === $type ) {
@@ -112,7 +119,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				}
 
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
-				$this->assertEquals( $field['field'] . '-' . $element[ 'widgetType'] . '-' . $node_id, $string->get_name() );
+				$this->assertEquals( $field['field'] . '-' . $element['widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
 				$this->assertEquals( $field['editor_type'], $string->get_editor_type() );
 			}
@@ -125,7 +132,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 				if ( is_numeric( $item_key ) ) {
 					$this->assertEquals( $element['settings'][ $items_field ][0][ $item['field'] ], $string->get_value() );
-					$this->assertEquals( $element['widgetType'] . '-' . $item['field'] . '-' . $node_id . '-' . $sub_items[ '_id' ], $string->get_name() );
+					$this->assertEquals( $element['widgetType'] . '-' . $item['field'] . '-' . $node_id . '-' . $sub_items['_id'], $string->get_name() );
 				} else {
 					$this->assertEquals( $element['settings'][ $items_field ][0][ $item_key ][ $item['field'] ], $string->get_value() );
 				}
