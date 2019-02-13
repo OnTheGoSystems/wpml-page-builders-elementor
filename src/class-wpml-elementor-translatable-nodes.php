@@ -6,7 +6,10 @@
 class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translatable_Nodes {
 
 	const SETTINGS_FIELD = 'settings';
-	const TYPE           = 'widgetType';
+
+	const TYPE = 'widgetType';
+
+	const DEFAULT_HEADING_TAG = 'h2';
 
 	/**
 	 * @var string
@@ -167,8 +170,8 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 */
 	private function get_wrap_tag( $settings ) {
 		if ( isset( $settings[ $this->type ] ) && 'heading' === $settings[ $this->type ] ) {
-			// h2 must be by default, as Elementor sends empty header size for h2 block.
-			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ? $settings[ $this->settings_field ]['header_size'] : 'h2';
+			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ?
+				$settings[ $this->settings_field ]['header_size'] : self::DEFAULT_HEADING_TAG;
 
 			return $header_size;
 		}
