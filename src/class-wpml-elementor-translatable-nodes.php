@@ -5,10 +5,8 @@
  */
 class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translatable_Nodes {
 
-	const SETTINGS_FIELD = 'settings';
-
-	const TYPE = 'widgetType';
-
+	const SETTINGS_FIELD      = 'settings';
+	const TYPE                = 'widgetType';
 	const DEFAULT_HEADING_TAG = 'h2';
 
 	/**
