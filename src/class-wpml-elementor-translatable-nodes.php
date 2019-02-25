@@ -159,7 +159,8 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 * @return string
 	 */
 	public function get_string_name( $node_id, $field, $settings ) {
-		return $field['field'] . '-' . $settings[ self::TYPE ] . '-' . $node_id;
+		$field_id = isset( $field['field_id'] ) ? $field['field_id'] : $field['field'];
+		return $field_id . '-' . $settings[ self::TYPE ] . '-' . $node_id;
 	}
 
 	/**
