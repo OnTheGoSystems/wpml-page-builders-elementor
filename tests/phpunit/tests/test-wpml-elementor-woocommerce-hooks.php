@@ -25,12 +25,27 @@ class Test_WPML_Elementor_WooCommerce_Hooks extends OTGS_TestCase {
 	/**
 	 * @test
 	 */
+	public function it_should_not_change_if_post_type_is_NOT_in_query_vars() {
+		$subject = new WPML_Elementor_WooCommerce_Hooks();
+
+		$query = $this->get_wp_query();
+
+		$_POST['action'] = 'elementor_ajax';
+
+		$query->query_vars[ 'suppress_filters' ] = true;
+
+		$filtered_query = $subject->do_not_suppress_filters_on_product_widget( $query );
+
+		$this->assertTrue( $filtered_query->query_vars['suppress_filters'] );
+	}
+
+	/**
+	 * @test
+	 */
 	public function it_should_not_change_if_post_type_is_not_product() {
 		$subject = new WPML_Elementor_WooCommerce_Hooks();
 
-		$query = $this->getMockBuilder( 'WP_Query' )
-		              ->disableOriginalConstructor()
-		              ->getMock();
+		$query = $this->get_wp_query();
 
 		$_POST['action'] = 'elementor_ajax';
 
@@ -48,9 +63,7 @@ class Test_WPML_Elementor_WooCommerce_Hooks extends OTGS_TestCase {
 	public function it_should_not_change_if_action_global_is_not_set() {
 		$subject = new WPML_Elementor_WooCommerce_Hooks();
 
-		$query = $this->getMockBuilder( 'WP_Query' )
-			->disableOriginalConstructor()
-			->getMock();
+		$query = $this->get_wp_query();
 
 		$query->query_vars[ 'suppress_filters' ] = true;
 		$query->query_vars[ 'post_type' ] = 'product';
@@ -66,9 +79,7 @@ class Test_WPML_Elementor_WooCommerce_Hooks extends OTGS_TestCase {
 	public function it_should_not_change_if_action_global_is_different_than_the_one_for_adding_widgets() {
 		$subject = new WPML_Elementor_WooCommerce_Hooks();
 
-		$query = $this->getMockBuilder( 'WP_Query' )
-		              ->disableOriginalConstructor()
-		              ->getMock();
+		$query = $this->get_wp_query();
 
 		$query->query_vars[ 'suppress_filters' ] = true;
 		$query->query_vars[ 'post_type' ] = 'product';
@@ -86,9 +97,7 @@ class Test_WPML_Elementor_WooCommerce_Hooks extends OTGS_TestCase {
 	public function it_should_set_suppress_filters_to_false() {
 		$subject = new WPML_Elementor_WooCommerce_Hooks();
 
-		$query = $this->getMockBuilder( 'WP_Query' )
-		              ->disableOriginalConstructor()
-		              ->getMock();
+		$query = $this->get_wp_query();
 
 		$query->query_vars[ 'suppress_filters' ] = true;
 		$query->query_vars[ 'post_type' ] = 'product';
@@ -98,5 +107,14 @@ class Test_WPML_Elementor_WooCommerce_Hooks extends OTGS_TestCase {
 		$filtered_query = $subject->do_not_suppress_filters_on_product_widget( $query );
 
 		$this->assertFalse( $filtered_query->query_vars['suppress_filters'] );
+	}
+
+	/**
+	 * @return \WP_Query|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	private function get_wp_query() {
+		return $this->getMockBuilder( 'WP_Query' )
+					->disableOriginalConstructor()
+					->getMock();
 	}
 }
