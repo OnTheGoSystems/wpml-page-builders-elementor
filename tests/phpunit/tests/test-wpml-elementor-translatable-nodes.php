@@ -575,6 +575,59 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group pb-elementor-64
+	 */
+	public function it_gets_multiple_occurrences_of_same_field_in_node() {
+		$subject = new WPML_Elementor_Translatable_Nodes();
+
+		$nodes = array(
+			'custom-module' => array(
+				'conditions' => array( 'widgetType' => 'custom-module' ),
+				'fields'     => array(
+					'example_url_1' => array(
+						'field'       => 'url',
+						'field_id'    => 'example_url_1', // This is the new key to be used in the string name
+						'type'        => __( 'Example URL 1', 'example' ),
+						'editor_type' => 'LINE',
+					),
+					'example_url_2' => array(
+						'field'       => 'url',
+						'field_id'    => 'example_url_2', // This is the new key to be used in the string name
+						'type'        => __( 'Example URL 2', 'example' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			)
+		);
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'custom-module',
+			'settings' => array(
+				'example_url_1' => array(
+					'url' => 'http://first-url.com',
+				),
+				'example_url_2' => array(
+					'url' => 'http://second-url.com',
+				),
+			),
+		);
+
+		$node_id = 123;
+
+		$string_1 = new WPML_PB_String( 'http://first-url.com', 'example_url_1-custom-module-123', 'Example URL 1', 'LINE' );
+		$string_2 = new WPML_PB_String( 'http://second-url.com', 'example_url_2-custom-module-123', 'Example URL 2', 'LINE' );
+
+		$actual_strings = $subject->get( $node_id, $element_data );
+
+		$this->assertEquals( array( $string_1, $string_2 ), $actual_strings );
+	}
+
+	/**
+	 * @test
 	 * @group wpmlcore-5803
 	 */
 	public function it_updates_single_repeater_field() {
@@ -696,6 +749,68 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		$string->set_value( $new_string_text );
 
 		$this->assertEquals( $expected_element_data, $subject->update( $node_id, $element_data, $string ) );
+	}
+
+	/**
+	 * @test
+	 * @see https://github.com/OnTheGoSystems/wpml-page-builders-elementor/issues/64
+	 * @group pb-elementor-64
+	 */
+	public function it_updates_with_multiple_occurrence_of_field_in_node() {
+		$subject = new WPML_Elementor_Translatable_Nodes();
+
+		$nodes = array(
+			'custom-module' => array(
+				'conditions' => array( 'widgetType' => 'custom-module' ),
+				'fields'     => array(
+					'example_url_1' => array(
+						'field'       => 'url',
+						'field_id'    => 'example_url_1', // This is the new key to be used in the string name
+						'type'        => __( 'Example URL 1', 'example' ),
+						'editor_type' => 'LINE',
+					),
+					'example_url_2' => array(
+						'field'       => 'url',
+						'field_id'    => 'example_url_2', // This is the new key to be used in the string name
+						'type'        => __( 'Example URL 2', 'example' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			)
+		);
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$element_data = array(
+			'widgetType' => 'custom-module',
+			'settings' => array(
+				'example_url_1' => array(
+					'url' => 'http://first-url.com',
+				),
+				'example_url_2' => array(
+					'url' => 'http://second-url.com',
+				),
+			),
+		);
+
+		$node_id = 123;
+
+		$translated_first_url  = 'http://first-url.com/fr';
+		$translated_second_url = 'http://second-url.com/fr';
+
+		$expected_element_data_1 = $element_data;
+		$expected_element_data_1['settings']['example_url_1']['url'] = $translated_first_url;
+
+		$string_1 = new WPML_PB_String( $translated_first_url, 'example_url_1-custom-module-123', 'Example URL 1', 'LINE' );
+		$this->assertEquals( $expected_element_data_1, $subject->update( $node_id, $element_data, $string_1 ) );
+
+		$expected_element_data_2 = $element_data;
+		$expected_element_data_2['settings']['example_url_2']['url'] = $translated_second_url;
+
+		$string_2 = new WPML_PB_String( $translated_second_url, 'example_url_2-custom-module-123', 'Example URL 2', 'LINE' );
+		$this->assertEquals( $expected_element_data_2, $subject->update( $node_id, $element_data, $string_2 ) );
 	}
 }
 
