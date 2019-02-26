@@ -72,6 +72,16 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-6400
+	 */
+	public function it_does_not_mark_css_field_as_empty_when_value_is_not_array() {
+		$subject = new WPML_Elementor_Data_Settings();
+		$value = rand_str( 10 );
+		$this->assertEquals( $value, $subject->mark_css_field_as_empty( $value, null, null, '_elementor_css' ) );
+	}
+
+	/**
+	 * @test
 	 */
 	public function it_gets_meta_field() {
 		$subject = new WPML_Elementor_Data_Settings();
