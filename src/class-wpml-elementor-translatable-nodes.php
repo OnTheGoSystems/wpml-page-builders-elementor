@@ -678,12 +678,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 					array(
 						'field'       => 'email_subject_2',
-						'type'        => __( 'Form: Email subject', 'sitepress' ),
+						'type'        => __( 'Form: Email subject 2', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'email_content_2',
-						'type'        => __( 'Form: Email Content', 'sitepress' ),
+						'type'        => __( 'Form: Email Content 2', 'sitepress' ),
 						'editor_type' => 'AREA'
 					),
 					array(
@@ -697,7 +697,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'editor_type' => 'LINE'
 					),
 					array(
-						'field'       => 'required_message',
+						'field'       => 'required_field_message',
 						'type'        => __( 'Form: Required message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
