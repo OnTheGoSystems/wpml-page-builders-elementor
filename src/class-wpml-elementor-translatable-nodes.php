@@ -645,13 +645,18 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'editor_type' => 'LINE'
 					),
 					array(
-						'field'       => 'required_field_message',
+						'field'       => 'required_message',
 						'type'        => __( 'Form: Required message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
 						'field'       => 'invalid_message',
 						'type'        => __( 'Form: Invalid message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'required_field_message',
+						'type'        => __( 'Form: Required message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
