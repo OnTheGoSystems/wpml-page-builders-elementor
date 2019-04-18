@@ -620,6 +620,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Form: Invalid message', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					array(
+						'field'       => 'redirect_to',
+						'type'        => __( 'Form: Redirect to URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 				),
 				'integration-class' => 'WPML_Elementor_Form',
 			),

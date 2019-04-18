@@ -341,6 +341,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					array( 'field' => 'error_message', 'type' => 'Form: Error message', 'editor_type' => 'LINE' ),
 					array( 'field' => 'required_message', 'type' => 'Form: Required message', 'editor_type' => 'LINE' ),
 					array( 'field' => 'invalid_message', 'type' => 'Form: Invalid message', 'editor_type' => 'LINE' ) ),
+					array( 'field' => 'redirect_to', 'type' => 'Form: Redirect to URL', 'editor_type' => 'LINE' ) ),
 				'form',
 				array(
 					array( 'field' => 'field_label', 'value' => rand_str( 10 ), 'type' => 'Form: Field label', 'editor_type' => 'LINE' ),
