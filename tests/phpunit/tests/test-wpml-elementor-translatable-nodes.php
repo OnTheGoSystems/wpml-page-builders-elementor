@@ -379,11 +379,63 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-6436
+	 */
+	public function it_gets_nodes_regardless_of_their_array_key_in_their_definition() {
+		$widget_type  = 'wpmlcore-6436';
+		$field        = 'some_text';
+		$string_value = rand_str();
+		$title        = 'Some text';
+		$editor_type  = 'LINE';
+
+		$nodes = array(
+			array(
+				'conditions' => array( 'widgetType' => $widget_type ),
+				'fields' => array(
+					'non-numeric-key' => array(
+						'field'       => $field,
+						'type'        => $title,
+						'editor_type' => $editor_type,
+					),
+				),
+			),
+		);
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$node_id = mt_rand();
+		$element = array(
+			'widgetType' => $widget_type,
+			'settings'   => array(
+				$field => $string_value,
+			),
+		);
+
+		$string_name     = $field . '-' . $widget_type . '-' . $node_id;
+		$expected_string = new WPML_PB_String( $string_value, $string_name, $title, $editor_type );
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$strings = $element = $subject->get( $node_id, $element );
+
+		$this->assertCount( 1, $strings );
+		$this->assertEquals( $expected_string, $strings[0] );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-6436
 	 */
 	public function it_updates() {
 
 		$node_id = mt_rand();
-		$element = array( 'widgetType' => 'text-editor', 'editor' => rand_str() );
+		$element = array(
+			'widgetType' => 'text-editor',
+			'settings'   => array(
+				'editor' => rand_str(),
+			),
+		);
 		$translation = rand_str();
 
 		$string = new WPML_PB_String( $translation, 'editor-text-editor-' . $node_id, 'anything', 'anything' );
@@ -392,6 +444,48 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		$element = $subject->update( $node_id, $element, $string );
 
 		$this->assertEquals( $translation, $element['settings']['editor'] );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-6436
+	 */
+	public function it_updates_nodes_regardless_of_their_array_key_in_their_definition() {
+		$widget_type = 'wpmlcore-6436';
+		$field       = 'some_text';
+		$original    = 'The original string';
+		$translation = 'The translated string';
+		$node_id     = mt_rand();
+
+		$nodes = array(
+			array(
+				'conditions' => array( 'widgetType' => $widget_type ),
+				'fields' => array(
+					'non-numeric-key' => array(
+						'field' => $field,
+					),
+				),
+			),
+		);
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$element = array(
+			'widgetType' => $widget_type,
+			'settings'   => array(
+				$field => $original,
+			),
+		);
+
+		$string_name = $field . '-' . $widget_type . '-' . $node_id;
+		$string      = new WPML_PB_String( $translation, $string_name, 'anything', 'anything' );
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$element = $subject->update( $node_id, $element, $string );
+
+		$this->assertEquals( $translation, $element['settings'][ $field ] );
 	}
 
 	/**

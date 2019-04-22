@@ -10,27 +10,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	const DEFAULT_HEADING_TAG = 'h2';
 
 	/**
-	 * @var string
-	 */
-	private $settings_field;
-
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
 	 * @var array
 	 */
 	private $nodes_to_translate;
-
-	/**
-	 * WPML_Elementor_Translatable_Nodes constructor.
-	 */
-	public function __construct() {
-		$this->settings_field = self::SETTINGS_FIELD;
-		$this->type           = 'widgetType';
-	}
 
 	/**
 	 * @param string|int $node_id Translatable node id.
@@ -49,28 +31,26 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		foreach ( $this->nodes_to_translate as $node_type => $node_data ) {
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
-					$field_key = $field['field'];
+					$field_key    = $field['field'];
+					$string_value = null;
 
-					if ( is_numeric( $key ) && isset( $element[ $this->settings_field ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $field_key ] ) ) {
-						$string    = new WPML_PB_String(
-							$element[ $this->settings_field ][ $field_key ],
+					if ( $this->is_flat_field( $element, $field_key ) ) {
+						$string_value = $element[ self::SETTINGS_FIELD ][ $field_key ];
+					} elseif ( $this->is_array_field( $element, $key, $field_key ) ) {
+						$string_value =	$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ];
+					}
+
+					if ( $string_value ) {
+						$strings[] = new WPML_PB_String(
+							$string_value,
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
 							$field['editor_type'],
 							$this->get_wrap_tag( $element )
 						);
-						$strings[] = $string;
-					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
-						$string    = new WPML_PB_String(
-							$element[ $this->settings_field ][ $key ][ $field_key ],
-							$this->get_string_name( $node_id, $field, $element ),
-							$field['type'],
-							$field['editor_type'],
-							$this->get_wrap_tag( $element )
-						);
-						$strings[] = $string;
 					}
 				}
+
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
@@ -106,10 +86,10 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					$field_key = $field['field'];
 
 					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
-						if ( is_numeric( $key ) ) {
-							$element[ $this->settings_field ][ $field_key ] = $string->get_value();
-						} else {
-							$element[ $this->settings_field ][ $key ][ $field_key ] = $string->get_value();
+						if ( $this->is_flat_field( $element, $field_key ) ) {
+							$element[ self::SETTINGS_FIELD ][ $field_key ] = $string->get_value();
+						} elseif ( $this->is_array_field( $element, $key, $field_key )) {
+							$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ] = $string->get_value();
 						}
 					}
 				}
@@ -119,7 +99,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 							$node = new $class();
 							$item = $node->update( $node_id, $element, $string );
 							if ( $item ) {
-								$element[ $this->settings_field ][ $node->get_items_field() ][ $item['index'] ] = $item;
+								$element[ self::SETTINGS_FIELD ][ $node->get_items_field() ][ $item['index'] ] = $item;
 							}
 						} catch ( Exception $e ) {
 
@@ -130,6 +110,30 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		}
 
 		return $element;
+	}
+
+	/**
+	 * @param array  $element
+	 * @param string $field_key
+	 *
+	 * @return bool
+	 */
+	private function is_flat_field( $element, $field_key ) {
+		return isset( $element[ self::SETTINGS_FIELD ][ $field_key ] )
+		       && is_string( $element[ self::SETTINGS_FIELD ][ $field_key ] )
+		       && trim( $element[ self::SETTINGS_FIELD ][ $field_key ] );
+	}
+
+	/**
+	 * @param array      $element
+	 * @param string|int $field_wrapper
+	 * @param string     $field_key
+	 *
+	 * @return bool
+	 */
+	private function is_array_field( $element, $field_wrapper, $field_key ) {
+		return isset( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] )
+		       && trim( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] );
 	}
 
 	/**
@@ -155,7 +159,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 * @return string
 	 */
 	public function get_string_name( $node_id, $field, $settings ) {
-		return $field['field'] . '-' . $settings[ $this->type ] . '-' . $node_id;
+		return $field['field'] . '-' . $settings[ self::TYPE ] . '-' . $node_id;
 	}
 
 	/**
@@ -167,9 +171,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	 * @return string
 	 */
 	private function get_wrap_tag( $settings ) {
-		if ( isset( $settings[ $this->type ] ) && 'heading' === $settings[ $this->type ] ) {
-			$header_size = isset( $settings[ $this->settings_field ]['header_size'] ) ?
-				$settings[ $this->settings_field ]['header_size'] : self::DEFAULT_HEADING_TAG;
+		if ( isset( $settings[ self::TYPE ] ) && 'heading' === $settings[ self::TYPE ] ) {
+			$header_size = isset( $settings[ self::SETTINGS_FIELD ]['header_size'] ) ?
+				$settings[ self::SETTINGS_FIELD ]['header_size'] : self::DEFAULT_HEADING_TAG;
 
 			return $header_size;
 		}
