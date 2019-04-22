@@ -49,28 +49,26 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		foreach ( $this->nodes_to_translate as $node_type => $node_data ) {
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
-					$field_key = $field['field'];
+					$field_key    = $field['field'];
+					$string_value = null;
 
-					if ( is_numeric( $key ) && isset( $element[ $this->settings_field ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $field_key ] ) ) {
-						$string    = new WPML_PB_String(
-							$element[ $this->settings_field ][ $field_key ],
+					if ( isset( $element[ $this->settings_field ][ $field_key ] ) && is_string( $element[ $this->settings_field ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $field_key ] ) ) {
+						$string_value = $element[ $this->settings_field ][ $field_key ];
+					} elseif ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
+						$string_value =	$element[ $this->settings_field ][ $key ][ $field_key ];
+					}
+
+					if ( $string_value ) {
+						$strings[] = new WPML_PB_String(
+							$string_value,
 							$this->get_string_name( $node_id, $field, $element ),
 							$field['type'],
 							$field['editor_type'],
 							$this->get_wrap_tag( $element )
 						);
-						$strings[] = $string;
-					} else if ( isset( $element[ $this->settings_field ][ $key ][ $field_key ] ) && trim( $element[ $this->settings_field ][ $key ][ $field_key ] ) ) {
-						$string    = new WPML_PB_String(
-							$element[ $this->settings_field ][ $key ][ $field_key ],
-							$this->get_string_name( $node_id, $field, $element ),
-							$field['type'],
-							$field['editor_type'],
-							$this->get_wrap_tag( $element )
-						);
-						$strings[] = $string;
 					}
 				}
+
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
@@ -106,7 +104,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					$field_key = $field['field'];
 
 					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
-						if ( is_numeric( $key ) ) {
+						if ( isset( $element[ $this->settings_field ][ $field_key ] ) && is_string( $element[ $this->settings_field ][ $field_key ] ) ) {
 							$element[ $this->settings_field ][ $field_key ] = $string->get_value();
 						} else {
 							$element[ $this->settings_field ][ $key ][ $field_key ] = $string->get_value();
