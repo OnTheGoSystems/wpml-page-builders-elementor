@@ -34,9 +34,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					$field_key    = $field['field'];
 					$string_value = null;
 
-					if ( isset( $element[ self::SETTINGS_FIELD ][ $field_key ] ) && is_string( $element[ self::SETTINGS_FIELD ][ $field_key ] ) && trim( $element[ self::SETTINGS_FIELD ][ $field_key ] ) ) {
+					if ( $this->is_flat_field( $element, $field_key ) ) {
 						$string_value = $element[ self::SETTINGS_FIELD ][ $field_key ];
-					} elseif ( isset( $element[ self::SETTINGS_FIELD ][ $key ][ $field_key ] ) && trim( $element[ self::SETTINGS_FIELD ][ $key ][ $field_key ] ) ) {
+					} elseif ( $this->is_array_field( $element, $key, $field_key ) ) {
 						$string_value =	$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ];
 					}
 
@@ -86,9 +86,9 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					$field_key = $field['field'];
 
 					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
-						if ( isset( $element[ self::SETTINGS_FIELD ][ $field_key ] ) && is_string( $element[ self::SETTINGS_FIELD ][ $field_key ] ) ) {
+						if ( $this->is_flat_field( $element, $field_key ) ) {
 							$element[ self::SETTINGS_FIELD ][ $field_key ] = $string->get_value();
-						} else {
+						} elseif ( $this->is_array_field( $element, $key, $field_key )) {
 							$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ] = $string->get_value();
 						}
 					}
@@ -110,6 +110,30 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		}
 
 		return $element;
+	}
+
+	/**
+	 * @param array  $element
+	 * @param string $field_key
+	 *
+	 * @return bool
+	 */
+	private function is_flat_field( $element, $field_key ) {
+		return isset( $element[ self::SETTINGS_FIELD ][ $field_key ] )
+		       && is_string( $element[ self::SETTINGS_FIELD ][ $field_key ] )
+		       && trim( $element[ self::SETTINGS_FIELD ][ $field_key ] );
+	}
+
+	/**
+	 * @param array      $element
+	 * @param string|int $field_wrapper
+	 * @param string     $field_key
+	 *
+	 * @return bool
+	 */
+	private function is_array_field( $element, $field_wrapper, $field_key ) {
+		return isset( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] )
+		       && trim( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] );
 	}
 
 	/**
