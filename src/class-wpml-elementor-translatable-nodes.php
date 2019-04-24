@@ -74,7 +74,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
-							$node    = new $class();
+							if($class instanceof \WPML_Elementor_Module_With_Items){
+								$node = $class;
+							} else {
+								$node = new $class();
+							}
 							$strings = $node->get( $node_id, $element, $strings );
 						} catch ( Exception $e ) {
 						}
@@ -116,7 +120,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
-							$node = new $class();
+							if($class instanceof \WPML_Elementor_Module_With_Items){
+								$node = $class;
+							} else {
+								$node = new $class();
+							}
 							$item = $node->update( $node_id, $element, $string );
 							if ( $item ) {
 								$element[ $this->settings_field ][ $node->get_items_field() ][ $item['index'] ] = $item;
