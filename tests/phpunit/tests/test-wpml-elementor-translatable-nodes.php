@@ -433,6 +433,44 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		$this->assertEquals( array( $string ), $subject->get( $node_id, $element_data ) );
 	}
 
+    /**
+     * @test
+     */
+    public function it_gets_single_repeater_field_using_integration_class_instance() {
+        $subject = new WPML_Elementor_Translatable_Nodes();
+        $field_id = 1;
+
+        $nodes = array(
+            'my-custom-module'      => array(
+                'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+                'fields'            => array(),
+                'integration-class' => new WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field(),
+            ),
+        );
+
+        \WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+            ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+            ->reply( $nodes );
+
+        $element_data = array(
+            'widgetType' => 'my-custom-module',
+            'settings' => array(
+                'items' => array(
+                    array(
+                        'text' => 'my_text',
+                        '_id' => $field_id,
+                    ),
+                ),
+            ),
+        );
+
+        $node_id = 123;
+
+        $string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+
+        $this->assertEquals( array( $string ), $subject->get( $node_id, $element_data ) );
+    }
+
 	/**
 	 * @test
 	 * @group wpmlcore-5803
@@ -532,6 +570,59 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$this->assertEquals( $expected_element_data, $subject->update( $node_id, $element_data, $string ) );
 	}
+
+    /**
+     * @test
+     */
+    public function it_updates_single_repeater_field_using_integration_class_instance() {
+        $subject = new WPML_Elementor_Translatable_Nodes();
+        $field_id = 1;
+
+        $nodes = array(
+            'my-custom-module'      => array(
+                'conditions'        => array( 'widgetType' => 'my-custom-module' ),
+                'fields'            => array(),
+                'integration-class' => new WPML_PB_My_Custom_Module_With_A_Single_Repeater_Field(),
+            ),
+        );
+
+        WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+            ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+            ->reply( $nodes );
+
+        $element_data = array(
+            'widgetType' => 'my-custom-module',
+            'settings' => array(
+                'items' => array(
+                    array(
+                        'text' => 'my_text',
+                        '_id' => $field_id,
+                    ),
+                ),
+            ),
+        );
+
+        $node_id = 123;
+        $new_string_value = 'the_value';
+
+        $expected_element_data = array(
+            'widgetType' => 'my-custom-module',
+            'settings' => array(
+                'items' => array(
+                    array(
+                        'text' => $new_string_value,
+                        '_id' => $field_id,
+                        'index' => 0,
+                    ),
+                ),
+            ),
+        );
+
+        $string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
+        $string->set_value( $new_string_value );
+
+        $this->assertEquals( $expected_element_data, $subject->update( $node_id, $element_data, $string ) );
+    }
 
 	/**
 	 * @test
