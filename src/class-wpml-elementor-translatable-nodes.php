@@ -74,7 +74,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
-							if($class instanceof \WPML_Elementor_Module_With_Items){
+							if( $class instanceof \WPML_Elementor_Module_With_Items ){
 								$node = $class;
 							} else {
 								$node = new $class();
@@ -120,7 +120,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				if ( isset( $node_data['integration-class'] ) ) {
 					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
 						try {
-							if($class instanceof \WPML_Elementor_Module_With_Items){
+							if ( $class instanceof \WPML_Elementor_Module_With_Items ){
 								$node = $class;
 							} else {
 								$node = new $class();
