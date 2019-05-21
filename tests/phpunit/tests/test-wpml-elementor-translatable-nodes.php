@@ -388,6 +388,60 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Archive Posts' => array(
+				'archive-posts',
+				array(
+					 array(
+			            'field'       => 'archive_cards_meta_separator',
+			            'type'        => 'Cards: Separator Between',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_cards_read_more_text',
+			            'type'        => 'Cards: Read More Text',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'nothing_found_message',
+			            'type'        => 'Nothing Found Message',
+			            'editor_type' => 'AREA'
+			        ),
+			        array(
+			            'field'       => 'pagination_prev_label',
+			            'type'        => 'Previous Label',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'pagination_next_label',
+			            'type'        => 'Next Label',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_meta_separator',
+			            'type'        => 'Classic: Separator Between',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_read_more_text',
+			            'type'        => 'Classic: Read More Text',
+			            'editor_type' => 'LINE'
+			        )
+				),
+				'',
+				array(),
+			),
+			'Search Form' => array(
+				'search-form',
+				array(
+					array(
+						'field'       => 'placeholder',
+						'type'        => 'Placeholder',
+						'editor_type' => 'LINE'
+					)
+				),
+				'',
+				array(),
+			),
 		);
 	}
 

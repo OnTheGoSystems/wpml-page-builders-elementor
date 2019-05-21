@@ -744,6 +744,56 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'archive-posts' => array(
+			    'conditions' => array( self::TYPE => 'archive-posts' ),
+			    'fields'     => array(
+			        array(
+			            'field'       => 'archive_cards_meta_separator',
+			            'type'        => __( 'Cards: Separator Between', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_cards_read_more_text',
+			            'type'        => __( 'Cards: Read More Text', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'nothing_found_message',
+			            'type'        => __( 'Nothing Found Message', 'sitepress' ),
+			            'editor_type' => 'AREA'
+			        ),
+			        array(
+			            'field'       => 'pagination_prev_label',
+			            'type'        => __( 'Previous Label', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'pagination_next_label',
+			            'type'        => __( 'Next Label', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_meta_separator',
+			            'type'        => __( 'Classic: Separator Between', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_read_more_text',
+			            'type'        => __( 'Classic: Read More Text', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			    ),
+			),
+			'search-form' => array(
+			    'conditions' => array( self::TYPE => 'search-form' ),
+			    'fields'     => array(
+			        array(
+			            'field'       => 'placeholder',
+			            'type'        => __( 'Placeholder', 'sitepress' ),
+			            'editor_type' => 'LINE'
+			        ),
+			    ),
+			),
 		);
 	}
 
