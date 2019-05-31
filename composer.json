@@ -9,6 +9,20 @@
       "email": "hello@wpml.org"
     }
   ],
+  "repositories": [
+    {
+      "type":"package",
+      "package": {
+        "name": "elementor/elementor",
+        "version":"master",
+        "source": {
+          "url": "https://github.com/elementor/elementor.git",
+          "type": "git",
+          "reference":"master"
+        }
+      }
+    }
+  ],
   "autoload": {
     "classmap": [
       "src/"
@@ -27,6 +41,12 @@
   "require-dev": {
     "phpunit/phpunit": "~5.7",
     "otgs/unit-tests-framework": "~1.2.0",
-    "wpml/page-builders": "dev-master"
+    "wpml/page-builders": "dev-master",
+    "elementor/elementor": "dev-master"
+  },
+  "scripts": {
+    "post-package-install": [
+      "sed -i 's/final public function add_group_control/public function add_group_control/g' ./vendor/elementor/elementor/includes/base/controls-stack.php"
+    ]
   }
 }
