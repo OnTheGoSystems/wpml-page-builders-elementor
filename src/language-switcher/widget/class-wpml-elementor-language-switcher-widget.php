@@ -1,6 +1,8 @@
 <?php
 namespace WPML\PB\Elementor\LanguageSwitcher;
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Typography;
+use Elementor\Scheme_Color;
 
 class Widget extends \Elementor\Widget_Base {
 
@@ -21,6 +23,8 @@ class Widget extends \Elementor\Widget_Base {
 	}
 
 	protected function _register_controls() {
+
+		//Content Tab
 		$this->start_controls_section(
 			'section_content',
 			[
@@ -57,7 +61,7 @@ class Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'link_current',
 			[
-				'label' => __('Show Active Language', 'sitepress'),
+				'label' => __('Show Active Language - has to be ON with Dropdown', 'sitepress'),
 				'type' => Controls_Manager::SWITCHER,
 				'return_value' => 1,
 				'default' => 1,
@@ -84,26 +88,152 @@ class Widget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'align_items',
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'style_section',
 			[
-				'label' => __('Align', 'sitepress'),
-				'type' => Controls_Manager::CHOOSE,
-				'default' => 'left',
-				'separator' => 'before'
-,				'options' => [
-					'left' => [
-						'title' => __('Left', 'sitepress'),
-						'icon' => 'fa fa-align-left',
-					],
-					'center' => [
-						'title' => __('Center', 'sitepress'),
-						'icon' => 'fa fa-align-center',
-					],
-					'right' => [
-						'title' => __('Right', 'sitepress'),
-						'icon' => 'fa fa-align-right',
-					]
+				'label' => __( 'Style', 'sitepress' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+		$this->start_controls_tabs( 'style_tabs' );
+
+		$this->start_controls_tab(
+			'style_normal_tab',
+			[
+				'label' => __( 'Normal', 'sitepress' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'switcher_typography',
+				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-item',
+			]
+		);
+
+
+		$this->add_control(
+			'switcher_color',
+			[
+				'label' => __( 'Text Color', 'sitepress' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link, 
+					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'style_hover_tab',
+			[
+				'label' => __( 'Hover', 'sitepress' ),
+			]
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'switcher_hover_typography',
+				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-item:hover,
+					{{WRAPPER}} .wpmlels .wpml-ls-item.wpml-ls-item__active,
+					{{WRAPPER}} .wpmlels .wpml-ls-item.highlighted,
+					{{WRAPPER}} .wpmlels .wpml-ls-item:focus',
+			]
+		);
+
+		$this->add_control(
+			'switcher_hover_color',
+			[
+				'label' => __( 'Text Color', 'sitepress' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_4,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a:hover,
+					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a:focus,
+					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a,
+					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link:hover,
+					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link.wpml-ls-link__active,
+					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link.highlighted,
+					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link:focus' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'language_flag',
+			[
+				'label' => __( 'Language Flag', 'sitepress' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'display_flag' => [ 1 ],
+				],
+			]
+		);
+
+		$this->add_control(
+			'flag_margin',
+			[
+				'label' => __( 'Margin', 'sitepress' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors' => [
+					'{{WRAPPER}} .wpmlels .wpml-ls-flag' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'post_translation_text',
+			[
+				'label' => __( 'Post Translation Text', 'sitepress' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'style' => [ 'post_translations' ],
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'post_translation_typography',
+				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-statics-post_translations',
+			]
+		);
+
+		$this->add_control(
+			'post_translation_color',
+			[
+				'label' => __( 'Text Color', 'sitepress' ),
+				'type' => Controls_Manager::COLOR,
+				'scheme' => [
+					'type' => Scheme_Color::get_type(),
+					'value' => Scheme_Color::COLOR_3,
+				],
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .wpmlels .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -116,15 +246,21 @@ class Widget extends \Elementor\Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
+		$this->add_render_attribute('wpmlels', 'class', [
+			'wpmlels',
+		]);
+
 		$args = array(
-			'display_link_for_current_lang' => $settings['link_current'], //does not work with dropdown
+			'display_link_for_current_lang' => ($settings['style'] == 'custom' ? 1 : $settings['link_current']), //does not work with dropdown
 			'flags' => $settings['display_flag'],
 			'native' => $settings['native_language_name'],
 			'translated' => $settings['language_name_current_language'],
 			'type' => $settings['style']
 		);
 
+		echo "<div " . $this->get_render_attribute_string('wpmlels') . ">";
 		do_action('wpml_language_switcher', $args);
+		echo "</div>";
 
 	}
 }
