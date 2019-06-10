@@ -21,7 +21,7 @@ class WPML_Elementor_Integration_Factory {
 				'WPML_PB_Elementor_Handle_Custom_Fields_Factory',
 				'WPML_Elementor_Media_Hooks_Factory',
 				'WPML_Elementor_WooCommerce_Hooks_Factory',
-				'\WPML\PB\Elementor\LanguageSwitcher\Factory'
+				'\WPML\PB\Elementor\LanguageSwitcher\LanguageSwitcher'
 			)
 		);
 

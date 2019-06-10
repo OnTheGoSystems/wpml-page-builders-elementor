@@ -41,7 +41,7 @@ class Widget extends \Elementor\Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'default' => 'custom',
 				'options' => [
-					'custom' => __('Drop Down', 'sitepress'),
+					'custom' => __('Drop Down', 'sitepress'), //wrong, it depends on settings in Languages -> Custom language switchers
 					'footer' => __('Footer', 'sitepress'),
 					'post_translations' => __('Post Translations', 'sitepress'),
 				],
@@ -110,7 +110,7 @@ class Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'switcher_typography',
-				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-item',
+				'selector' => '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item',
 			]
 		);
 
@@ -126,8 +126,8 @@ class Widget extends \Elementor\Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link, 
-					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -144,10 +144,10 @@ class Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'switcher_hover_typography',
-				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-item:hover,
-					{{WRAPPER}} .wpmlels .wpml-ls-item.wpml-ls-item__active,
-					{{WRAPPER}} .wpmlels .wpml-ls-item.highlighted,
-					{{WRAPPER}} .wpmlels .wpml-ls-item:focus',
+				'selector' => '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item.wpml-ls-item__active,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item.highlighted,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item:focus',
 			]
 		);
 
@@ -161,13 +161,13 @@ class Widget extends \Elementor\Widget_Base {
 					'value' => Scheme_Color::COLOR_4,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a:hover,
-					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown a:focus,
-					{{WRAPPER}} .wpmlels .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a,
-					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link:hover,
-					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link.wpml-ls-link__active,
-					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link.highlighted,
-					{{WRAPPER}} .wpmlels .wpml-ls-item .wpml-ls-link:focus' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:focus,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:hover,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.wpml-ls-link__active,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.highlighted,
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:focus' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -196,7 +196,7 @@ class Widget extends \Elementor\Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .wpmlels .wpml-ls-flag' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-flag' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -218,7 +218,7 @@ class Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'post_translation_typography',
-				'selector' => '{{WRAPPER}} .wpmlels .wpml-ls-statics-post_translations',
+				'selector' => '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations',
 			]
 		);
 
@@ -233,7 +233,7 @@ class Widget extends \Elementor\Widget_Base {
 				],
 				'default' => '',
 				'selectors' => [
-					'{{WRAPPER}} .wpmlels .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -246,19 +246,19 @@ class Widget extends \Elementor\Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$this->add_render_attribute('wpmlels', 'class', [
-			'wpmlels',
+		$this->add_render_attribute('wpml-elementor-ls', 'class', [
+			'wpml-elementor-ls',
 		]);
 
 		$args = array(
-			'display_link_for_current_lang' => ($settings['style'] == 'custom' ? 1 : $settings['link_current']), //does not work with dropdown
+			'display_link_for_current_lang' => ($settings['style'] == 'custom' ? 1 : $settings['link_current']), //forcing in dropdown case
 			'flags' => $settings['display_flag'],
 			'native' => $settings['native_language_name'],
 			'translated' => $settings['language_name_current_language'],
 			'type' => $settings['style']
 		);
 
-		echo "<div " . $this->get_render_attribute_string('wpmlels') . ">";
+		echo "<div " . $this->get_render_attribute_string('wpml-elementor-ls') . ">";
 		do_action('wpml_language_switcher', $args);
 		echo "</div>";
 
