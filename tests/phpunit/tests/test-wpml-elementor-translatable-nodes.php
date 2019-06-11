@@ -113,6 +113,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				if ( 'icon-box' === $type ) {
 					$string = $strings[2];
 				}
+				
+				if ( 'image-box' === $type ) {
+					$string = $strings[2];
+				}
 
 				if ( 'call-to-action' === $type ) {
 					$string = $strings[4];
