@@ -116,7 +116,7 @@ class Widget extends \Elementor\Widget_Base {
 
 
 		$this->add_control(
-			'switcher_color',
+			'switcher_text_color',
 			[
 				'label' => __( 'Text Color', 'sitepress' ),
 				'type' => Controls_Manager::COLOR,
@@ -128,6 +128,19 @@ class Widget extends \Elementor\Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'switcher_bg_color',
+			[
+				'label' => __( 'Background Color', 'sitepress' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
+					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a' => 'background-color: {{VALUE}}',
 				],
 			]
 		);
@@ -234,6 +247,42 @@ class Widget extends \Elementor\Widget_Base {
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'post_translation_bg_color',
+			[
+				'label' => __( 'Background Color', 'sitepress' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '',
+				'selectors' => [
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'post_translation_padding',
+			[
+				'label' => __( 'Padding', 'sitepress' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors' => [
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'post_translation_margin',
+			[
+				'label' => __( 'Margin', 'sitepress' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors' => [
+					'{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
