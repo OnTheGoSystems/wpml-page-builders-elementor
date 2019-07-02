@@ -245,6 +245,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Video: Vimeo link', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					array(
+						'field'       => 'youtube_url',
+						'type'        => __( 'Video: Youtube URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'vimeo_url',
+						'type'        => __( 'Video: Vimeo URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'dailymotion_url',
+						'type'        => __( 'Video: DailyMotion URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 				),
 			),
 			'login'       => array(

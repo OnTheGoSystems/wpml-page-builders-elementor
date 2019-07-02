@@ -163,7 +163,11 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Video' => array( 'video', array(
 				array( 'field' => 'link', 'type' => 'Video: Link', 'editor_type' => 'LINE' ),
-				array( 'field' => 'vimeo_link', 'type' => 'Video: Vimeo link', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'vimeo_link', 'type' => 'Video: Vimeo link', 'editor_type' => 'LINE' ),
+				array( 'field' => 'youtube_url', 'type' => 'Video: Youtube URL', 'editor_type' => 'LINE' ),
+				array( 'field' => 'vimeo_url', 'type' => 'Video: Vimeo URL', 'editor_type' => 'LINE' ),
+				array( 'field' => 'dailymotion_url', 'type' => 'Video: DailyMotion URL', 'editor_type' => 'LINE' )
+			),
 				'',
 				array(),
 			),
