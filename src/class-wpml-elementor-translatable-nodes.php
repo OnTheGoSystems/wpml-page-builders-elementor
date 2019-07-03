@@ -719,6 +719,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'post-navigation' => array(
+				'conditions' => array( self::TYPE => 'post-navigation' ),
+				'fields'     => array(
+					array(
+						'field'       => 'prev_label',
+						'type'        => __( 'Previous Label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'next_label',
+						'type'        => __( 'Next Label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+				),
+			),
 		);
 	}
 
