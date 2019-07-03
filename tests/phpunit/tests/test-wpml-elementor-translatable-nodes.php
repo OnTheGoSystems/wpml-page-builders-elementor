@@ -118,6 +118,14 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[4];
 				}
 
+				if ( 'heading' === $type ) {
+					$string = $strings[1];
+				}
+
+				if ( 'animated-headline' === $type ) {
+					$string = $strings[4];
+				}
+
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
 				$this->assertEquals( $field['field'] . '-' . $element['widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
@@ -147,7 +155,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		return array(
 			'Heading' => array( 'heading', array(
-				array( 'field' => 'title', 'type' => 'Heading', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'title', 'type' => 'Heading', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Heading: Link URL', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),
@@ -253,7 +262,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array( 'field' => 'before_text', 'type' => 'Animated Headline: Before text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'highlighted_text', 'type' => 'Animated Headline: Highlighted text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'rotating_text', 'type' => 'Animated Headline: Rotating text', 'editor_type' => 'AREA' ),
-				array( 'field' => 'after_text', 'type' => 'Animated Headline: After text', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'after_text', 'type' => 'Animated Headline: After text', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Animated Headline: Link URL', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),
