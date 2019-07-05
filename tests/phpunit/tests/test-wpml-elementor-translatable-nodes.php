@@ -56,8 +56,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			'settings'   => $settings,
 		);
 
-		\WP_Mock::wpPassthruFunction( '__' );
-		\WP_Mock::wpPassthruFunction( 'esc_html__' );
+		WP_Mock::wpPassthruFunction( '__' );
+		WP_Mock::wpPassthruFunction( 'esc_html__' );
 
 		$subject = new WPML_Elementor_Translatable_Nodes();
 		$strings = $subject->get( $node_id, $element );
@@ -415,9 +415,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$node_id = mt_rand();
 		$element = array(
@@ -482,9 +482,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element = array(
 			'widgetType' => $widget_type,
@@ -518,9 +518,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		       ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		       ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'my-custom-module',
@@ -614,9 +614,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			)
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'custom-module',
@@ -793,9 +793,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			)
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'custom-module',
