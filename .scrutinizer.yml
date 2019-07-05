@@ -1,8 +1,8 @@
 ---
 checks:
-  php:
-    code_rating: true
-    duplication: true
+    php:
+        code_rating: true
+        duplication: true
 filter:
     excluded_paths:
         - "tests/"
@@ -18,41 +18,48 @@ coding_style:
                 negation: true
 
 build:
-  cache:
-    directories:
-      - vendor/
-  nodes:
-    phpcs:
-      environment:
-        php: 5.6
-      tests:
-        override:
-          -
-            on_node: 1
-            idle_timeout: 4800
-            command: "phpcs-run ./"
+    cache:
+        directories:
+            - vendor/
+    nodes:
+        phpcs:
+            environment:
+                php: 7.3
+            tests:
+                override:
+                    - on_node: 1
+                      idle_timeout: 4800
+                      command: "phpcs-run ./"
 
-    phpunit:
-      environment:
-        php: 5.6
-      tests:
+        php56:
+            environment:
+                php: 5.6
+        php70:
+            environment:
+                php: 7.0
+        php71:
+            environment:
+                php: 7.1
+        php72:
+            environment:
+                php: 7.2
+
+        php73-cover:
+            environment:
+                php: 7.3
+            tests:
+                override:
+                    - on_node: 2
+                      idle_timeout: 4800
+                      command: "./vendor/bin/phpunit --fail-on-warning --coverage-clover ./coverage.xml"
+                      coverage:
+                          file: ./coverage.xml
+                          format: php-clover
+    tests:
         override:
-          -
-            on_node: 2
-            idle_timeout: 4800
-            command: "./vendor/bin/phpunit --coverage-clover ./coverage.xml"
-            coverage:
-              file: coverage.xml
-              format: php-clover
-    php70:
-      environment:
-        php: 7.0
-    php71:
-      environment:
-        php: 7.1
-  tests:
-    override:
-      -
-        on_node: 1
-        idle_timeout: 4800
-        command: "./vendor/bin/phpunit"
+            - on_node: 1
+              idle_timeout: 4800
+              command: "./vendor/bin/phpunit"
+
+build_failure_conditions:
+    - 'project.metric_change("scrutinizer.test_coverage", < 0)'
