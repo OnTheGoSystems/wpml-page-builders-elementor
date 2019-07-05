@@ -210,6 +210,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Heading', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Heading: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
 				),
 			),
 			'text-editor' => array(
@@ -243,6 +248,21 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'vimeo_link',
 						'type'        => __( 'Video: Vimeo link', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'youtube_url',
+						'type'        => __( 'Video: Youtube URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'vimeo_url',
+						'type'        => __( 'Video: Vimeo URL', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'dailymotion_url',
+						'type'        => __( 'Video: DailyMotion URL', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
@@ -479,6 +499,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'field'       => 'after_text',
 						'type'        => __( 'Animated Headline: After text', 'sitepress' ),
 						'editor_type' => 'LINE'
+					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Animated Headline: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
 					),
 				),
 			),
