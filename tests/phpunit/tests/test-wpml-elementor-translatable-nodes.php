@@ -56,8 +56,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			'settings'   => $settings,
 		);
 
-		\WP_Mock::wpPassthruFunction( '__' );
-		\WP_Mock::wpPassthruFunction( 'esc_html__' );
+		WP_Mock::wpPassthruFunction( '__' );
+		WP_Mock::wpPassthruFunction( 'esc_html__' );
 
 		$subject = new WPML_Elementor_Translatable_Nodes();
 		$strings = $subject->get( $node_id, $element );
@@ -118,6 +118,14 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[4];
 				}
 
+				if ( 'heading' === $type ) {
+					$string = $strings[1];
+				}
+
+				if ( 'animated-headline' === $type ) {
+					$string = $strings[4];
+				}
+
 				$this->assertEquals( $element['settings'][ $key ][ $field['field'] ], $string->get_value() );
 				$this->assertEquals( $field['field'] . '-' . $element['widgetType'] . '-' . $node_id, $string->get_name() );
 				$this->assertEquals( $field['type'], $string->get_title() );
@@ -147,7 +155,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		return array(
 			'Heading' => array( 'heading', array(
-				array( 'field' => 'title', 'type' => 'Heading', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'title', 'type' => 'Heading', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Heading: Link URL', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),
@@ -163,7 +172,11 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Video' => array( 'video', array(
 				array( 'field' => 'link', 'type' => 'Video: Link', 'editor_type' => 'LINE' ),
-				array( 'field' => 'vimeo_link', 'type' => 'Video: Vimeo link', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'vimeo_link', 'type' => 'Video: Vimeo link', 'editor_type' => 'LINE' ),
+				array( 'field' => 'youtube_url', 'type' => 'Video: Youtube URL', 'editor_type' => 'LINE' ),
+				array( 'field' => 'vimeo_url', 'type' => 'Video: Vimeo URL', 'editor_type' => 'LINE' ),
+				array( 'field' => 'dailymotion_url', 'type' => 'Video: DailyMotion URL', 'editor_type' => 'LINE' )
+			),
 				'',
 				array(),
 			),
@@ -249,7 +262,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array( 'field' => 'before_text', 'type' => 'Animated Headline: Before text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'highlighted_text', 'type' => 'Animated Headline: Highlighted text', 'editor_type' => 'LINE' ),
 				array( 'field' => 'rotating_text', 'type' => 'Animated Headline: Rotating text', 'editor_type' => 'AREA' ),
-				array( 'field' => 'after_text', 'type' => 'Animated Headline: After text', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'after_text', 'type' => 'Animated Headline: After text', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Animated Headline: Link URL', 'editor_type' => 'LINK' ) ),
 				'',
 				array(),
 			),
@@ -378,6 +392,57 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array(
 					array( 'field' => 'prev_label', 'type' => 'Previous Label', 'editor_type' => 'LINE' ),
 					array( 'field' => 'next_label', 'type' => 'Next Label', 'editor_type' => 'LINE' ),
+
+			'Archive Posts' => array(
+				'archive-posts',
+				array(
+					 array(
+			            'field'       => 'archive_cards_meta_separator',
+			            'type'        => 'Cards: Separator Between',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_cards_read_more_text',
+			            'type'        => 'Cards: Read More Text',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'nothing_found_message',
+			            'type'        => 'Nothing Found Message',
+			            'editor_type' => 'AREA'
+			        ),
+			        array(
+			            'field'       => 'pagination_prev_label',
+			            'type'        => 'Previous Label',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'pagination_next_label',
+			            'type'        => 'Next Label',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_meta_separator',
+			            'type'        => 'Classic: Separator Between',
+			            'editor_type' => 'LINE'
+			        ),
+			        array(
+			            'field'       => 'archive_classic_read_more_text',
+			            'type'        => 'Classic: Read More Text',
+			            'editor_type' => 'LINE'
+			        )
+				),
+				'',
+				array(),
+			),
+			'Search Form' => array(
+				'search-form',
+				array(
+					array(
+						'field'       => 'placeholder',
+						'type'        => 'Placeholder',
+						'editor_type' => 'LINE'
+					)
 				),
 				'',
 				array(),
@@ -409,9 +474,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$node_id = mt_rand();
 		$element = array(
@@ -476,9 +541,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element = array(
 			'widgetType' => $widget_type,
@@ -512,9 +577,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		       ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		       ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'my-custom-module',
@@ -608,9 +673,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			)
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'custom-module',
@@ -787,9 +852,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			)
 		);
 
-		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
-		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
-		        ->reply( $nodes );
+		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+			   ->reply( $nodes );
 
 		$element_data = array(
 			'widgetType' => 'custom-module',
