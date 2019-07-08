@@ -673,6 +673,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			)
 		);
 
+
 		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
 			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
 			   ->reply( $nodes );
@@ -851,6 +852,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				),
 			)
 		);
+
 
 		WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
 			   ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
