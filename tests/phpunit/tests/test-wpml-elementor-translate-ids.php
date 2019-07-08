@@ -7,7 +7,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 	 */
 	public function it_adds_hooks() {
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->expectFilterAdded( 'elementor/theme/get_location_templates/template_id', array(
 			$subject,
@@ -50,7 +50,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $template_id, $post_type, true )
 		        ->reply( $translated_id );
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translated_id, $subject->translate_theme_location_template_id( $template_id ) );
 
@@ -67,7 +67,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 	public function it_should_not_translate_location_condition_sub_id( $sub_id, $parsed_conditions ) {
 		\WP_Mock::userFunction( 'get_post_type', array( 'times' => 0 ) );
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $sub_id, $subject->translate_location_condition_sub_id( $sub_id, $parsed_conditions ) );
 	}
@@ -102,7 +102,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $sub_id, $post_type, true )
 		        ->reply( $translate_id );
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
 	}
@@ -128,7 +128,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $sub_id, $post_type, true )
 		        ->reply( $translate_id );
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
 	}
@@ -147,7 +147,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $sub_id, $taxonomy, true )
 		        ->reply( $translate_id );
 
-		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( 'WPML_Debug_BackTrace' ) );
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
 	}
@@ -172,7 +172,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $template_id, $post_type, true )
 		        ->reply( $translated_id );
 
-		$debug_backtrace = \Mockery::mock( 'WPML_Debug_BackTrace' );
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 		$debug_backtrace->shouldReceive( 'is_class_function_in_call_stack' )
 		                ->with( 'ElementorPro\Modules\Library\WP_Widgets\Elementor_Library', 'widget' )
 		                ->andReturn( true );
@@ -203,7 +203,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $template_id, $post_type, true )
 		        ->reply( $translated_id );
 
-		$debug_backtrace = \Mockery::mock( 'WPML_Debug_BackTrace' );
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 		$debug_backtrace->shouldReceive( 'is_class_function_in_call_stack' )
 		                ->with( 'ElementorPro\Modules\Library\WP_Widgets\Elementor_Library', 'widget' )
 		                ->andReturn( false );
@@ -237,7 +237,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $template_id, $post_type, true )
 		        ->reply( $translated_id );
 
-		$debug_backtrace = \Mockery::mock( 'WPML_Debug_BackTrace' );
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 		$debug_backtrace->shouldReceive( 'is_class_function_in_call_stack' )
 		                ->with( 'ElementorPro\Modules\Library\WP_Widgets\Elementor_Library', 'widget' )
 		                ->andReturn( false );
@@ -274,7 +274,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( $template_id, $post_type, true )
 		        ->reply( $translated_id );
 
-		$debug_backtrace = \Mockery::mock( 'WPML_Debug_BackTrace' );
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 		$debug_backtrace->shouldReceive( 'is_class_function_in_call_stack' )
 		                ->andReturn( false );
 
@@ -305,7 +305,7 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		        ->with( (string) $original_template_id, $post_type, true )
 		        ->reply( $translated_template_id );
 
-		$debug_backtrace = \Mockery::mock( 'WPML_Debug_BackTrace' );
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 
 		$subject = new WPML_Elementor_Translate_IDs( $debug_backtrace );
 
