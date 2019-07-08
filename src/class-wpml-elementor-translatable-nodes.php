@@ -758,6 +758,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'editor_type' => 'LINE'
 					),
 				),
+			),
 			'archive-posts' => array(
 			    'conditions' => array( self::TYPE => 'archive-posts' ),
 			    'fields'     => array(
