@@ -475,6 +475,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Image Box: Description text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Image Box: Link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
 				),
 			),
 			'animated-headline'   => array(
