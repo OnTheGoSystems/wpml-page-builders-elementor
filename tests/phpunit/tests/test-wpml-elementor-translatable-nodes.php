@@ -114,6 +114,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[2];
 				}
 
+				if ( 'image-box' === $type ) {
+					$string = $strings[2];
+				}
+
 				if ( 'call-to-action' === $type ) {
 					$string = $strings[4];
 				}
@@ -254,7 +258,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Image box' => array( 'image-box', array(
 				array( 'field' => 'title_text', 'type' => 'Image Box: Title text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Image Box: Link', 'editor_type' => 'LINK' )),
 				'',
 				array(),
 			),
