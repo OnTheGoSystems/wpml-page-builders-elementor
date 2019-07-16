@@ -475,6 +475,11 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Image Box: Description text', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					'link' => array(
+						'field'       => 'url',
+						'type'        => __( 'Image Box: Link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
 				),
 			),
 			'animated-headline'   => array(
@@ -678,7 +683,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 					array(
 						'field'       => 'email_subject_2',
-						'type'        => __( 'Form: Email subject', 'sitepress' ),
+						'type'        => __( 'Form: Email subject 2', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 					array(
@@ -704,6 +709,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'invalid_message',
 						'type'        => __( 'Form: Invalid message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'required_field_message',
+						'type'        => __( 'Form: Required message', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'redirect_to',
+						'type'        => __( 'Form: Redirect to URL', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
 				),
