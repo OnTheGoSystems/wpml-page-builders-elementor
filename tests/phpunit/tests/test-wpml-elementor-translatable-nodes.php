@@ -114,6 +114,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					$string = $strings[2];
 				}
 
+				if ( 'image-box' === $type ) {
+					$string = $strings[2];
+				}
+
 				if ( 'call-to-action' === $type ) {
 					$string = $strings[4];
 				}
@@ -254,7 +258,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Image box' => array( 'image-box', array(
 				array( 'field' => 'title_text', 'type' => 'Image Box: Title text', 'editor_type' => 'LINE' ),
-				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'description_text', 'type' => 'Image Box: Description text', 'editor_type' => 'LINE' ),
+				'link' => array( 'field' => 'url', 'type' => 'Image Box: Link', 'editor_type' => 'LINK' )),
 				'',
 				array(),
 			),
@@ -361,7 +366,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 					array( 'field' => 'success_message', 'type' => 'Form: Success message', 'editor_type' => 'LINE' ),
 					array( 'field' => 'error_message', 'type' => 'Form: Error message', 'editor_type' => 'LINE' ),
 					array( 'field' => 'required_message', 'type' => 'Form: Required message', 'editor_type' => 'LINE' ),
-					array( 'field' => 'invalid_message', 'type' => 'Form: Invalid message', 'editor_type' => 'LINE' ) ),
+					array( 'field' => 'invalid_message', 'type' => 'Form: Invalid message', 'editor_type' => 'LINE' ),
+					array( 'field' => 'required_field_message', 'type' => 'Form: Required message', 'editor_type' => 'LINE' ),
+					array( 'field' => 'redirect_to', 'type' => 'Form: Redirect to URL', 'editor_type' => 'LINE' ),
+					),
 				'form',
 				array(
 					array( 'field' => 'field_label', 'value' => rand_str( 10 ), 'type' => 'Form: Field label', 'editor_type' => 'LINE' ),
@@ -388,6 +396,15 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Post Navigation' => array( 'post-navigation',
+				array(
+					array( 'field' => 'prev_label', 'type' => 'Previous Label', 'editor_type' => 'LINE' ),
+					array( 'field' => 'next_label', 'type' => 'Next Label', 'editor_type' => 'LINE' ),
+				),
+				'',
+				array(),
+			),
+
 			'Archive Posts' => array(
 				'archive-posts',
 				array(
