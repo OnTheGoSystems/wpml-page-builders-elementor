@@ -95,4 +95,32 @@ class Test_WPML_Elementor_Register_Strings extends WPML_PB_TestCase2 {
 		$subject = new WPML_Elementor_Register_Strings( $translatable_nodes, $data_settings, $string_registration );
 		$subject->register_strings( $post, $package );
 	}
+
+	/**
+	 * @test
+	 */
+	public function it_does_not_throw_error_on_invalid_elementor_data() {
+		list( $name, $post, $package ) = $this->get_post_and_package( 'Elementor' );
+
+		$invalid_json = 'invalid_json';
+		\WP_Mock::wpFunction( 'get_post_meta', array(
+			'args'   => [ $post->ID, '_elementor_data', false ],
+			'return' => $invalid_json,
+		) );
+
+		WP_Mock::expectAction( 'wpml_start_string_package_registration', $package );
+		WP_Mock::expectAction( 'wpml_delete_unused_package_strings', $package );
+
+		$data_settings = \Mockery::mock( 'WPML_Elementor_Data_Settings' );
+		$data_settings->shouldReceive( 'get_meta_field' )->andReturn( '_elementor_data' );
+		$data_settings->shouldReceive( 'convert_data_to_array' )->once()->with( $invalid_json )->andReturn( null );
+
+		$subject = new WPML_Elementor_Register_Strings(
+			\Mockery::mock( 'WPML_Elementor_Translatable_Nodes' ),
+			$data_settings,
+			\Mockery::mock( 'WPML_PB_String_Registration' )
+		);
+		$subject->register_strings( $post, $package );
+	}
+
 }
