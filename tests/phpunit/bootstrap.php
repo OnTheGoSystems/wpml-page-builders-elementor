@@ -36,5 +36,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(WPML_ST_PATH . '/../../../') );
 }
 
+define( 'ELEMENTOR_PATH', realpath( __DIR__ . '/../../vendor/elementor/elementor' ) . '/' );
+//	require_once ELEMENTOR_PATH . '/includes/autoloader.php';
+//	Elementor\Autoloader::run();
+// Load classes not included in Elementor's autoloader.
+require_once ELEMENTOR_PATH . '/core/base/base-object.php';
+require_once ELEMENTOR_PATH . '/includes/base/controls-stack.php';
+require_once ELEMENTOR_PATH . '/includes/base/element-base.php';
+require_once ELEMENTOR_PATH . '/includes/base/widget-base.php';
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/otgs/unit-tests-framework/phpunit/bootstrap.php';

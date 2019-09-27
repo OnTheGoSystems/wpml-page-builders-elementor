@@ -1,27 +1,44 @@
 <?php
 namespace WPML\PB\Elementor\LanguageSwitcher;
+
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
 use Elementor\Scheme_Color;
+use Elementor\Widget_Base;
 
-class Widget extends \Elementor\Widget_Base {
+class Widget extends Widget_Base {
 
+	/** @return string */
 	public function get_name() {
 		return 'wpml-language-switcher';
 	}
 
+	/** @return string */
 	public function get_title() {
 		return __( 'WPML Language Switcher', 'sitepress' );
 	}
 
+	/** @return string */
 	public function get_icon() {
 		return 'fa fa-globe';
 	}
 
+	/** @return array */
 	public function get_categories() {
 		return [ 'general' ];
 	}
 
+	/**
+	 * Register controls.
+	 *
+	 * Used to add new controls to any element type. For example, external
+	 * developers use this method to register controls in a widget.
+	 *
+	 * Should be inherited and register new controls using `add_control()`,
+	 * `add_responsive_control()` and `add_group_control()`, inside control
+	 * wrappers like `start_controls_section()`, `start_controls_tabs()` and
+	 * `start_controls_tab()`.
+	 */
 	protected function _register_controls() {
 
 		//Content Tab
@@ -291,6 +308,11 @@ class Widget extends \Elementor\Widget_Base {
 
 	}
 
+	/**
+	 * Render element.
+	 *
+	 * Generates the final HTML on the frontend.
+	 */
 	protected function render() {
 
 		$settings = $this->get_settings_for_display();
