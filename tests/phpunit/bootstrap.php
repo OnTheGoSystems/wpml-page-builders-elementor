@@ -41,12 +41,12 @@ require_once ELEMENTOR_PATH . '/includes/autoloader.php';
 Elementor\Autoloader::run();
 // Load classes not included in Elementor's autoloader.
 require_once ELEMENTOR_PATH . '/includes/managers/controls.php';
-//require_once ELEMENTOR_PATH . '/includes/interfaces/scheme.php';
-//require_once ELEMENTOR_PATH . '/includes/schemes/base.php';
-//require_once ELEMENTOR_PATH . '/includes/schemes/color.php';
-//require_once ELEMENTOR_PATH . '/includes/interfaces/group-control.php';
-//require_once ELEMENTOR_PATH . '/includes/controls/groups/base.php';
-//require_once ELEMENTOR_PATH . '/includes/controls/groups/typography.php';
+require_once ELEMENTOR_PATH . '/includes/interfaces/scheme.php';
+require_once ELEMENTOR_PATH . '/includes/schemes/base.php';
+require_once ELEMENTOR_PATH . '/includes/schemes/color.php';
+require_once ELEMENTOR_PATH . '/includes/interfaces/group-control.php';
+require_once ELEMENTOR_PATH . '/includes/controls/groups/base.php';
+require_once ELEMENTOR_PATH . '/includes/controls/groups/typography.php';
 require_once ELEMENTOR_PATH . '/core/base/base-object.php';
 require_once ELEMENTOR_PATH . '/includes/base/controls-stack.php';
 require_once ELEMENTOR_PATH . '/includes/base/element-base.php';
