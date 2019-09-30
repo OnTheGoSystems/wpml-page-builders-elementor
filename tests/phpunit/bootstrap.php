@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(WPML_ST_PATH . '/../../../') );
 }
 
-define( 'ELEMENTOR_PATH', realpath( __DIR__ . '/../../vendor/elementor/elementor' ) . '/' );
+define( 'ELEMENTOR_PATH', __DIR__ . '/../../vendor/elementor/elementor/' );
 require_once ELEMENTOR_PATH . '/includes/autoloader.php';
 Elementor\Autoloader::run();
 // Load classes not included in Elementor's autoloader.
