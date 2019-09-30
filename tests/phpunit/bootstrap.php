@@ -37,8 +37,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'ELEMENTOR_PATH', realpath( __DIR__ . '/../../vendor/elementor/elementor' ) . '/' );
-//	require_once ELEMENTOR_PATH . '/includes/autoloader.php';
-//	Elementor\Autoloader::run();
+require_once ELEMENTOR_PATH . '/includes/autoloader.php';
+Elementor\Autoloader::run();
 // Load classes not included in Elementor's autoloader.
 require_once ELEMENTOR_PATH . '/core/base/base-object.php';
 require_once ELEMENTOR_PATH . '/includes/base/controls-stack.php';

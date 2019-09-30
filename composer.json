@@ -43,5 +43,10 @@
     "otgs/unit-tests-framework": "~1.2.0",
     "wpml/page-builders": "dev-master",
     "elementor/elementor": "dev-master"
+  },
+  "scripts": {
+    "post-package-install": [
+      "sed -i 's/final public function add_group_control/public function add_group_control/g' ./vendor/elementor/elementor/includes/base/controls-stack.php"
+    ]
   }
 }
