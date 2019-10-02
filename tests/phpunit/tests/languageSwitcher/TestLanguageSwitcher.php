@@ -13,7 +13,7 @@ class TestLanguageSwitcher extends \OTGS_TestCase {
 	public function itShouldAddHooks() {
 		$subject = new LanguageSwitcher();
 		\WP_Mock::expectActionAdded( 'elementor/widgets/widgets_registered', [ $subject, 'registerWidgets' ] );
-		\WP_Mock::expectFilterAdded( 'wpml_custom_language_switcher_is_enabled', [ $subject, 'enableCustomLanguageSwitcher' ] );
+		\WP_Mock::expectFilterAdded( 'wpml_custom_language_switcher_is_enabled', '__return_true' );
 		$subject->add_hooks();
 	}
 
@@ -34,15 +34,5 @@ class TestLanguageSwitcher extends \OTGS_TestCase {
 		$elementorPlugin->widgets_manager = $widgetManager;
 
 		$subject->registerWidgets();
-	}
-
-	/**
-	 * @test
-	 * @group wpmlcore-6669
-	 */
-	public function itShouldEnableCustomLanguageSwitcher() {
-		$subject = new LanguageSwitcher();
-
-		$this->assertTrue( $subject->enableCustomLanguageSwitcher() );
 	}
 }
