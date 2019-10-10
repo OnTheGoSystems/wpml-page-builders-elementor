@@ -134,7 +134,7 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 					       'type'    => Controls_Manager::SELECT,
 					       'default' => 'custom',
 					       'options' => [
-						       'custom'            => 'Drop Down',
+						       'custom'            => 'Custom',
 						       'footer'            => 'Footer',
 						       'post_translations' => 'Post Translations',
 					       ],
