@@ -64,7 +64,7 @@ class WidgetAdaptor {
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'custom',
 				'options' => [
-					'custom'            => __( 'Drop Down', 'sitepress' ), //wrong, it depends on settings in Languages -> Custom language switchers
+					'custom'            => __( 'Custom', 'sitepress' ),
 					'footer'            => __( 'Footer', 'sitepress' ),
 					'post_translations' => __( 'Post Translations', 'sitepress' ),
 				],
