@@ -183,6 +183,7 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-6929
 	 */
 	public function it_saves_post_body_as_plain_text_when_elementor_page() {
 		$post_id = 123;
@@ -190,33 +191,89 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 		$elementor_db = \Mockery::mock( 'WPML_Elementor_DB' );
 		$elementor_db->shouldReceive( 'save_plain_text' )->once()->with( $post_id );
 
-		\WP_Mock::userFunction( 'get_post_meta', array(
-			'args' => array( $post_id, '_elementor_data' ),
-			'return' => true,
-		));
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_data', true ],
+			'return' => [ 'some data' ],
+		] );
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_edit_mode', true ],
+			'return' => 'builder',
+		] );
 
 		$subject = new WPML_Elementor_Data_Settings( $elementor_db );
 		$subject->save_post_body_as_plain_text( '', $post_id, '', '', '' );
-
 	}
 
 	/**
 	 * @test
+	 * @dataProvider dp_does_not_save_post_body_as_plain_text_when_elementor_page
+	 * @group wpmlcore-6929
+	 *
+	 * @param mixed $elementor_data
+	 * @param mixed $edit_mode
 	 */
-	public function it_does_not_saves_post_body_as_plain_text_when_not_an_elementor_page() {
+	public function it_does_not_saves_post_body_as_plain_text_when_not_an_elementor_page( $elementor_data, $edit_mode ) {
 		$post_id = 123;
 
 		$elementor_db = \Mockery::mock( 'WPML_Elementor_DB' );
-		$elementor_db->shouldReceive( 'save_plain_text' )->never()->with( $post_id );
+		$elementor_db->shouldNotReceive( 'save_plain_text' );
 
-		\WP_Mock::userFunction( 'get_post_meta', array(
-			'args' => array( $post_id, '_elementor_data' ),
-			'return' => false,
-		));
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_data', true ],
+			'return' => $elementor_data,
+		] );
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_edit_mode', true ],
+			'return' => $edit_mode,
+		] );
 
 		$subject = new WPML_Elementor_Data_Settings( $elementor_db );
 		$subject->save_post_body_as_plain_text( '', $post_id, '', '', '' );
-
 	}
 
+	public function dp_does_not_save_post_body_as_plain_text_when_elementor_page() {
+		return [
+			'no elementor data'          => [ '', 'builder' ],
+			'not using elementor editor' => [ [ 'some elementor data' ], 'another editor' ],
+		];
+	}
+
+	/**
+	 * @test
+	 * @dataProvider dpShouldReturnIsHandlingPost
+	 *
+	 * @group wpmlcore-6929
+	 *
+	 * @param mixed $elementorData
+	 * @param mixed $elementorEditMode
+	 * @param bool  $expectedResult
+	 */
+	public function itShouldReturnIsHandlingPost( $elementorData, $elementorEditMode, $expectedResult ) {
+		$postId = 123;
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $postId, '_elementor_data', true ],
+			'return' => $elementorData,
+		] );
+
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $postId, '_elementor_edit_mode', true ],
+			'return' => $elementorEditMode,
+		] );
+
+		$subject = new WPML_Elementor_Data_Settings();
+
+		$this->assertSame( $expectedResult, $subject->is_handling_post( $postId ) );
+	}
+
+	public function dpShouldReturnIsHandlingPost() {
+		return [
+			'with elementor data and elementor editor'    => [ 'some data', 'builder', true ],
+			'with elementor data and no editor'           => [ 'some data', '', false ],
+			'with elementor data and unknown editor'      => [ 'some data', 'foo', false ],
+			'with no elementor data and elementor editor' => [ '', 'editor', false ],
+		];
+	}
 }
