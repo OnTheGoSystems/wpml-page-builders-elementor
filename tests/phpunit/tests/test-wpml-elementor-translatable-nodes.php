@@ -458,6 +458,13 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Divider' => array( 'divider',
+				array(
+					array( 'field' => 'text', 'type' => 'Divider Text', 'editor_type' => 'LINE' ),
+				),
+				'',
+				array(),
+			),
 		);
 	}
 
