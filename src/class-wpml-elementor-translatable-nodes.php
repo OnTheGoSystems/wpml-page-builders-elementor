@@ -832,6 +832,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'divider' => array(
+				'conditions' => array( self::TYPE => 'divider' ),
+				'fields'     => array(
+					array(
+						'field'       => 'text',
+						'type'        => __( 'Divider Text', 'sitepress' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			),
 		);
 	}
 
