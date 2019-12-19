@@ -465,6 +465,13 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				'',
 				array(),
 			),
+			'Table of Contents' => array( 'table-of-contents',
+				array(
+					array( 'field' => 'title', 'type' => 'Table of Contents - Title', 'editor_type' => 'LINE' ),
+				),
+				'',
+				array(),
+			),
 		);
 	}
 
