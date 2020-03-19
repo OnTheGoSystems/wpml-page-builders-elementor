@@ -9,6 +9,15 @@ class Test_WPML_PB_Fix_Maintenance_Query extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-6425
+	 */
+	public function it_should_load_on_frontend() {
+		$subject = new WPML_PB_Fix_Maintenance_Query();
+		$this->assertInstanceOf( 'IWPML_Frontend_Action', $subject );
+	}
+
+	/**
+	 * @test
 	 */
 	public function it_adds_hooks() {
 		$subject = new WPML_PB_Fix_Maintenance_Query();
