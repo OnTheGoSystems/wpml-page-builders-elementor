@@ -1,5 +1,7 @@
 <?php
 
+use WPML\PB\Elementor\DynamicContent\Strings as DynamicContentStrings;
+
 /**
  * Class WPML_Elementor_Translatable_Nodes
  */
@@ -67,7 +69,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 			}
 		}
 
-		return $strings;
+		return DynamicContentStrings::filter( $strings, $node_id, $element );
 	}
 
 	/**
@@ -117,7 +119,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 			}
 		}
 
-		return $element;
+		return DynamicContentStrings::updateNode( $element, $string );
 	}
 
 	/**
