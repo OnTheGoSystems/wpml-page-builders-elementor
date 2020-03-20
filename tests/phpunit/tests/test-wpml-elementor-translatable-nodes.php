@@ -1,5 +1,8 @@
 <?php
 
+use tad\FunctionMocker\FunctionMocker;
+use WPML\PB\Elementor\DynamicContent\Strings as DynamicContentStrings;
+
 /**
  * Class Test_WPML_Translatable_Nodes
  *
@@ -11,6 +14,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-6244
 	 * @dataProvider node_data_provider
 	 *
 	 * @param $type
@@ -58,6 +62,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		\WP_Mock::wpPassthruFunction( '__' );
 		\WP_Mock::wpPassthruFunction( 'esc_html__' );
+
+		$dynamicContentStrings = FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
 
 		$subject = new WPML_Elementor_Translatable_Nodes();
 		$strings = $subject->get( $node_id, $element );
@@ -153,6 +161,8 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				$key++;
 			}
 		}
+
+		$dynamicContentStrings->wasCalledWithOnce( [ $strings, $node_id, FunctionMocker::isType( 'array' ) ] );
 	}
 
 	public function node_data_provider() {
@@ -478,6 +488,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 	/**
 	 * @test
 	 * @group wpmlcore-6436
+	 * @group wpmlcore-6244
 	 */
 	public function it_gets_nodes_regardless_of_their_array_key_in_their_definition() {
 		$widget_type  = 'wpmlcore-6436';
@@ -514,11 +525,17 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		$string_name     = $field . '-' . $widget_type . '-' . $node_id;
 		$expected_string = new WPML_PB_String( $string_value, $string_name, $title, $editor_type );
 
+		$dynamicContentStrings = FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
+
 		$subject = new WPML_Elementor_Translatable_Nodes();
 		$strings = $element = $subject->get( $node_id, $element );
 
 		$this->assertCount( 1, $strings );
 		$this->assertEquals( $expected_string, $strings[0] );
+
+		$dynamicContentStrings->wasCalledWithOnce( [ $strings, $node_id, FunctionMocker::isType( 'array' ) ] );
 	}
 
 	/**
@@ -538,10 +555,16 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$string = new WPML_PB_String( $translation, 'editor-text-editor-' . $node_id, 'anything', 'anything' );
 
+		$dynamicContentStrings = FunctionMocker::replace( DynamicContentStrings::class . '::updateNode', function( $element) {
+			return $element;
+		} );
+
 		$subject = new WPML_Elementor_Translatable_Nodes();
 		$element = $subject->update( $node_id, $element, $string );
 
 		$this->assertEquals( $translation, $element['settings']['editor'] );
+
+		$dynamicContentStrings->wasCalledWithOnce( [ $element, $string ] );
 	}
 
 	/**
@@ -620,6 +643,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$node_id = 123;
 
+		FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
+
 		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
 
 		$this->assertEquals( array( $string ), $subject->get( $node_id, $element_data ) );
@@ -657,6 +684,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
         );
 
         $node_id = 123;
+
+	    FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+		    return $strings;
+	    } );
 
         $string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
 
@@ -702,6 +733,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		);
 
 		$node_id = 123;
+
+		FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
 
 		$string = new WPML_PB_String( 'my_text', 'my-custom-module-text-123-1', 'title', 'LINE' );
 		$string2 = new WPML_PB_String( 'my_text_2', 'my-custom-module-text-123-1', 'title', 'LINE' );
@@ -753,6 +788,10 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 		);
 
 		$node_id = 123;
+
+		FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
 
 		$string_1 = new WPML_PB_String( 'http://first-url.com', 'example_url_1-custom-module-123', 'Example URL 1', 'LINE' );
 		$string_2 = new WPML_PB_String( 'http://second-url.com', 'example_url_2-custom-module-123', 'Example URL 2', 'LINE' );

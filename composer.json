@@ -9,8 +9,8 @@
       "email": "hello@wpml.org"
     }
   ],
-  "repositories": [
-    {
+  "repositories": {
+    "elementor": {
       "type":"package",
       "package": {
         "name": "elementor/elementor",
@@ -21,8 +21,12 @@
           "reference":"master"
         }
       }
+    },
+    "collect": {
+      "type": "vcs",
+      "url": "https://github.com/OnTheGoSystems/collect.git"
     }
-  ],
+  },
   "autoload": {
     "classmap": [
       "src/"
@@ -42,7 +46,8 @@
     "phpunit/phpunit": "~5.7",
     "otgs/unit-tests-framework": "~1.2.0",
     "wpml/page-builders": "dev-master",
-    "elementor/elementor": "dev-master"
+    "elementor/elementor": "dev-master",
+    "wpml/collect": "dev-wpml-collect-rename"
   },
   "scripts": {
     "post-install-cmd": [
