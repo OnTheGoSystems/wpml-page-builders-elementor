@@ -45,7 +45,7 @@
     "elementor/elementor": "dev-master"
   },
   "scripts": {
-    "post-package-install": [
+    "post-install-cmd": [
       "sed -i 's/final public function add_group_control/public function add_group_control/g' ./vendor/elementor/elementor/includes/base/controls-stack.php"
     ]
   }
