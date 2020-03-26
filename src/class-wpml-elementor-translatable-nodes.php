@@ -854,6 +854,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'media-carousel' => [
+				'conditions' => [ self::TYPE => 'media-carousel' ],
+				'fields'     => [],
+				'integration-class' => [
+					'\WPML\PB\Elementor\Modules\MediaCarousel',
+				]
+			]
 		);
 	}
 
