@@ -8,6 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set github token for composer
+        run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+
       - name: Validate composer.json and composer.lock
         run: composer validate
 
