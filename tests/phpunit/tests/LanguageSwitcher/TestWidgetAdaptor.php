@@ -4,7 +4,7 @@ namespace WPML\PB\Elementor\LanguageSwitcher;
 
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Scheme_Color;
+use Elementor\Core\Schemes\Color as SchemeColor;
 
 /**
  * @group language-switcher
@@ -182,8 +182,8 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 					       'label'     => 'Text Color',
 					       'type'      => Controls_Manager::COLOR,
 					       'scheme'    => [
-						       'type'  => Scheme_Color::get_type(),
-						       'value' => Scheme_Color::COLOR_3,
+						       'type'  => SchemeColor::get_type(),
+						       'value' => SchemeColor::COLOR_3,
 					       ],
 					       'default'   => '',
 					       'selectors' => [
@@ -210,8 +210,8 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 					       'label'     => 'Text Color',
 					       'type'      => Controls_Manager::COLOR,
 					       'scheme'    => [
-						       'type'  => Scheme_Color::get_type(),
-						       'value' => Scheme_Color::COLOR_4,
+						       'type'  => SchemeColor::get_type(),
+						       'value' => SchemeColor::COLOR_4,
 					       ],
 					       'selectors' => [
 						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:hover,
@@ -241,8 +241,8 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 					       'label'     => 'Text Color',
 					       'type'      => Controls_Manager::COLOR,
 					       'scheme'    => [
-						       'type'  => Scheme_Color::get_type(),
-						       'value' => Scheme_Color::COLOR_3,
+						       'type'  => SchemeColor::get_type(),
+						       'value' => SchemeColor::COLOR_3,
 					       ],
 					       'default'   => '',
 					       'selectors' => [
