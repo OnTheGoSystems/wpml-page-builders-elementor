@@ -56,6 +56,8 @@ class Test_WPML_Elementor_Media_Node_Image extends OTGS_TestCase {
 			'caption' => '',
 		);
 
+		\WP_Mock::userFunction( 'wp_prepare_attachment_for_js' )->andReturn( $settings );
+
 		$media_translate = $this->get_media_translate();
 
 		$subject = $this->get_subject( $media_translate );
