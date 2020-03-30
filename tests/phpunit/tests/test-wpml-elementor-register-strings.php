@@ -78,6 +78,8 @@ class Test_WPML_Elementor_Register_Strings extends WPML_PB_TestCase2 {
 		              ->with( array( json_encode( $elementor_data ) ) )
 		              ->willReturn( json_decode( json_encode( $elementor_data ), true ) );
 
+		$data_settings->method( 'is_handling_post' )->with( $post->ID )->willReturn( true );
+
 		$string_registration = $this->getMockBuilder( 'WPML_PB_String_Registration' )
 			->setMethods( array( 'register_string' ) )
 			->disableOriginalConstructor()
