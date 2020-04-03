@@ -3,9 +3,15 @@
 namespace WPML\PB\Elementor\DynamicContent;
 
 use WPML\Collect\Support\Collection;
+use WPML_Elementor_Translatable_Nodes;
 use WPML_PB_String;
 
 class Strings {
+
+	const KEY_SETTINGS = WPML_Elementor_Translatable_Nodes::SETTINGS_FIELD;
+	const KEY_DYNAMIC  = '__dynamic__';
+	const KEY_NODE_ID  = 'id';
+	const KEY_ITEM_ID  = '_id';
 
 	const SETTINGS_REGEX        = '/settings="(.*?(?="]))/';
 	const NAME_PREFIX           = 'dynamic';
@@ -28,41 +34,114 @@ class Strings {
 	 */
 	public static function filter( array $strings, $nodeId, array $element ) {
 
-		$dynamicFields = wpml_collect( isset( $element['settings']['__dynamic__'] ) ? $element['settings']['__dynamic__'] : [] );
+		$dynamicFields = self::getDynamicFields( $element );
 
-		$getStringKey = function ( WPML_PB_String $string ) {
-			return explode( '-', $string->get_name() )[0];
-		};
+		$updateFromDynamicFields = function( WPML_PB_String $string ) use ( &$dynamicFields, $nodeId ) {
+			$matchingField = $dynamicFields->first( function( Field $field, $key ) use ( $string ) {
+				return $field->isMatchingStaticString( $string );
+			} );
 
-		$updateFromDynamicFields = function( WPML_PB_String $string, $fieldKey ) use ( &$dynamicFields, $nodeId ) {
-			if ( $dynamicFields->has( $fieldKey ) ) {
-				return self::addBeforeAfterAndFallback( wpml_collect( [ $fieldKey => $dynamicFields->pull( $fieldKey ) ] ), $nodeId );
+			if ( $matchingField ) {
+				return self::addBeforeAfterAndFallback( wpml_collect( [ $dynamicFields->pull( $dynamicFields->search( $matchingField ) ) ] ), $nodeId );
 			}
 
 			return $string;
 		};
 
 		return wpml_collect( $strings )
-			->keyBy( $getStringKey )
 			->map( $updateFromDynamicFields )
 			->merge( self::addBeforeAfterAndFallback( $dynamicFields, $nodeId ) )
 			->flatten()
 			->toArray();
 	}
 
+	/**
+	 * @param array $element
+	 *
+	 * @return Collection
+	 */
+	private static function getDynamicFields( array $element ) {
+		if ( self::isModuleWithItems( $element ) ) {
+			return self::getDynamicFieldsForModuleWithItems( $element );
+		} elseif ( isset( $element[ self::KEY_SETTINGS ][ self::KEY_DYNAMIC ] ) ) {
+			return self::getFields(
+				$element[ self::KEY_SETTINGS ][ self::KEY_DYNAMIC ],
+				$element[ self::KEY_NODE_ID ]
+			);
+		}
+
+		return wpml_collect();
+	}
+
+	/**
+	 * @param array $element
+	 *
+	 * @return Collection
+	 */
+	private static function getDynamicFieldsForModuleWithItems( array $element ) {
+		$isDynamic = function( array $item ) { return isset( $item[ self::KEY_DYNAMIC ] ); };
+		$getFields = function( array $item ) use ( $element ) {
+			return self::getFields(
+				$item[ self::KEY_DYNAMIC ],
+				$element[ self::KEY_NODE_ID ],
+				$item[ self::KEY_ITEM_ID ]
+			);
+		};
+
+		return wpml_collect( reset( $element[ self::KEY_SETTINGS ] ) )
+			->filter( $isDynamic )
+			->map( $getFields )
+			->flatten();
+	}
+
+	/**
+	 * @param array  $data
+	 * @param string $nodeId
+	 * @param string $itemId
+	 *
+	 * @return Collection
+	 */
+	private static function getFields( array $data, $nodeId, $itemId = '' ) {
+		$buildField = function( $tagValue, $tagKey ) use ( $nodeId, $itemId ) {
+			return new Field( $tagValue, $tagKey, $nodeId, $itemId );
+		};
+
+		return wpml_collect( $data )->map( $buildField );
+	}
+
+	/**
+	 * @param array $element
+	 *
+	 * @return bool
+	 */
+	private static function isModuleWithItems( array $element ) {
+		if ( isset( $element[ self::KEY_SETTINGS ] ) ) {
+			$firstSettingElement = reset( $element[ self::KEY_SETTINGS ] );
+			return is_array( $firstSettingElement ) &&  0 === key( $firstSettingElement );
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param Collection $dynamicFields
+	 * @param string     $nodeId
+	 *
+	 * @return Collection
+	 */
 	private static function addBeforeAfterAndFallback( Collection $dynamicFields, $nodeId ) {
-		$dynamicFieldToSettingStrings = function( $dynamicTag, $tagKey ) use ( $nodeId ) {
-			preg_match( self::SETTINGS_REGEX, $dynamicTag, $matches );
+		$dynamicFieldToSettingStrings = function( Field $field ) use ( $nodeId ) {
+			preg_match( self::SETTINGS_REGEX, $field->tagValue, $matches );
 
 			$isTranslatableSetting = function( $value, $settingField ) {
-				return in_array( $settingField, self::TRANSLATABLE_SETTINGS );
+				return $value && in_array( $settingField, self::TRANSLATABLE_SETTINGS );
 			};
 
-			$buildStringFromSetting = function( $value, $settingField ) use ( $nodeId, $tagKey ) {
+			$buildStringFromSetting = function( $value, $settingField ) use ( $field ) {
 				return new WPML_PB_String(
 					$value,
-					self::getStringName( $nodeId, $tagKey, $settingField ),
-					sprintf( __( 'Dynamic content string: %s', 'sitepress' ), $tagKey ),
+					self::getStringName( $field->nodeId, $field->itemId, $field->tagKey, $settingField ),
+					sprintf( __( 'Dynamic content string: %s', 'sitepress' ), $field->tagKey ),
 					'LINE'
 				);
 			};
@@ -84,30 +163,69 @@ class Strings {
 	public static function updateNode( array $element, WPML_PB_String $string ) {
 		$stringNameParts = explode( self::DELIMITER, $string->get_name() );
 
-		if ( count( $stringNameParts ) !== 4 || self::NAME_PREFIX !== $stringNameParts[0] ) {
+		if ( count( $stringNameParts ) !== 5 || self::NAME_PREFIX !== $stringNameParts[0] ) {
 			return $element;
 		}
 
-		list( , , $dynamicField, $settingField ) = $stringNameParts;
+		list( , , $itemId, $dynamicField, $settingField ) = $stringNameParts;
 
-		if ( ! isset( $element['settings']['__dynamic__'][ $dynamicField ] ) ) {
-			return $element;
+		if ( $itemId && self::isModuleWithItems( $element ) ) {
+			$element = self::updateNodeWithItems( $element, $string, $stringNameParts );
+		} elseif ( isset( $element[ self::KEY_SETTINGS ][ self::KEY_DYNAMIC ][ $dynamicField ] ) ) {
+			$element[ self::KEY_SETTINGS ][ self::KEY_DYNAMIC ][ $dynamicField ] = self::replaceSettingString(
+				$element[ self::KEY_SETTINGS ][ self::KEY_DYNAMIC ][ $dynamicField ],
+				$string,
+				$settingField
+			);
 		}
 
-		$replaceSettingStrings = function( array $matches ) use ( $string, $settingField ) {
+		return $element;
+	}
+
+	/**
+	 * @param string         $encodedSettings
+	 * @param WPML_PB_String $string
+	 * @param string         $settingField
+	 *
+	 * @return array
+	 */
+	private static function replaceSettingString( $encodedSettings, WPML_PB_String $string, $settingField ) {
+		$replace = function( array $matches ) use ( $string, $settingField ) {
 			$settings                  = self::decodeSettings( $matches[1] );
 			$settings[ $settingField ] = $string->get_value();
 			$replace                   = urlencode( json_encode( $settings ) );
 
 			return str_replace( $matches[1], $replace, $matches[0] );
-
 		};
 
-		$element['settings']['__dynamic__'][ $dynamicField ] = preg_replace_callback(
-			self::SETTINGS_REGEX,
-			$replaceSettingStrings,
-			$element['settings']['__dynamic__'][ $dynamicField ]
-		);
+		return preg_replace_callback( self::SETTINGS_REGEX, $replace, $encodedSettings );
+	}
+
+	/**
+	 * @param array          $element
+	 * @param WPML_PB_String $string
+	 * @param array          $stringNameParts
+	 *
+	 * @return array
+	 */
+	private static function updateNodeWithItems( array $element, WPML_PB_String $string, array $stringNameParts ) {
+		list( , , $itemId, $dynamicField, $settingField ) = $stringNameParts;
+
+		$items   = wpml_collect( reset( $element[ self::KEY_SETTINGS ] ) );
+		$mainKey = key( $element[ self::KEY_SETTINGS ] );
+
+		$replaceStringInItem = function( array $item ) use ( $itemId, $string, $dynamicField, $settingField ) {
+			if (
+				isset( $item[ self::KEY_DYNAMIC ][ $dynamicField ], $item[ self::KEY_ITEM_ID ] )
+				&& $item[ self::KEY_ITEM_ID ] === $itemId
+			) {
+				$item[ self::KEY_DYNAMIC ][ $dynamicField ] = self::replaceSettingString( $item[ self::KEY_DYNAMIC ][ $dynamicField ], $string, $settingField );
+			}
+
+			return $item;
+		};
+
+		$element[ self::KEY_SETTINGS ][ $mainKey ] = $items->map( $replaceStringInItem )->toArray();
 
 		return $element;
 	}
@@ -123,12 +241,17 @@ class Strings {
 
 	/**
 	 * @param string $nodeId
+	 * @param string $itemId
 	 * @param string $tagKey
 	 * @param string $settingField
 	 *
 	 * @return string
 	 */
-	public static function getStringName( $nodeId, $tagKey, $settingField ) {
-		return self::NAME_PREFIX . self::DELIMITER. $nodeId . self::DELIMITER . $tagKey . self::DELIMITER . $settingField;
+	public static function getStringName( $nodeId, $itemId, $tagKey, $settingField ) {
+		return self::NAME_PREFIX . self::DELIMITER
+			. $nodeId . self::DELIMITER
+			. $itemId . self::DELIMITER
+			. $tagKey . self::DELIMITER
+			. $settingField;
 	}
 }
