@@ -60,6 +60,7 @@ class TestStrings extends \OTGS_TestCase {
 		];
 
 		$element = [
+			'id'       => $nodeId,
 			'settings' => [
 				$fieldName1 => $staticStringValue1,
 				'foo1'      => 'bar1',
@@ -72,9 +73,9 @@ class TestStrings extends \OTGS_TestCase {
 			]
 		];
 
-		$pbStringTitle = new WPML_PB_String( $staticStringValue1, self::getStaticStringName( $fieldName1 ), 'the title', 'LINE' );
-		$pbStringFoo1  = new WPML_PB_String( 'bar1', self::getStaticStringName( 'foo1' ), 'the foo1', 'LINE' );
-		$pbStringFoo2  = new WPML_PB_String( 'bar2', self::getStaticStringName( 'foo2' ), 'the foo2', 'LINE' );
+		$pbStringTitle = new WPML_PB_String( $staticStringValue1, self::getStaticStringName( $fieldName1, $nodeId ), 'the title', 'LINE' );
+		$pbStringFoo1  = new WPML_PB_String( 'bar1', self::getStaticStringName( 'foo1', $nodeId ), 'the foo1', 'LINE' );
+		$pbStringFoo2  = new WPML_PB_String( 'bar2', self::getStaticStringName( 'foo2', $nodeId ), 'the foo2', 'LINE' );
 
 		$originalStrings = [
 			$pbStringFoo1,
@@ -84,11 +85,70 @@ class TestStrings extends \OTGS_TestCase {
 
 		$expectedStrings = [
 			$pbStringFoo1,
-			self::getPbString( $before, $nodeId, $fieldName1, 'before' ),
-			self::getPbString( $after, $nodeId, $fieldName1, 'after' ),
-			self::getPbString( $fallback, $nodeId, $fieldName1, 'fallback' ),
+			self::getPbString( $before, $nodeId, '', $fieldName1, 'before' ),
+			self::getPbString( $after, $nodeId, '', $fieldName1, 'after' ),
+			self::getPbString( $fallback, $nodeId, '', $fieldName1, 'fallback' ),
 			$pbStringFoo2,
-			self::getPbString( $before2, $nodeId, $fieldName2, 'before' ),
+			self::getPbString( $before2, $nodeId, '', $fieldName2, 'before' ),
+		];
+
+		$this->assertEquals( $expectedStrings, Strings::filter( $originalStrings, $nodeId, $element ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-7194
+	 */
+	public function itShouldAddDynamicContentStringsAndRemoveStaticOnesForModuleWithItems() {
+		$fieldName1         = 'title';
+		$staticStringValue1 = 'the static text 1';
+		$staticStringValue2 = 'the static text 2';
+		$before             = 'my before';
+		$after              = 'my after';
+		$fallback           = 'my fallback';
+
+		$nodeId  = 'ef89gl32';
+		$itemId1 = 'ag44kl55';
+		$itemId2 = 'kk88ll77';
+
+		$settings1 = [
+			'before'   => $before,
+			'after'    => $after,
+			'fallback' => $fallback,
+		];
+
+		$element = [
+			'id'       => $nodeId,
+			'settings' => [
+				'price-list' => [
+					[
+						'_id'         => $itemId1,
+						$fieldName1   => $staticStringValue1,
+						'__dynamic__' => [
+							$fieldName1   => '[elementor-tag id="cc0b6c6" name="post-title" settings="' . urlencode( json_encode( $settings1 ) ) . '"]',
+						],
+					],
+					[
+						'_id'         => $itemId2,
+						$fieldName1   => $staticStringValue2,
+					],
+				],
+			],
+		];
+
+		$pbStringTitle1 = new WPML_PB_String( $staticStringValue1, self::getStaticStringName( $fieldName1, $nodeId, $itemId1 ), 'the title', 'LINE' );
+		$pbStringTitle2 = new WPML_PB_String( $staticStringValue2, self::getStaticStringName( $fieldName1, $nodeId, $itemId2 ), 'the title', 'LINE' );
+
+		$originalStrings = [
+			$pbStringTitle1,
+			$pbStringTitle2,
+		];
+
+		$expectedStrings = [
+			self::getPbString( $before, $nodeId, $itemId1, $fieldName1, 'before' ),
+			self::getPbString( $after, $nodeId, $itemId1, $fieldName1, 'after' ),
+			self::getPbString( $fallback, $nodeId, $itemId1, $fieldName1, 'fallback' ),
+			$pbStringTitle2,
 		];
 
 		$this->assertEquals( $expectedStrings, Strings::filter( $originalStrings, $nodeId, $element ) );
@@ -141,7 +201,7 @@ class TestStrings extends \OTGS_TestCase {
 	 * @param array $elementWithoutDynamicContent
 	 */
 	public function itShouldNotUpdateNodeIfNoDynamicContentField( array $elementWithoutDynamicContent ) {
-		$validDynamicContentPbString = self::getPbString( 'some value', '45gh69ee', 'title', 'before');
+		$validDynamicContentPbString = self::getPbString( 'some value', '45gh69ee', '', 'title', 'before');
 
 		$this->assertSame(
 			$elementWithoutDynamicContent,
@@ -157,7 +217,7 @@ class TestStrings extends \OTGS_TestCase {
 		$translatedBefore = 'TRANSLATED my before';
 		$fieldName        = 'title';
 
-		$string = self::getPbString( $translatedBefore, '45gh69ee', $fieldName, 'before');
+		$string = self::getPbString( $translatedBefore, '45gh69ee', '', $fieldName, 'before');
 
 		$getElement = function( $beforeText ) use ( $fieldName ) {
 			$settings = [
@@ -186,27 +246,91 @@ class TestStrings extends \OTGS_TestCase {
 	}
 
 	/**
+	 * @test
+	 * @group wpmlcore-7194
+	 */
+	public function itShouldUpdateNodeWithDynamicContentStringForModuleWithItems() {
+		$originalBefore   = 'my before';
+		$translatedBefore = 'TRANSLATED my before';
+		$fieldName        = 'title';
+		$itemId           = 'ag44kl55';
+
+		$string = self::getPbString( $translatedBefore, '45gh69ee', $itemId, $fieldName, 'before');
+
+		$getElement = function( $beforeText ) use ( $fieldName, $itemId ) {
+			$settings = [
+				'before'   => $beforeText,
+				'after'    => 'my after',
+				'fallback' => 'my fallback',
+			];
+
+			$unchangedSettings = [
+				'before'   => 'my before unchanged',
+				'after'    => 'my after unchanged',
+				'fallback' => 'my fallback unchanged',
+			];
+
+			return [
+				'settings' => [
+					'price-list' => [
+						[
+							'_id'         => 'not-' . $itemId,
+							$fieldName    => 'the static title',
+							'__dynamic__' => [
+								$fieldName => '[elementor-tag id="cc0b6c6" name="post-title" settings="' . urlencode( json_encode( $unchangedSettings ) ) . '"]'
+							],
+						],
+						[
+							'_id'         => $itemId,
+							$fieldName    => 'the static title',
+							'__dynamic__' => [
+								$fieldName => '[elementor-tag id="cc0b6c6" name="post-title" settings="' . urlencode( json_encode( $settings ) ) . '"]'
+							],
+						],
+					],
+				],
+			];
+		};
+
+		$originalElement = $getElement( $originalBefore );
+		$expectedElement = $getElement( $translatedBefore );
+
+		$this->assertSame(
+			$expectedElement,
+			Strings::updateNode( $originalElement, $string )
+		);
+	}
+
+	/**
 	 * @see \WPML_Elementor_Translatable_Nodes::get_string_name()
+	 * @see \WPML_Elementor_Module_With_Items::get_string_name()
 	 *
-	 * @param string $nodeId
 	 * @param string $fieldName
-	 * @param string $widgetType
+	 * @param string $nodeId
+	 * @param string $itemId
 	 *
 	 * @return string
 	 */
-	private static function getStaticStringName( $fieldName ) {
-		return $fieldName . '-someWidgetType-someNodId';
+	private static function getStaticStringName( $fieldName, $nodeId, $itemId = '' ) {
+		$name = $fieldName . '-someWidgetType-' . $nodeId;
+
+		if ( $itemId ) {
+			$name .= '-' . $itemId;
+		}
+
+		return $name;
 	}
 
 	/**
 	 * @param string $value
 	 * @param string $nodeId
+	 * @param string $îtemId
 	 * @param string $fieldName
 	 * @param string $settingName
 	 *
 	 * @return WPML_PB_String
 	 */
-	private static function getPbString( $value, $nodeId, $fieldName, $settingName ) {
-		return new WPML_PB_String( $value, Strings::getStringName( $nodeId, $fieldName, $settingName ), "Dynamic content string: $fieldName", 'LINE' );
+	private static function getPbString( $value, $nodeId, $îtemId, $fieldName, $settingName ) {
+		return new WPML_PB_String( $value, Strings::getStringName( $nodeId, $îtemId, $fieldName, $settingName ), "Dynamic content string: $fieldName", 'LINE' );
 	}
 }
