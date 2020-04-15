@@ -20,7 +20,6 @@ class Test_WPML_Elementor_Media_Node_Image extends OTGS_TestCase {
 			'image'                   => array( 'id' => $original_id, 'url' => $original_url ),
 			'_background_image'       => array( 'id' => $original_id, 'url' => $original_url ),
 			'_background_hover_image' => array( 'id' => $original_id, 'url' => $original_url ),
-			'caption'                 => 'The caption',
 		);
 
 		$expected_settings = array(
@@ -50,9 +49,8 @@ class Test_WPML_Elementor_Media_Node_Image extends OTGS_TestCase {
 	/**
 	 * @test
 	 */
-	public function it_should_not_translate_if_properties_missing_or_empty() {
+	public function it_should_not_translate_if_properties_missing() {
 		$settings = array(
-			'image'   => array( 'id' => '' ),
 			'caption' => '',
 		);
 
