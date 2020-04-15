@@ -1,5 +1,7 @@
 <?php
 
+use WPML\Collect\Support\Collection;
+
 /**
  * Class Test_WPML_Elementor_Adjust_Global_Widget_ID
  */
@@ -35,7 +37,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		), 10 );
 		$this->expectActionAdded( 'elementor/frontend/the_content', array(
 			$subject,
-			'replace_css_class_id_with_original'
+			'duplicate_css_class_with_original_id'
 		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
@@ -70,7 +72,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		), 10 );
 		$this->expectActionAdded( 'elementor/frontend/the_content', array(
 			$subject,
-			'replace_css_class_id_with_original'
+			'duplicate_css_class_with_original_id'
 		), 10 );
 
 		$this->expectFilterAdded( 'wpml_should_use_display_as_translated_snippet', array(
@@ -297,6 +299,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 	/**
 	 * @test
 	 * @group wpmlcore-6006
+	 * @group wpmlcore-6630
 	 */
 	public function it_should_replace_css_class_id_with_original() {
 		$source_id_1     = 123;
@@ -304,23 +307,28 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		$source_id_2     = 345;
 		$translated_id_2 = 456;
 
-		$content = '<div class="wrapper">
-	<div data-id="b7135e3" class="elementor-element elementor-element-b7135e3 elementor-widget elementor-widget-global elementor-global-' . $translated_id_1 . ' elementor-widget-button" data-element_type="button.default">
-		<span class="elementor-button-text">Click here (translated)</span>
-	</div>
-	<div data-id="fl48r65s" class="elementor-global-' . $translated_id_2 . '">
-		<span class="elementor-button-text">Another text (translated)</span>
-	</div>
-</div>';
+		$getContent = function( Collection $ids1, Collection $ids2 ) {
+			$idsToClasses = function( Collection $ids, $classPrefix ) {
+				return $ids->map( function ( $id ) use ( $classPrefix ) {
+					return $classPrefix . $id;
+				} )->implode( ' ' );
+			};
 
-		$expected_content = '<div class="wrapper">
-	<div data-id="b7135e3" class="elementor-element elementor-element-b7135e3 elementor-widget elementor-widget-global elementor-global-' . $source_id_1 . ' elementor-widget-button" data-element_type="button.default">
-		<span class="elementor-button-text">Click here (translated)</span>
-	</div>
-	<div data-id="fl48r65s" class="elementor-global-' . $source_id_2 . '">
-		<span class="elementor-button-text">Another text (translated)</span>
-	</div>
-</div>';
+			$classesElementorGlobal = $idsToClasses( $ids1, 'elementor-global-' );
+			$classesElementor       = $idsToClasses( $ids2, 'elementor-' );
+
+			return '<div class="wrapper">
+						<div data-id="b7135e3" class="elementor-element elementor-element-b7135e3 elementor-widget elementor-widget-global ' . $classesElementorGlobal . ' elementor-widget-button" data-element_type="button.default">
+							<span class="elementor-button-text">Click here (translated)</span>
+						</div>
+						<div data-id="fl48r65s" class=" ' . $classesElementor . ' ">
+							<span class="elementor-button-text">Another text (translated)</span>
+						</div>
+					</div>';
+		};
+
+		$content          = $getContent( wpml_collect( [ $translated_id_1 ] ), wpml_collect( [ $translated_id_2 ] ) );
+		$expected_content = $getContent( wpml_collect( [ $translated_id_1, $source_id_1 ] ), wpml_collect( [ $translated_id_2, $source_id_2 ] ) );
 
 		$source_1 = \Mockery::mock( 'WPML_Post_Element' );
 		$source_1->shouldReceive( 'get_id' )->andReturn( $source_id_1 );
@@ -345,7 +353,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 
 		$this->assertEquals(
 			$expected_content,
-			$subject->replace_css_class_id_with_original( $content )
+			$subject->duplicate_css_class_with_original_id( $content )
 		);
 	}
 }
