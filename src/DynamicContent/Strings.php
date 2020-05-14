@@ -79,7 +79,7 @@ class Strings {
 	 * @return Collection
 	 */
 	private static function getDynamicFieldsForModuleWithItems( array $element ) {
-		$isDynamic = function( array $item ) { return isset( $item[ self::KEY_DYNAMIC ] ); };
+		$isDynamic = function( $item ) { return isset( $item[ self::KEY_DYNAMIC ] ); };
 		$getFields = function( array $item ) use ( $element ) {
 			return self::getFields(
 				$item[ self::KEY_DYNAMIC ],
