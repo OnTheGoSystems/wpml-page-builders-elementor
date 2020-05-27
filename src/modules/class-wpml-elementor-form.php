@@ -16,7 +16,17 @@ class WPML_Elementor_Form extends WPML_Elementor_Module_With_Items {
 	 * @return array
 	 */
 	public function get_fields() {
-		return array( 'field_label', 'placeholder', 'field_html', 'acceptance_text', 'field_options' );
+		return [
+			'field_label',
+			'placeholder',
+			'field_html',
+			'acceptance_text',
+			'field_options',
+			'step_next_label',
+			'step_previous_label',
+			'previous_button',
+			'next_button',
+		];
 	}
 
 	/**
@@ -25,25 +35,17 @@ class WPML_Elementor_Form extends WPML_Elementor_Module_With_Items {
 	 * @return string
 	 */
 	protected function get_title( $field ) {
-		switch( $field ) {
-			case 'field_label':
-				return esc_html__( 'Form: Field label', 'sitepress' );
-
-			case 'placeholder':
-				return esc_html__( 'Form: Field placeholder', 'sitepress' );
-
-			case 'field_html':
-				return esc_html__( 'Form: Field HTML', 'sitepress' );
-				
-            case 'acceptance_text':
-                return esc_html__( 'Form: Acceptance Text', 'sitepress' );
-
-            case 'field_options':
-                return esc_html__( 'Form: Checkbox Options', 'sitepress' );
-				
-			default:
-				return '';
-		}
+		return wpml_collect( [
+			'field_label'            => esc_html__( 'Form: Field label', 'sitepress' ),
+			'placeholder'            => esc_html__( 'Form: Field placeholder', 'sitepress' ),
+			'field_html'             => esc_html__( 'Form: Field HTML', 'sitepress' ),
+			'acceptance_text'        => esc_html__( 'Form: Acceptance Text', 'sitepress' ),
+			'field_options'          => esc_html__( 'Form: Checkbox Options', 'sitepress' ),
+			'step_next_label'        => esc_html__( 'Form: Step Next Label', 'sitepress' ),
+			'step_previous_label'    => esc_html__( 'Form: Step Previous Label', 'sitepress' ),
+			'previous_button'        => esc_html__( 'Form: Previous Button', 'sitepress' ),
+			'next_button'            => esc_html__( 'Form: Next Button', 'sitepress' ),
+		] )->get( $field, '' );
 	}
 
 	/**
@@ -52,21 +54,16 @@ class WPML_Elementor_Form extends WPML_Elementor_Module_With_Items {
 	 * @return string
 	 */
 	protected function get_editor_type( $field ) {
-		switch( $field ) {
-			case 'field_label':
-			case 'placeholder':
-            case 'acceptance_text':			
-				return 'LINE';
-
-			case 'field_html':
-				return 'VISUAL';	
-				
-            case 'field_options':
-                return 'AREA';				
-
-			default:
-				return '';
-		}
+		return wpml_collect( [
+			'field_label'            => 'LINE',
+			'placeholder'            => 'LINE',
+			'field_html'             => 'VISUAL',
+			'acceptance_text'        => 'LINE',
+			'field_options'          => 'AREA',
+			'step_next_label'        => 'LINE',
+			'step_previous_label'    => 'LINE',
+			'previous_button'        => 'LINE',
+			'next_button'            => 'LINE',
+		] )->get( $field, '' );
 	}
-
 }
