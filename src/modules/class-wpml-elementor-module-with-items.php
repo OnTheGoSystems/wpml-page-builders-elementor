@@ -80,6 +80,11 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 		foreach ( $this->get_items( $element ) as $key => $item ) {
 			foreach( $this->get_fields() as $field_key => $field ) {
 				if ( ! is_array( $field ) ) {
+
+					if ( ! isset( $item[ $field ] ) ) {
+						continue;
+					}
+
 					if ( $this->get_string_name( $node_id, $item[ $field ], $field, $element['widgetType'], $item['_id'] ) === $string->get_name() ) {
 						$item[ $field ] = $string->get_value();
 						$item['index'] = $key;
@@ -87,6 +92,10 @@ abstract class WPML_Elementor_Module_With_Items implements IWPML_Page_Builders_M
 					}
 				} else {
 					foreach ( $field as $inner_field ) {
+						if ( ! isset( $item[ $field_key ][ $inner_field ] ) ) {
+							continue;
+						}
+
 						if ( $this->get_string_name( $node_id, $item[ $field_key ][ $inner_field ], $inner_field, $element['widgetType'], $item['_id'] ) === $string->get_name() ) {
 							$item[ $field_key ][ $inner_field ] = $string->get_value();
 							$item['index'] = $key;
