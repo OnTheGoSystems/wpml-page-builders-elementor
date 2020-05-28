@@ -860,7 +860,17 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 				'integration-class' => [
 					'\WPML\PB\Elementor\Modules\MediaCarousel',
 				]
-			]
+			],
+			'lottie'     => [
+				'conditions' => [ self::TYPE => 'lottie' ],
+				'fields'     => [
+					'custom_link' => [
+						'field'       => 'url',
+						'type'        => __( 'Lottie: Link URL', 'sitepress' ),
+						'editor_type' => 'LINK'
+					],
+				],
+			],
 		);
 	}
 
