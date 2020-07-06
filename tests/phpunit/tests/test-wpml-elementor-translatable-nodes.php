@@ -227,7 +227,7 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 				array(),
 			),
 			'Blockquote' => array( 'blockquote', array(
-				array( 'field' => 'blockquote_content', 'type' => 'Blockquote: Content', 'editor_type' => 'VISUAL' ),
+				array( 'field' => 'blockquote_content', 'type' => 'Blockquote: Content', 'editor_type' => 'AREA' ),
 				array( 'field' => 'tweet_button_label', 'type' => 'Blockquote: Tweet button label', 'editor_type' => 'LINE' ) ),
 				'',
 				array(),
