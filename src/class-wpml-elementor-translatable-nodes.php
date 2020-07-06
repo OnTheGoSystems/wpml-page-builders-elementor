@@ -368,7 +368,7 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					array(
 						'field'       => 'blockquote_content',
 						'type'        => __( 'Blockquote: Content', 'sitepress' ),
-						'editor_type' => 'VISUAL'
+						'editor_type' => 'AREA',
 					),
 					array(
 						'field'       => 'tweet_button_label',
