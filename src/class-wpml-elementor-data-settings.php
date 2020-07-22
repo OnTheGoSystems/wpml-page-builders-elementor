@@ -12,7 +12,7 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	}
 
 	public function add_hooks() {
-		add_filter( 'wpml_custom_field_values_for_post_signature', array( $this, 'add_data_custom_field_to_md5' ), 10, 2 );
+		add_filter( 'wpml_custom_field_values_for_post_signature', array( $this, 'add_data_custom_field_to_md5' ), 10 );
 		add_filter( 'wpml_pb_copy_meta_field', array( $this, 'mark_css_field_as_empty' ), 10, 4 );
 
 		if ( $this->elementor_db ) {
@@ -123,8 +123,8 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	 *
 	 * @return array
 	 */
-	public function add_data_custom_field_to_md5( array $custom_fields_values, $post_id ) {
-		$custom_fields_values[] = get_post_meta( $post_id, $this->get_meta_field(), true );
+	public function add_data_custom_field_to_md5( array $custom_fields_values ) {
+		unset( $custom_fields_values[ $this->get_meta_field() ] );
 		return $custom_fields_values;
 	}
 
