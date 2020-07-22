@@ -13,7 +13,7 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 	 */
 	public function it_add_hooks() {
 		$subject = new WPML_Elementor_Data_Settings();
-		\WP_Mock::expectFilterAdded( 'wpml_custom_field_values_for_post_signature', array( $subject, 'add_data_custom_field_to_md5' ), 10, 2 );
+		\WP_Mock::expectFilterAdded( 'wpml_custom_field_values_for_post_signature', array( $subject, 'add_data_custom_field_to_md5' ), 10 );
 		\WP_Mock::expectFilterAdded( 'wpml_pb_copy_meta_field', array( $subject, 'mark_css_field_as_empty' ), 10, 4 );
 		$subject->add_hooks();
 	}
@@ -162,23 +162,29 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-7373
 	 */
 	public function it_adds_custom_field() {
 		$subject = new WPML_Elementor_Data_Settings();
 
-		$custom_field_values = array( 'cf1', 'cf2' );
-		$pb_cf_value = rand_str( 10 );
-		$post_id = mt_rand();
+		$pb_cf_value         = 'Elementor data in custom field';
+		$post_id             = 123;
+		$custom_field_values = [
+			'cf1'                      => 'some value for cf1',
+			$subject->get_meta_field() => 'Elementor data in custom field',
+			'cf2'                      => 'some value for cf2',
+		];
+		$expected_custom_field_values = [
+			'cf1'                      => 'some value for cf1',
+			'cf2'                      => 'some value for cf2',
+		];
 
-		\WP_Mock::wpFunction( 'get_post_meta', array(
-			'args'   => array( $post_id, '_elementor_data', true ),
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_data', true ],
 			'return' => $pb_cf_value,
-		) );
+		] );
 
-		$expected = $custom_field_values;
-		$expected[] = $pb_cf_value;
-
-		$this->assertEquals( $expected, $subject->add_data_custom_field_to_md5( $custom_field_values, $post_id ) );
+		$this->assertEquals( $expected_custom_field_values, $subject->add_data_custom_field_to_md5( $custom_field_values, $post_id ) );
 	}
 
 	/**
