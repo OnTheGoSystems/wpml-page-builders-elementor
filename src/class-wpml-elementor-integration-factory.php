@@ -24,6 +24,7 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\LanguageSwitcher\LanguageSwitcher::class,
 				\WPML\PB\Elementor\Hooks\DynamicElements::class,
 				\WPML\PB\Elementor\Hooks\GutenbergCleanup::class,
+				\WPML\PB\Elementor\Hooks\Frontend::class,
 			)
 		);
 
