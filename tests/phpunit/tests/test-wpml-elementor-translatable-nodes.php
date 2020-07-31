@@ -247,7 +247,9 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 			),
 			'Counter' => array( 'counter', array(
 				array( 'field' => 'starting_number', 'type' => 'Starting number', 'editor_type' => 'LINE' ),
-				array( 'field' => 'title', 'type' => 'Title', 'editor_type' => 'LINE' ) ),
+				array( 'field' => 'title', 'type' => 'Title', 'editor_type' => 'LINE' ) ,
+				array( 'field' => 'prefix', 'type' => 'Prefix', 'editor_type' => 'LINE' ) ,
+				array( 'field' => 'suffix', 'type' => 'Suffix', 'editor_type' => 'LINE' ) ),
 				'',
 				array(),
 			),
