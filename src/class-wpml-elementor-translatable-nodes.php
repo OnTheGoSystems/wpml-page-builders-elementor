@@ -425,6 +425,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Title', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					array(
+						'field'       => 'prefix',
+						'type'        => __( 'Prefix', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					array(
+						'field'       => 'suffix',
+						'type'        => __( 'Suffix', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 				),
 			),
 			'countdown'     => array(
