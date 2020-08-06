@@ -47,7 +47,10 @@
     "otgs/unit-tests-framework": "~1.2.0",
     "wpml/page-builders": "dev-master",
     "elementor/elementor": "dev-master",
-    "wpml/collect": "dev-wpml-collect-rename"
+    "wpml/collect": "dev-wpml-collect-rename",
+    "wpml/fp": "^0.1.1",
+    "wpml/wp": "^0.1.1",
+    "composer/composer": "^1.10"
   },
   "scripts": {
     "post-update-cmd": [

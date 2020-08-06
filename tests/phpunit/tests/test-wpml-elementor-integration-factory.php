@@ -29,6 +29,7 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 			                     'WPML_Elementor_WooCommerce_Hooks_Factory',
 			                     \WPML\PB\Elementor\LanguageSwitcher\LanguageSwitcher::class,
 			                     \WPML\PB\Elementor\Hooks\DynamicElements::class,
+			                     \WPML\PB\Elementor\Hooks\GutenbergCleanup::class,
 		                     ) );
 
 		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
