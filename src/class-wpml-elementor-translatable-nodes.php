@@ -923,6 +923,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					),
 				),
 			),
+			'reviews' => array(
+				'conditions'        => array( self::TYPE => 'reviews' ),
+				'fields'     => [],
+				'integration-class' => [
+					'\WPML\PB\Elementor\Modules\Reviews',
+				]
+			),
 		);
 	}
 
