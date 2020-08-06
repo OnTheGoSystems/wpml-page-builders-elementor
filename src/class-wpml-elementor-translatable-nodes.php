@@ -930,6 +930,24 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					'\WPML\PB\Elementor\Modules\Reviews',
 				]
 			),
+			'galleries' => array(
+				'conditions'        => array( self::TYPE => 'gallery' ),
+				'fields'            => array(
+					array(
+						'field'       => 'show_all_galleries_label',
+						'type'        => __( 'All Gallery Label', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'url' => array(
+						'field'       => 'url',
+						'type'        => __( 'Gallery custom link', 'sitepress' ),
+						'editor_type' => 'LINK'
+					),
+				),
+				'integration-class' => [
+					'\WPML\PB\Elementor\Modules\MulitpleGallery',
+				]
+			),
 		);
 	}
 
