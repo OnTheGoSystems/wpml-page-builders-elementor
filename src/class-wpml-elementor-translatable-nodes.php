@@ -275,6 +275,16 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						'type'        => __( 'Video: DailyMotion URL', 'sitepress' ),
 						'editor_type' => 'LINE'
 					),
+					'hosted_url'=> array(
+						'field'       => 'url',
+						'type'        => __( 'Video: Self hosted', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
+					'external_url'=> array(
+						'field'       => 'url',
+						'type'        => __( 'Video: External hosted', 'sitepress' ),
+						'editor_type' => 'LINE'
+					),
 				),
 			),
 			'login'       => array(
