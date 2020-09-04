@@ -58,10 +58,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						try {
 							if ( $class instanceof \WPML_Elementor_Module_With_Items ) {
 								$node = $class;
-							} else {
+							} elseif ( class_exists( $class ) ) {
 								$node = new $class();
 							}
-							$strings = $node->get( $node_id, $element, $strings );
+							if ( ! empty( $node ) ) {
+								$strings = $node->get( $node_id, $element, $strings );
+							}
 						} catch ( Exception $e ) {
 						}
 					}
@@ -104,10 +106,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						try {
 							if ( $class instanceof \WPML_Elementor_Module_With_Items ) {
 								$node = $class;
-							} else {
+							} elseif ( class_exists( $class ) ) {
 								$node = new $class();
 							}
-							$item = $node->update( $node_id, $element, $string );
+							if ( ! empty( $node ) ) {
+								$item = $node->update( $node_id, $element, $string );
+							}
 							if ( $item ) {
 								$element[ self::SETTINGS_FIELD ][ $node->get_items_field() ][ $item['index'] ] = $item;
 							}
