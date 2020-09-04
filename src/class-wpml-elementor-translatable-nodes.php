@@ -53,20 +53,10 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					}
 				}
 
-				if ( isset( $node_data['integration-class'] ) ) {
-					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
-						try {
-							if ( $class instanceof \WPML_Elementor_Module_With_Items ) {
-								$node = $class;
-							} elseif ( class_exists( $class ) ) {
-								$node = new $class();
-							}
-							if ( ! empty( $node ) ) {
-								$strings = $node->get( $node_id, $element, $strings );
-							}
-						} catch ( Exception $e ) {
-						}
-					}
+				foreach ( $this->get_integration_instances( $node_data ) as $instance ) {
+					try {
+						$strings = $instance->get( $node_id, $element, $strings );
+					} catch ( Exception $e ) {}
 				}
 			}
 		}
@@ -101,24 +91,14 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 						}
 					}
 				}
-				if ( isset( $node_data['integration-class'] ) ) {
-					foreach ( $this->get_integration_classes( $node_data ) as $class ) {
-						try {
-							if ( $class instanceof \WPML_Elementor_Module_With_Items ) {
-								$node = $class;
-							} elseif ( class_exists( $class ) ) {
-								$node = new $class();
-							}
-							if ( ! empty( $node ) ) {
-								$item = $node->update( $node_id, $element, $string );
-							}
-							if ( $item ) {
-								$element[ self::SETTINGS_FIELD ][ $node->get_items_field() ][ $item['index'] ] = $item;
-							}
-						} catch ( Exception $e ) {
 
+				foreach ( $this->get_integration_instances( $node_data ) as $instance ) {
+					try {
+						$item = $instance->update( $node_id, $element, $string );
+						if ( $item ) {
+							$element[ self::SETTINGS_FIELD ][ $instance->get_items_field() ][ $item['index'] ] = $item;
 						}
-					}
+					} catch ( Exception $e ) {}
 				}
 			}
 		}
@@ -153,16 +133,31 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	/**
 	 * @param array $node_data
 	 *
-	 * @return array
+	 * @return WPML_Elementor_Module_With_Items[]
 	 */
-	private function get_integration_classes( $node_data ) {
-		$integration_classes = $node_data['integration-class'];
+	private function get_integration_instances( $node_data ) {
+		$instances = [];
 
-		if ( ! is_array( $node_data['integration-class'] ) ) {
-			$integration_classes = array( $node_data['integration-class'] );
+		if ( isset( $node_data['integration-class'] ) ) {
+			$integration_classes = $node_data['integration-class'];
+
+			if ( ! is_array( $integration_classes ) ) {
+				$integration_classes = [ $integration_classes ];
+			}
+
+			foreach ( $integration_classes as $class_or_instance ) {
+				if ( $class_or_instance instanceof \WPML_Elementor_Module_With_Items ) {
+					$instances[] = $class_or_instance;
+				} elseif ( class_exists( $class_or_instance ) ) {
+					try {
+						$instances[] = new $class_or_instance();
+					} catch ( Exception $e ) {
+					}
+				}
+			}
 		}
 
-		return $integration_classes;
+		return array_filter( $instances );
 	}
 
 	/**
