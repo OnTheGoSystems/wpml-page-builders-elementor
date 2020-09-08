@@ -1,5 +1,8 @@
 <?php
 
+use tad\FunctionMocker\FunctionMocker;
+use WPML\PB\AutoUpdate\Settings;
+
 /**
  * Class Test_WPML_Elementor_Data_Settings
  *
@@ -164,21 +167,46 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 	 * @test
 	 */
 	public function it_adds_custom_field() {
+		$this->mockAutoUpdateIsEnabled( false );
+
 		$subject = new WPML_Elementor_Data_Settings();
 
-		$custom_field_values = array( 'cf1', 'cf2' );
-		$pb_cf_value = rand_str( 10 );
-		$post_id = mt_rand();
+		$custom_field_values = [ 'cf1', 'cf2' ];
+		$pb_cf_value         = 'Some Elementor data';
+		$post_id             = 123;
 
-		\WP_Mock::wpFunction( 'get_post_meta', array(
-			'args'   => array( $post_id, '_elementor_data', true ),
+		\WP_Mock::userFunction( 'get_post_meta', [
+			'args'   => [ $post_id, '_elementor_data', true ],
 			'return' => $pb_cf_value,
-		) );
+		] );
 
-		$expected = $custom_field_values;
-		$expected[] = $pb_cf_value;
+		$expected                    = $custom_field_values;
+		$expected['_elementor_data'] = $pb_cf_value;
 
 		$this->assertEquals( $expected, $subject->add_data_custom_field_to_md5( $custom_field_values, $post_id ) );
+	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-7544
+	 */
+	public function it_removes_custom_field_if_auto_update_activated() {
+		$this->mockAutoUpdateIsEnabled( true );
+
+		$custom_field_values = [
+			'cf1' => 'cf1 value',
+			WPML_Elementor_Data_Settings::META_KEY_DATA => 'Some Elementor data',
+			'cf2' => 'cf2 value',
+		];
+
+		$expected = [
+			'cf1' => 'cf1 value',
+			'cf2' => 'cf2 value',
+		];
+
+		$subject = new WPML_Elementor_Data_Settings();
+
+		$this->assertEquals( $expected, $subject->add_data_custom_field_to_md5( $custom_field_values, 123 ) );
 	}
 
 	/**
@@ -275,5 +303,10 @@ class Test_WPML_Elementor_Data_Settings extends OTGS_TestCase {
 			'with elementor data and unknown editor'      => [ 'some data', 'foo', false ],
 			'with no elementor data and elementor editor' => [ '', 'editor', false ],
 		];
+	}
+
+	private function mockAutoUpdateIsEnabled( $bool ) {
+		$auto_update_settings = \Mockery::mock( 'alias:' . Settings::class );
+		$auto_update_settings->shouldReceive( 'isEnabled' )->andReturn( $bool );
 	}
 }
