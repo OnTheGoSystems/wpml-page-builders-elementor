@@ -124,7 +124,12 @@ class WPML_Elementor_Data_Settings implements IWPML_Page_Builders_Data_Settings 
 	 * @return array
 	 */
 	public function add_data_custom_field_to_md5( array $custom_fields_values, $post_id ) {
-		$custom_fields_values[] = get_post_meta( $post_id, $this->get_meta_field(), true );
+		if ( apply_filters( 'wpml_pb_auto_update_enabled', false ) ) {
+			unset( $custom_fields_values[ $this->get_meta_field() ] );
+		} else {
+			$custom_fields_values[ $this->get_meta_field() ] = get_post_meta( $post_id, $this->get_meta_field(), true );
+		}
+
 		return $custom_fields_values;
 	}
 
