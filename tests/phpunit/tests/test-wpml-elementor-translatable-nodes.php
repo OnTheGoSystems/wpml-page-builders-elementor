@@ -542,6 +542,67 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-7565
+	 */
+	public function it_gets_strings_from_fields_in_item_config() {
+		$widgetType  = 'slide';
+		$itemsField  = 'slides';
+		$field       = 'title';
+		$stringValue = 'The nice title';
+		$type        = 'Slide Title';
+		$editorType  = 'LINE';
+		$nodeId      = '1a2b3c4d';
+		$itemId      = 'slide1';
+
+		$nodes = [
+			[
+				'conditions'     => [ 'widgetType' => $widgetType ],
+				'fields'         => [],
+				'fields_in_item' => [
+					$itemsField => [
+						[
+							'field'       => $field,
+							'type'        => $type,
+							'editor_type' => $editorType,
+						],
+					],
+				],
+			],
+		];
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$element = [
+			'widgetType' => $widgetType,
+			'settings'   => [
+				$itemsField => [
+					[
+						'_id'  => $itemId,
+						$field => $stringValue,
+					]
+				],
+			],
+		];
+
+		$stringName     = $widgetType . '-' . $field . '-' . $nodeId . '-' . $itemId;
+		$expectedString = new WPML_PB_String( $stringValue, $stringName, $type, $editorType );
+
+		FunctionMocker::replace(
+			DynamicContentStrings::class . '::filter',
+			function( $strings ) { return $strings; }
+		);
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$strings = $subject->get( $nodeId, $element );
+
+		$this->assertCount( 1, $strings );
+		$this->assertEquals( $expectedString, $strings[0] );
+	}
+
+	/**
+	 * @test
 	 * @group wpmlcore-6436
 	 */
 	public function it_updates() {

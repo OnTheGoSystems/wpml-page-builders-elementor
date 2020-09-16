@@ -1,6 +1,7 @@
 <?php
 
 use WPML\PB\Elementor\DynamicContent\Strings as DynamicContentStrings;
+use WPML\PB\Elementor\Modules\ModuleWithItemsFromConfig;
 
 /**
  * Class WPML_Elementor_Translatable_Nodes
@@ -154,6 +155,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					} catch ( Exception $e ) {
 					}
 				}
+			}
+		}
+
+		if ( isset( $node_data['fields_in_item'] ) ) {
+			foreach ( $node_data['fields_in_item'] as $item_of => $config ) {
+				$instances[] = new ModuleWithItemsFromConfig( $item_of, $config );
 			}
 		}
 
