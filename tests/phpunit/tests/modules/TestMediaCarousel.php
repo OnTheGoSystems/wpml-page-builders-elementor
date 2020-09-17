@@ -12,7 +12,13 @@ class TestMediaCarousel extends \OTGS_TestCase {
 	 * @test
 	 */
 	public function it_get_fields() {
-		$subject = new MediaCarousel();
+		$config = [
+			'image_link_to'	=> [
+				'field' => 'url',
+			],
+		];
+
+		$subject = new ModuleWithItemsFromConfig( 'slides', $config );
 		$this->assertEquals( [ 'image_link_to' => [ 'url' ] ], $subject->get_fields() );
 	}
 
@@ -20,7 +26,7 @@ class TestMediaCarousel extends \OTGS_TestCase {
 	 * @test
 	 */
 	public function it_get_items_field() {
-		$subject = new MediaCarousel();
+		$subject = new ModuleWithItemsFromConfig( 'slides', [] );
 		$this->assertEquals( 'slides', $subject->get_items_field() );
 	}
 }
