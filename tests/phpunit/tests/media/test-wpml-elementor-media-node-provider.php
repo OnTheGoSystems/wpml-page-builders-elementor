@@ -36,6 +36,7 @@ class Test_WPML_Elementor_Media_Node_Provider extends OTGS_TestCase {
 			'image-carousel'          => array( 'image-carousel', 'WPML_Elementor_Media_Node_Image_Carousel' ),
 			'wp-widget-media_image'   => array( 'wp-widget-media_image', 'WPML_Elementor_Media_Node_WP_Widget_Media_Image' ),
 			'wp-widget-media_gallery' => array( 'wp-widget-media_gallery', 'WPML_Elementor_Media_Node_WP_Widget_Media_Gallery' ),
+			'background-images'       => array( 'all_nodes', \WPML\PB\Elementor\Media\Modules\AllNodes::class ),
 		);
 	}
 
