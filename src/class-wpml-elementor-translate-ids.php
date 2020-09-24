@@ -110,7 +110,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	 * @return int
 	 */
 	private function translate_id( $element_id, $element_type = null ) {
-		if ( ! $element_type ) {
+		if ( ! $element_type || $element_type === "any_child_of" ) {
 			$element_type = get_post_type( $element_id );
 		}
 

@@ -373,4 +373,26 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 			),
 		);
 	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-7559
+	 */
+	public function it_should_translate_location_condition_any_child_of() {
+		$sub_id            = 123;
+		$translate_id      = 456;
+		$post_type         = 'page';
+		$parsed_conditions = [ 'sub_name' => 'any_child_of' ];
+
+		\WP_Mock::userFunction( 'get_post_type', [ 'args' => $sub_id, 'return' => $post_type ] );
+
+		\WP_Mock::onFilter( 'wpml_object_id' )
+		        ->with( $sub_id, $post_type, true )
+		        ->reply( $translate_id );
+
+		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
+
+		$this->assertEquals( $translate_id,
+			$subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
+	}
 }
