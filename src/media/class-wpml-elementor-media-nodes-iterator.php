@@ -23,6 +23,10 @@ class WPML_Elementor_Media_Nodes_Iterator implements IWPML_PB_Media_Nodes_Iterat
 			} elseif ( $this->is_valid_media_node( $node ) ) {
 				$node = $this->translate_node( $node, $lang, $source_lang );
 			}
+
+			if ( isset( $node['settings'] ) ) {
+				$node["settings"] = $this->node_provider->get( 'all_nodes' )->translate( $node['settings'], $lang, $source_lang );
+			}
 		}
 
 		return $data_array;
