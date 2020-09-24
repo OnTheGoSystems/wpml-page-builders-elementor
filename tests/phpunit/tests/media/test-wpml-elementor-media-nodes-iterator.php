@@ -32,6 +32,12 @@ class Test_WPML_Elementor_Media_Nodes_Iterator extends OTGS_TestCase {
 				'settings'   => $slides_data,
 				'elements'   => array(),
 			),
+			array(
+				'elType'     => 'section',
+				'widgetType' => 'section',
+				'settings'   => [ 'background image data' ],
+				'elements'   => array(),
+			),
 			// Not supported module
 			 array(
 				'elType'     => 'widget',
@@ -53,6 +59,7 @@ class Test_WPML_Elementor_Media_Nodes_Iterator extends OTGS_TestCase {
 		$expected_data                               = $data;
 		$expected_data[0]['elements'][0]['settings'] = $translated_image_data;
 		$expected_data[1]['settings']                = $translated_slides_data;
+		$expected_data[2]['settings']                = ['translated background image data'];
 
 
 		$node_image = $this->get_node();
@@ -63,13 +70,19 @@ class Test_WPML_Elementor_Media_Nodes_Iterator extends OTGS_TestCase {
 		$node_slides->method( 'translate' )->with( $slides_data, $lang, $source_lang )
 			->willReturn( $translated_slides_data );
 
+		$all_nodes = $this->createMock( \WPML\PB\Elementor\Media\Modules\AllNodes::class );
+		$all_nodes->method( 'translate' )->willReturnCallback( function ( $settings ) {
+			return $settings === ['background image data'] ? ['translated background image data'] : $settings;
+		} );
+
 		$node_provider = $this->get_node_provider();
 		$node_provider->method( 'get' )->willReturnMap(
-			array(
-				array( 'image', $node_image ),
-				array( 'slides', $node_slides ),
-				array( 'not-supported', null ),
-			)
+			[
+				[ 'image', $node_image ],
+				[ 'slides', $node_slides ],
+				[ 'not-supported', null ],
+				[ 'all_nodes', $all_nodes ],
+			]
 		);
 
 		$subject = $this->get_subject( $node_provider );

@@ -56,6 +56,10 @@ class WPML_Elementor_Media_Node_Provider {
 					$node = new WPML_Elementor_Media_Node_WP_Widget_Media_Gallery( $this->media_translate );
 					break;
 
+				case 'all_nodes':
+					$node = new \WPML\PB\Elementor\Media\Modules\AllNodes( $this->media_translate );
+					break;
+
 				default:
 					$node = null;
 			}
