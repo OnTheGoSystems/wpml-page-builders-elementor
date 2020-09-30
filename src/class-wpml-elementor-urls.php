@@ -23,6 +23,7 @@ class WPML_Elementor_URLs implements IWPML_Action {
 
 	public function add_hooks() {
 		add_filter( 'elementor/document/urls/edit', array( $this, 'adjust_edit_with_elementor_url' ), 10, 2 );
+		add_filter( 'wpml_is_pagination_url_in_post', [ $this, 'is_pagination_url' ], 10, 3 );
 	}
 
 	public function adjust_edit_with_elementor_url( $url, $elementor_document ) {
@@ -36,5 +37,22 @@ class WPML_Elementor_URLs implements IWPML_Action {
 		}
 
 		return $this->language_converter->convert_admin_url_string( $url, $post_language );
+	}
+
+	/**
+	 * Check if the given URL is the pagination inside the post.
+	 *
+	 * @param bool $is_pagination_url_in_post
+	 * @param string $url URL to check
+	 * @param string $post_name Current post name
+	 *
+	 * @return bool
+	 */
+	public function is_pagination_url( $is_pagination_url_in_post, $url, $post_name ) {
+		return $is_pagination_url_in_post
+		       || (
+			       WPML_Elementor_Data_Settings::is_edited_with_elementor( get_the_ID() )
+			       && preg_match_all( "/$post_name\/([\d]*)\/$/", $url )
+		       );
 	}
 }

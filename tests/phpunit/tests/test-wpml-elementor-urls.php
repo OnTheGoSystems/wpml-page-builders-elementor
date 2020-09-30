@@ -18,6 +18,12 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 			'adjust_edit_with_elementor_url'
 		), 10, 2 );
 
+
+		$this->expectFilterAdded( 'wpml_is_pagination_url_in_post', [
+			$subject,
+			'is_pagination_url'
+		], 10, 3 );
+
 		$subject->add_hooks();
 
 	}
@@ -88,7 +94,7 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$current_language = \Mockery::mock( 'IWPML_Current_Language' );
 		$current_language->shouldReceive( 'get_current_language' )->andReturn( $site_language );
 
-		$subject = new WPML_Elementor_URLs(
+		$subject = $this->get_subject(
 			$element_factory,
 			$language_converter,
 			$current_language
@@ -100,4 +106,37 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$this->assertEquals( $translated_url, $subject->adjust_edit_with_elementor_url( $original_url, $elementor_document ) );
 	}
 
+	/**
+	 * @test
+	 */
+	public function it_filters_pagination_in_post() {
+		$path      = 'index.php/elementor-post/2/';
+		$post_name = 'elementor-post';
+
+		$element_factory    = \Mockery::mock( 'WPML_Translation_Element_Factory' );
+		$language_converter = \Mockery::mock( 'IWPML_URL_Converter_Strategy' );
+		$current_language   = \Mockery::mock( 'IWPML_Current_Language' );
+
+		WP_Mock::userFunction( 'get_post_meta', [ 'return' => 'builder' ] );
+		WP_Mock::userFunction( 'get_the_ID', [ 'return' => 1 ] );
+
+		$subject = $this->get_subject(
+			$element_factory,
+			$language_converter,
+			$current_language
+		);
+
+		$this->assertSame(
+			true,
+			$subject->is_pagination_url( false, $path, $post_name )
+		);
+	}
+
+	private function get_subject( $element_factory, $language_converter, $current_language ) {
+		return new WPML_Elementor_URLs(
+			$element_factory,
+			$language_converter,
+			$current_language
+		);
+	}
 }
