@@ -13,8 +13,7 @@ class TestMediaCarousel extends \OTGS_TestCase {
 	 */
 	public function it_get_fields() {
 		$subject = new MediaCarousel();
-		$this->assertEquals( [ 'image_link_to' => [ 'url' ] ], $subject->get_fields() );
-		$this->assertEquals( [ 'video' => [ 'url' ] ], $subject->get_fields() );
+		$this->assertEquals( [ 'image_link_to' => [ 'url' ], 'video' => [ 'url' ] ], $subject->get_fields() );
 	}
 
 	/**
