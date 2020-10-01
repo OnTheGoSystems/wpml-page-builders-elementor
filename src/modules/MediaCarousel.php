@@ -15,7 +15,10 @@ class MediaCarousel extends \WPML_Elementor_Module_With_Items {
 	 * @return array
 	 */
 	public function get_fields() {
-		return [ 'image_link_to' => [ 'url' ] ];
+		return [ 
+			'image_link_to' => [ 'url' ],
+			'video' => [ 'url ']
+		];
 	}
 
 	/**
@@ -26,7 +29,7 @@ class MediaCarousel extends \WPML_Elementor_Module_With_Items {
 	protected function get_title( $field ) {
 		switch ( $field ) {
 			case 'url':
-				return esc_html__( 'Media Carousel: link URL', 'sitepress' );
+				return esc_html__( 'Media Carousel: slide URL', 'sitepress' );
 			default:
 				return '';
 		}
