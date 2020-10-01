@@ -15,7 +15,10 @@ class MediaCarousel extends \WPML_Elementor_Module_With_Items {
 	 * @return array
 	 */
 	public function get_fields() {
-		return [ 'image_link_to' => [ 'url' ] ];
+		return [ 
+			'image_link_to' => [ 'field' => 'url', 'field_id' => 'image_link_to' ],
+			'video' => [ 'field' => 'url', 'field_id' => 'video' ]
+		];
 	}
 
 	/**
@@ -23,10 +26,12 @@ class MediaCarousel extends \WPML_Elementor_Module_With_Items {
 	 *
 	 * @return string
 	 */
-	protected function get_title( $field ) {
-		switch ( $field ) {
-			case 'url':
-				return esc_html__( 'Media Carousel: link URL', 'sitepress' );
+	protected function get_title( $field_id ) {
+		switch ( $field_id ) {
+			case 'image_link_to':
+				return esc_html__( 'Media Carousel: image link URL', 'sitepress' );
+			case 'video':
+				return esc_html__( 'Media Carousel: video source URL', 'sitepress' );
 			default:
 				return '';
 		}
