@@ -17,7 +17,7 @@ class MediaCarousel extends \WPML_Elementor_Module_With_Items {
 	public function get_fields() {
 		return [ 
 			'image_link_to' => [ 'url' ],
-			'video' => [ 'url ']
+			'video' => [ 'url']
 		];
 	}
 
