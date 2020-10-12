@@ -24,6 +24,7 @@ class WPML_Elementor_URLs implements IWPML_Action {
 	public function add_hooks() {
 		add_filter( 'elementor/document/urls/edit', array( $this, 'adjust_edit_with_elementor_url' ), 10, 2 );
 		add_filter( 'wpml_is_pagination_url_in_post', [ $this, 'is_pagination_url' ], 10, 3 );
+		add_filter( 'paginate_links', [ $this, 'fix_pagination_link_with_language_param' ], 10, 1 );
 	}
 
 	public function adjust_edit_with_elementor_url( $url, $elementor_document ) {
@@ -52,7 +53,26 @@ class WPML_Elementor_URLs implements IWPML_Action {
 		return $is_pagination_url_in_post
 		       || (
 			       WPML_Elementor_Data_Settings::is_edited_with_elementor( get_the_ID() )
-			       && preg_match_all( "/$post_name\/([\d]*)\/$/", $url )
+			       && (
+				       preg_match_all( "/{$post_name}\/([\d]*)\/$/", $url )
+				       || preg_match_all( "/{$post_name}\/([\d]*)\/\?lang=([a-zA-Z_-]*)$/", $url )
+			       )
 		       );
+	}
+
+	public function fix_pagination_link_with_language_param( $link ) {
+		$post = get_post( get_the_ID() );
+		if (
+			$post
+			&& WPML_Elementor_Data_Settings::is_edited_with_elementor( $post->ID )
+			&& preg_match_all( "/{$post->post_name}\/\?lang=([a-zA-Z_-]*)\/([\d]*)\/$/", $link )
+		) {
+			$link = $this->language_converter->convert_url_string(
+				preg_replace( "/\?lang=([a-zA-Z_-]*)\//", '', $link ),
+				$this->current_language->get_current_language()
+			);
+		}
+
+		return $link;
 	}
 }
