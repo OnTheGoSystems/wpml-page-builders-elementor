@@ -542,6 +542,62 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @group wpmlcore-7676
+	 */
+	public function it_gets_nodes_from_field_path() {
+		$widget_type  = 'wpmlcore-6436';
+		$field        = 'foo>bar>baz';
+		$string_value = 'The original value';
+		$title        = 'Some text';
+		$editor_type  = 'LINE';
+
+		$nodes = [
+			[
+				'conditions' => [ 'widgetType' => $widget_type ],
+				'fields' => [
+					[
+						'field'       => $field,
+						'type'        => $title,
+						'editor_type' => $editor_type,
+					],
+				],
+			],
+		];
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$node_id = 'a1b2c3d4';
+		$element = [
+			'widgetType' => $widget_type,
+			'settings'   => [
+				'foo' => [
+					'bar' => [
+						'baz' => $string_value,
+					]
+				],
+			],
+		];
+
+		$string_name     = $field . '-' . $widget_type . '-' . $node_id;
+		$expected_string = new WPML_PB_String( $string_value, $string_name, $title, $editor_type );
+
+		$dynamicContentStrings = FunctionMocker::replace( DynamicContentStrings::class . '::filter', function( $strings ) {
+			return $strings;
+		} );
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$strings = $element = $subject->get( $node_id, $element );
+
+		$this->assertCount( 1, $strings );
+		$this->assertEquals( $expected_string, $strings[0] );
+
+		$dynamicContentStrings->wasCalledWithOnce( [ $strings, $node_id, FunctionMocker::isType( 'array' ) ] );
+	}
+
+	/**
+	 * @test
 	 * @group wpmlcore-7565
 	 */
 	public function it_gets_strings_from_fields_in_item_config() {
@@ -629,7 +685,6 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$dynamicContentStrings->wasCalledWithOnce( [ $element, $string ] );
 	}
-
 	/**
 	 * @test
 	 * @group wpmlcore-6436
@@ -671,6 +726,61 @@ class Test_WPML_Elementor_Translatable_Nodes extends OTGS_TestCase {
 
 		$this->assertEquals( $translation, $element['settings'][ $field ] );
 	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-7676
+	 */
+	public function it_updates_from_field_path() {
+		$node_id      = 'a1b2c3d4';
+		$widget_type  = 'wpmlcore-6436';
+		$field        = 'foo>bar>baz';
+		$title        = 'Some text';
+		$editor_type  = 'LINE';
+
+		$nodes = [
+			[
+				'conditions' => [ 'widgetType' => $widget_type ],
+				'fields' => [
+					[
+						'field'       => $field,
+						'type'        => $title,
+						'editor_type' => $editor_type,
+					],
+				],
+			],
+		];
+
+		\WP_Mock::onFilter( 'wpml_elementor_widgets_to_translate' )
+		        ->with( WPML_Elementor_Translatable_Nodes::get_nodes_to_translate() )
+		        ->reply( $nodes );
+
+		$element = [
+			'widgetType' => $widget_type,
+			'settings'   => [
+				'foo' => [
+					'bar' => [
+						'baz' => 'The original value',
+					],
+				],
+			],
+		];
+		$translation = 'The translation';
+
+		$string = new WPML_PB_String( $translation, $field . '-' . $widget_type . '-' . $node_id, 'anything', 'anything' );
+
+		$dynamicContentStrings = FunctionMocker::replace( DynamicContentStrings::class . '::updateNode', function( $element) {
+			return $element;
+		} );
+
+		$subject = new WPML_Elementor_Translatable_Nodes();
+		$element = $subject->update( $node_id, $element, $string );
+
+		$this->assertEquals( $translation, $element['settings']['foo']['bar']['baz'] );
+
+		$dynamicContentStrings->wasCalledWithOnce( [ $element, $string ] );
+	}
+
 
 	/**
 	 * @test

@@ -1,5 +1,6 @@
 <?php
 
+use WPML\FP\Obj;
 use WPML\PB\Elementor\DynamicContent\Strings as DynamicContentStrings;
 use WPML\PB\Elementor\Modules\ModuleWithItemsFromConfig;
 
@@ -34,13 +35,13 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 		foreach ( $this->nodes_to_translate as $node_type => $node_data ) {
 			if ( $this->conditions_ok( $node_data, $element ) ) {
 				foreach ( $node_data['fields'] as $key => $field ) {
-					$field_key    = $field['field'];
-					$string_value = null;
+					$field_key       = $field['field'];
+					$pathInFlatField = array_merge( [ self::SETTINGS_FIELD ], self::get_partial_path( $field_key ) );
+					$string_value    = Obj::path( $pathInFlatField, $element );
 
-					if ( $this->is_flat_field( $element, $field_key ) ) {
-						$string_value = $element[ self::SETTINGS_FIELD ][ $field_key ];
-					} elseif ( $this->is_array_field( $element, $key, $field_key ) ) {
-						$string_value =	$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ];
+					if ( ! is_string( $string_value ) ) {
+						$pathInArrayField = array_merge( [ self::SETTINGS_FIELD, $key ], self::get_partial_path( $field_key ) );
+						$string_value     = Obj::path( $pathInArrayField, $element );
 					}
 
 					if ( $string_value ) {
@@ -85,10 +86,15 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 					$field_key = $field['field'];
 
 					if ( $this->get_string_name( $node_id, $field, $element ) === $string->get_name() ) {
-						if ( $this->is_flat_field( $element, $field_key ) ) {
-							$element[ self::SETTINGS_FIELD ][ $field_key ] = $string->get_value();
-						} elseif ( $this->is_array_field( $element, $key, $field_key )) {
-							$element[ self::SETTINGS_FIELD ][ $key ][ $field_key ] = $string->get_value();
+						$pathInFlatField    = array_merge( [ self::SETTINGS_FIELD ], self::get_partial_path( $field_key ) );
+						$stringInFlatField  = Obj::path( $pathInFlatField, $element );
+						$pathInArrayField   = array_merge( [ self::SETTINGS_FIELD, $key ], self::get_partial_path( $field_key ) );
+						$stringInArrayField = Obj::path( $pathInArrayField, $element );
+
+						if ( is_string( $stringInFlatField ) ) {
+							$element = Obj::assocPath( $pathInFlatField, $string->get_value(), $element );
+						} elseif ( is_string( $stringInArrayField ) ) {
+							$element = Obj::assocPath( $pathInArrayField, $string->get_value(), $element );
 						}
 					}
 				}
@@ -108,27 +114,12 @@ class WPML_Elementor_Translatable_Nodes implements IWPML_Page_Builders_Translata
 	}
 
 	/**
-	 * @param array  $element
-	 * @param string $field_key
+	 * @param string $field
 	 *
-	 * @return bool
+	 * @return string[]
 	 */
-	private function is_flat_field( $element, $field_key ) {
-		return isset( $element[ self::SETTINGS_FIELD ][ $field_key ] )
-		       && is_string( $element[ self::SETTINGS_FIELD ][ $field_key ] )
-		       && trim( $element[ self::SETTINGS_FIELD ][ $field_key ] );
-	}
-
-	/**
-	 * @param array      $element
-	 * @param string|int $field_wrapper
-	 * @param string     $field_key
-	 *
-	 * @return bool
-	 */
-	private function is_array_field( $element, $field_wrapper, $field_key ) {
-		return isset( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] )
-		       && trim( $element[ self::SETTINGS_FIELD ][ $field_wrapper ][ $field_key ] );
+	private static function get_partial_path( $field ) {
+		return explode( '>', $field );
 	}
 
 	/**
