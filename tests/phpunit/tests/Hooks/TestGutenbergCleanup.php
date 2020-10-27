@@ -71,7 +71,9 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		$metaKey   = WPML_Elementor_Data_Settings::META_KEY_DATA;
 		$metaValue = 'some value';
 
-		Post::updateMeta( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $metaValue );
+		\WP_Mock::userFunction( 'update_metadata', [
+			'times' => 0
+		]);
 
 		$isEditedWithElementor = FunctionMocker::replace( WPML_Elementor_Data_Settings::class . '::is_edited_with_elementor', false );
 
@@ -83,7 +85,6 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		);
 
 		$isEditedWithElementor->wasCalledWithOnce( [ $postId ] );
-		$this->assertEquals( $metaValue, Post::getMetaSingle( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA ) );
 	}
 
 	/**
@@ -95,7 +96,9 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		$metaKey   = WPML_Elementor_Data_Settings::META_KEY_DATA;
 		$metaValue = self::getMetaValue( '<p><\/p>\n<p>Something sure!<\/p>\n<p><\/p>' );
 
-		Post::updateMeta( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $metaValue );
+		\WP_Mock::userFunction( 'update_metadata', [
+			'times' => 0
+		]);
 
 		$isEditedWithElementor = FunctionMocker::replace( WPML_Elementor_Data_Settings::class . '::is_edited_with_elementor', true );
 
@@ -109,7 +112,6 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		);
 
 		$isEditedWithElementor->wasCalledWithOnce( [ $postId ] );
-		$this->assertEquals( $metaValue, Post::getMetaSingle( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA ) );
 	}
 
 	/**
@@ -122,7 +124,10 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		$metaValue    = self::getMetaValue( '<p><!-- wp:paragraph --><\/p><!-- /wp:paragraph -->\n<p>Something sure!<\/p>\n<p><\/p>' );
 		$newMetaValue = self::getMetaValue( '<p><\/p>\n<p>Something sure!<\/p>\n<p><\/p>' );
 
-		Post::updateMeta( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $metaValue );
+		\WP_Mock::userFunction( 'update_metadata', [
+			'args' => [ 'post', $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $newMetaValue ],
+			'times' => 1
+		]);
 
 		$elementorPackage = $this->getPackage( 'elementor', $postId );
 		$gutenbergPackage = $this->getPackage( 'gutenberg', $postId );
@@ -143,7 +148,6 @@ class TestGutenbergCleanup extends \OTGS_TestCase {
 		);
 
 		$isEditedWithElementor->wasCalledWithOnce( [ $postId ] );
-		$this->assertEquals( $newMetaValue, Post::getMetaSingle( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA ) );
 		$deleteAction->wasCalledWithOnce( [ 'wpml_delete_package', $gutenbergPackage->name, $gutenbergPackage->kind ] );
 	}
 

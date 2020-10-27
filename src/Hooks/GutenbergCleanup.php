@@ -6,7 +6,6 @@ use WPML\FP\Fns;
 use WPML\FP\Logic;
 use WPML\FP\Maybe;
 use WPML\FP\Relation;
-use WPML\LIB\WP\Post;
 use WPML\PB\Elementor\DataConvert;
 use WPML_Elementor_Data_Settings;
 use function WPML\FP\curryN;
@@ -44,7 +43,8 @@ class GutenbergCleanup implements \IWPML_Backend_Action, \IWPML_Frontend_Action 
 
 			// $update :: int -> string -> bool
 			$update = curryN( 2, function( $postId, $meta ) {
-				Post::updateMeta( $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $meta );
+				// Do not use update_post_meta, we need update meta for revisions too.
+				update_metadata( 'post', $postId, WPML_Elementor_Data_Settings::META_KEY_DATA, $meta );
 				self::deletePackage( self::getGutenbergPackage( $postId ) );
 				return true;
 			} );
