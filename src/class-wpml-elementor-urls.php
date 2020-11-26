@@ -50,6 +50,9 @@ class WPML_Elementor_URLs implements IWPML_Action {
 	 * @return bool
 	 */
 	public function is_pagination_url( $is_pagination_url_in_post, $url, $post_name ) {
+
+                $post_name = preg_quote( $post_name, '/' );
+
 		return $is_pagination_url_in_post
 		       || (
 			       WPML_Elementor_Data_Settings::is_edited_with_elementor( get_the_ID() )

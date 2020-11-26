@@ -110,12 +110,22 @@ class Test_WPML_Elementor_URLs extends OTGS_TestCase {
 		$this->assertEquals( $translated_url, $subject->adjust_edit_with_elementor_url( $original_url, $elementor_document ) );
 	}
 
+	public function pagination_provider(){
+		return [
+			[ 'elementor-post', 'index.php/elementor-post/2/' ],
+			[ 'elementor/post', 'index.php/elementor/post/2/' ]
+		];
+	}
+	
 	/**
 	 * @test
+	 *
+	 * @dataProvider pagination_provider
+	 *
+	 * @param string $post_name
+	 * @param string $path
 	 */
-	public function it_filters_pagination_in_post() {
-		$path      = 'index.php/elementor-post/2/';
-		$post_name = 'elementor-post';
+	public function it_filters_pagination_in_post( $post_name, $path ) {
 
 		$element_factory    = \Mockery::mock( 'WPML_Translation_Element_Factory' );
 		$language_converter = \Mockery::mock( 'IWPML_URL_Converter_Strategy' );
