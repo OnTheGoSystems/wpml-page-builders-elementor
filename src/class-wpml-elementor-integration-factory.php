@@ -26,6 +26,7 @@ class WPML_Elementor_Integration_Factory {
 				\WPML\PB\Elementor\Hooks\GutenbergCleanup::class,
 				\WPML\PB\Elementor\Hooks\Frontend::class,
 				\WPML\PB\Elementor\Config\Factory::class,
+				\WPML_PB_Fix_Maintenance_Query::class,
 			)
 		);
 
