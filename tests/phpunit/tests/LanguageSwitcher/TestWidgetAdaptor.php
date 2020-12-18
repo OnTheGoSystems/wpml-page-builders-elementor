@@ -77,47 +77,47 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 		$sectionsNumber = 4;
 
 		$widget->expects( $this->exactly( $sectionsNumber ) )
-		       ->method( 'start_controls_section' )
-		       ->withConsecutive(
-			       [
-				       'section_content',
-				       [
-					       'label' => 'Content',
-					       'type'  => Controls_Manager::SECTION,
-					       'tab'   => Controls_Manager::TAB_CONTENT,
-				       ],
-			       ],
-			       [
-				       'style_section',
-				       [
-					       'label' => 'Style',
-					       'tab'   => Controls_Manager::TAB_STYLE,
-				       ]
-			       ],
-			       [
-				       'language_flag',
-				       [
-					       'label'     => 'Language Flag',
-					       'tab'       => Controls_Manager::TAB_STYLE,
-					       'condition' => [
-						       'display_flag' => [ 1 ],
-					       ],
-				       ]
-			       ],
-			       [
-				       'post_translation_text',
-				       [
-					       'label'     => 'Post Translation Text',
-					       'tab'       => Controls_Manager::TAB_STYLE,
-					       'condition' => [
-						       'style' => [ 'post_translations' ],
-					       ],
-				       ]
-			       ]
-		       );
+			   ->method( 'start_controls_section' )
+			   ->withConsecutive(
+				   [
+					   'section_content',
+					   [
+						   'label' => 'Content',
+						   'type'  => Controls_Manager::SECTION,
+						   'tab'   => Controls_Manager::TAB_CONTENT,
+					   ],
+				   ],
+				   [
+					   'style_section',
+					   [
+						   'label' => 'Style',
+						   'tab'   => Controls_Manager::TAB_STYLE,
+					   ]
+				   ],
+				   [
+					   'language_flag',
+					   [
+						   'label'     => 'Language Flag',
+						   'tab'       => Controls_Manager::TAB_STYLE,
+						   'condition' => [
+							   'display_flag' => [ 1 ],
+						   ],
+					   ]
+				   ],
+				   [
+					   'post_translation_text',
+					   [
+						   'label'     => 'Post Translation Text',
+						   'tab'       => Controls_Manager::TAB_STYLE,
+						   'condition' => [
+							   'style' => [ 'post_translations' ],
+						   ],
+					   ]
+				   ]
+			   );
 
 		$widget->expects( $this->exactly( $sectionsNumber ) )
-		       ->method( 'end_controls_section' );
+			   ->method( 'end_controls_section' );
 	}
 
 	/**
@@ -125,165 +125,175 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 	 */
 	private function setExpectedAddedControl( $widget ) {
 		$widget->expects( $this->exactly( 13 ) )
-		       ->method( 'add_control' )
-		       ->withConsecutive(
-			       [
-				       'style',
-				       [
-					       'label'   => 'Language switcher type',
-					       'type'    => Controls_Manager::SELECT,
-					       'default' => 'custom',
-					       'options' => [
-						       'custom'            => 'Custom',
-						       'footer'            => 'Footer',
-						       'post_translations' => 'Post Translations',
-					       ],
-				       ]
-			       ],
-			       [
-				       'display_flag',
-				       [
-					       'label'        => 'Display Flag',
-					       'type'         => Controls_Manager::SWITCHER,
-					       'return_value' => 1,
-					       'default'      => 1,
-				       ],
-			       ],
-			       [
-				       'link_current',
-				       [
-					       'label'        => 'Show Active Language - has to be ON with Dropdown',
-					       'type'         => Controls_Manager::SWITCHER,
-					       'return_value' => 1,
-					       'default'      => 1,
-				       ],
-			       ],
-			       [
-				       'native_language_name',
-				       [
-					       'label'        => 'Native language name',
-					       'type'         => Controls_Manager::SWITCHER,
-					       'return_value' => 1,
-					       'default'      => 1,
-				       ],
-			       ],
-			       [
-				       'language_name_current_language',
-				       [
-					       'label'        => 'Language name in current language',
-					       'type'         => Controls_Manager::SWITCHER,
-					       'return_value' => 1,
-					       'default'      => 1,
-				       ],
-			       ],
-			       [
-				       'switcher_text_color',
-				       [
-					       'label'     => 'Text Color',
-					       'type'      => Controls_Manager::COLOR,
-					       'scheme'    => [
-						       'type'  => SchemeColor::get_type(),
-						       'value' => SchemeColor::COLOR_3,
-					       ],
-					       'default'   => '',
-					       'selectors' => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
+			   ->method( 'add_control' )
+			   ->withConsecutive(
+				   [
+					   'style',
+					   [
+						   'label'   => 'Language switcher type',
+						   'type'    => Controls_Manager::SELECT,
+						   'default' => 'custom',
+						   'options' => [
+							   'custom'            => 'Custom',
+							   'footer'            => 'Footer',
+							   'post_translations' => 'Post Translations',
+						   ],
+					   ]
+				   ],
+				   [
+					   'display_flag',
+					   [
+						   'label'        => 'Display Flag',
+						   'type'         => Controls_Manager::SWITCHER,
+						   'return_value' => 1,
+						   'default'      => 1,
+					   ],
+				   ],
+				   [
+					   'link_current',
+					   [
+						   'label'        => 'Show Active Language - has to be ON with Dropdown',
+						   'type'         => Controls_Manager::SWITCHER,
+						   'return_value' => 1,
+						   'default'      => 1,
+						   'conditions' => [
+							   'relation' => 'and',
+							   'terms'    => [
+								   [
+									   'name'     => 'style',
+									   'operator' => '!=',
+									   'value'   => 'custom',
+								   ]
+							   ]
+						   ],
+					   ],
+				   ],
+				   [
+					   'native_language_name',
+					   [
+						   'label'        => 'Native language name',
+						   'type'         => Controls_Manager::SWITCHER,
+						   'return_value' => 1,
+						   'default'      => 1,
+					   ],
+				   ],
+				   [
+					   'language_name_current_language',
+					   [
+						   'label'        => 'Language name in current language',
+						   'type'         => Controls_Manager::SWITCHER,
+						   'return_value' => 1,
+						   'default'      => 1,
+					   ],
+				   ],
+				   [
+					   'switcher_text_color',
+					   [
+						   'label'     => 'Text Color',
+						   'type'      => Controls_Manager::COLOR,
+						   'scheme'    => [
+							   'type'  => SchemeColor::get_type(),
+							   'value' => SchemeColor::COLOR_3,
+						   ],
+						   'default'   => '',
+						   'selectors' => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a' => 'color: {{VALUE}}',
-					       ],
-				       ],
-			       ],
-			       [
-				       'switcher_bg_color',
-				       [
-					       'label'     => 'Background Color',
-					       'type'      => Controls_Manager::COLOR,
-					       'default'   => '',
-					       'selectors' => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
+						   ],
+					   ],
+				   ],
+				   [
+					   'switcher_bg_color',
+					   [
+						   'label'     => 'Background Color',
+						   'type'      => Controls_Manager::COLOR,
+						   'default'   => '',
+						   'selectors' => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link, 
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a' => 'background-color: {{VALUE}}',
-					       ],
-				       ],
-			       ],
-			       [
-				       'switcher_hover_color',
-				       [
-					       'label'     => 'Text Color',
-					       'type'      => Controls_Manager::COLOR,
-					       'scheme'    => [
-						       'type'  => SchemeColor::get_type(),
-						       'value' => SchemeColor::COLOR_4,
-					       ],
-					       'selectors' => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:hover,
+						   ],
+					   ],
+				   ],
+				   [
+					   'switcher_hover_color',
+					   [
+						   'label'     => 'Text Color',
+						   'type'      => Controls_Manager::COLOR,
+						   'scheme'    => [
+							   'type'  => SchemeColor::get_type(),
+							   'value' => SchemeColor::COLOR_4,
+						   ],
+						   'selectors' => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:hover,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown a:focus,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-legacy-dropdown .wpml-ls-current-language:hover>a,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:hover,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.wpml-ls-link__active,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link.highlighted,
 					{{WRAPPER}} .wpml-elementor-ls .wpml-ls-item .wpml-ls-link:focus' => 'color: {{VALUE}}',
-					       ],
-				       ],
-			       ],
-			       [
-				       'flag_margin',
-				       [
-					       'label'      => 'Margin',
-					       'type'       => Controls_Manager::DIMENSIONS,
-					       'size_units' => [ 'px', '%', 'em' ],
-					       'selectors'  => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-flag' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					       ],
-				       ],
-			       ],
-			       [
-				       'post_translation_color',
-				       [
-					       'label'     => 'Text Color',
-					       'type'      => Controls_Manager::COLOR,
-					       'scheme'    => [
-						       'type'  => SchemeColor::get_type(),
-						       'value' => SchemeColor::COLOR_3,
-					       ],
-					       'default'   => '',
-					       'selectors' => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
-					       ],
-				       ],
-			       ],
-			       [
-				       'post_translation_bg_color',
-				       [
-					       'label'     => 'Background Color',
-					       'type'      => Controls_Manager::COLOR,
-					       'default'   => '',
-					       'selectors' => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'background-color: {{VALUE}}',
-					       ],
-				       ],
-			       ],
-			       [
-				       'post_translation_padding',
-				       [
-					       'label'      => 'Padding',
-					       'type'       => Controls_Manager::DIMENSIONS,
-					       'size_units' => [ 'px', '%', 'em' ],
-					       'selectors'  => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					       ],
-				       ],
-			       ],
-			       [
-				       'post_translation_margin',
-				       [
-					       'label'      => 'Margin',
-					       'type'       => Controls_Manager::DIMENSIONS,
-					       'size_units' => [ 'px', '%', 'em' ],
-					       'selectors'  => [
-						       '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					       ],
-				       ],
-			       ]
-		       );
+						   ],
+					   ],
+				   ],
+				   [
+					   'flag_margin',
+					   [
+						   'label'      => 'Margin',
+						   'type'       => Controls_Manager::DIMENSIONS,
+						   'size_units' => [ 'px', '%', 'em' ],
+						   'selectors'  => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-flag' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						   ],
+					   ],
+				   ],
+				   [
+					   'post_translation_color',
+					   [
+						   'label'     => 'Text Color',
+						   'type'      => Controls_Manager::COLOR,
+						   'scheme'    => [
+							   'type'  => SchemeColor::get_type(),
+							   'value' => SchemeColor::COLOR_3,
+						   ],
+						   'default'   => '',
+						   'selectors' => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'color: {{VALUE}}',
+						   ],
+					   ],
+				   ],
+				   [
+					   'post_translation_bg_color',
+					   [
+						   'label'     => 'Background Color',
+						   'type'      => Controls_Manager::COLOR,
+						   'default'   => '',
+						   'selectors' => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'background-color: {{VALUE}}',
+						   ],
+					   ],
+				   ],
+				   [
+					   'post_translation_padding',
+					   [
+						   'label'      => 'Padding',
+						   'type'       => Controls_Manager::DIMENSIONS,
+						   'size_units' => [ 'px', '%', 'em' ],
+						   'selectors'  => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						   ],
+					   ],
+				   ],
+				   [
+					   'post_translation_margin',
+					   [
+						   'label'      => 'Margin',
+						   'type'       => Controls_Manager::DIMENSIONS,
+						   'size_units' => [ 'px', '%', 'em' ],
+						   'selectors'  => [
+							   '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						   ],
+					   ],
+				   ]
+			   );
 	}
 
 	/**
@@ -293,31 +303,31 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 		$tabsNumber = 2;
 
 		$widget->expects( $this->once() )
-		       ->method( 'start_controls_tabs' )
-		       ->with( 'style_tabs' );
+			   ->method( 'start_controls_tabs' )
+			   ->with( 'style_tabs' );
 
 		$widget->expects( $this->once() )
-		       ->method( 'end_controls_tabs' );
+			   ->method( 'end_controls_tabs' );
 
 		$widget->expects( $this->exactly( $tabsNumber ) )
-		       ->method( 'start_controls_tab' )
-		       ->withConsecutive(
-			       [
-				       'style_normal_tab',
-				       [
-					       'label' => 'Normal'
-				       ],
-			       ],
-			       [
-				       'style_hover_tab',
-				       [
-					       'label' => 'Hover',
-				       ],
-			       ]
-		       );
+			   ->method( 'start_controls_tab' )
+			   ->withConsecutive(
+				   [
+					   'style_normal_tab',
+					   [
+						   'label' => 'Normal'
+					   ],
+				   ],
+				   [
+					   'style_hover_tab',
+					   [
+						   'label' => 'Hover',
+					   ],
+				   ]
+			   );
 
 		$widget->expects( $this->exactly( $tabsNumber ) )
-		       ->method( 'end_controls_tab' );
+			   ->method( 'end_controls_tab' );
 	}
 
 	/**
@@ -325,8 +335,8 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 	 */
 	private function setExpectedAddedGroupControls( $widget ) {
 		$widget->expects( $this->exactly( 3 ) )
-		       ->method( 'add_group_control' )
-		       ->withConsecutive(
+			   ->method( 'add_group_control' )
+			   ->withConsecutive(
 					[
 						Group_Control_Typography::get_type(),
 						[
@@ -351,7 +361,7 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 						   'selector' => '{{WRAPPER}} .wpml-elementor-ls .wpml-ls-statics-post_translations',
 						],
 					]
-		       );
+			   );
 	}
 
 	/**
