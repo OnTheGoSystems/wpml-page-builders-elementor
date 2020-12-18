@@ -8,6 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: nanasess/setup-php@master
+        with:
+          php-version: '7.4'
+
       - name: Set github token for composer
         run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
