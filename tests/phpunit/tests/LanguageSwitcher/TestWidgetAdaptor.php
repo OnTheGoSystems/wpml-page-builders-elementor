@@ -156,6 +156,16 @@ class TestWidgetAdaptor extends \OTGS_TestCase {
 					       'type'         => Controls_Manager::SWITCHER,
 					       'return_value' => 1,
 					       'default'      => 1,
+						   'conditions' => [
+							   'relation' => 'and',
+							   'terms'    => [
+								   [
+									   'name'     => 'style',
+									   'operator' => '!=',
+									   'value'   => 'custom',
+								   ]
+							   ]
+						   ],
 				       ],
 			       ],
 			       [
