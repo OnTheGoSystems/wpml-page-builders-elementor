@@ -32,12 +32,9 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 
 	/**
 	 * @test
+	 * @dataProvider dp_translate_template_id
 	 */
-	public function it_should_translate_template_id() {
-
-		$template_id   = 123;
-		$translated_id = 456;
-		$post_type     = 'anything';
+	public function it_should_translate_template_id( $template_id, $translated_id, $post_type ) {
 
 		\WP_Mock::userFunction( 'get_post_type',
 			array(
@@ -48,12 +45,19 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 
 		\WP_Mock::onFilter( 'wpml_object_id' )
 		        ->with( $template_id, $post_type, true )
-		        ->reply( $translated_id );
+		        ->reply( (int) $translated_id );
 
 		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translated_id, $subject->translate_theme_location_template_id( $template_id ) );
 
+	}
+
+	public function dp_translate_template_id() {
+		return [
+			[ 123, 456, 'anything' ],
+			[ '123', '456', 'anything' ],
+		];
 	}
 
 	/**
