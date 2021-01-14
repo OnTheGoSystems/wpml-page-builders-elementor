@@ -55,8 +55,8 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 
 	public function dp_translate_template_id() {
 		return [
-			[ 123, 456, 'anything' ],
-			[ '123', '456', 'anything' ],
+			'preserve integer type' => [ 123, 456, 'anything' ],
+			'preserve string type'  => [ '123', '456', 'anything' ],
 		];
 	}
 
