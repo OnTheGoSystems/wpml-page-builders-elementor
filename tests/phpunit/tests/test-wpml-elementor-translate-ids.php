@@ -140,12 +140,13 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 	/**
 	 * @test
 	 * @group wpmlcore-5647
+	 * @dataProvider dp_condition_patterns
 	 */
-	public function it_should_translate_location_condition_sub_id_in_taxonomy_term() {
-		$sub_id           = mt_rand( 1, 10 );
-		$translate_id     = mt_rand( 11, 20 );
-		$taxonomy         = 'city';
-		$parsed_conditions = array( 'sub_name' => 'in_' . $taxonomy );
+	public function it_should_translate_location_condition_sub_id_in_taxonomy_term( $condition_pattern ) {
+		$sub_id            = 123;
+		$translate_id      = 456;
+		$taxonomy          = 'city';
+		$parsed_conditions = [ 'sub_name' => sprintf( $condition_pattern, $taxonomy ) ];
 
 		\WP_Mock::onFilter( 'wpml_object_id' )
 		        ->with( $sub_id, $taxonomy, true )
@@ -154,6 +155,13 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		$subject = new WPML_Elementor_Translate_IDs( \Mockery::mock( '\WPML\Utils\DebugBackTrace' ) );
 
 		$this->assertEquals( $translate_id, $subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
+	}
+
+	public function dp_condition_patterns() {
+		return  [
+			[ 'in_%s' ],
+			[ 'in_%s_children' ],
+		];
 	}
 
 	/**
