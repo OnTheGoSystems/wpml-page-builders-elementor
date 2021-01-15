@@ -399,4 +399,46 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		$this->assertEquals( $translate_id,
 			$subject->translate_location_condition_sub_id( (string) $sub_id, $parsed_conditions ) );
 	}
+
+	/**
+	 * @test
+	 * @group wpmlcore-7714
+	 */
+	public function it_translates_product_ids() {
+		$post_id       = 123;
+		$product_id    = 456;
+		$tr_product_id = 789;
+
+		$data = [ [
+			'id' => '4a3eaf7',
+			'elType' => 'column',
+			'elements' => [ [
+				'id' => '4a3ed07',
+				'elType' => 'widget',
+				'settings' => [ 'product_id' => $product_id ],
+				'elements' => [],
+				'widgetType' => 'wc-add-to-cart',
+			] ],
+		] ];
+
+		$expected = $data;
+		$expected[0]['elements'][0]['settings']['product_id'] = $tr_product_id;
+
+		\WP_Mock::userFunction( 'get_post_type', [ 'args' => $product_id, 'return' => 'product' ] );
+
+		\WP_Mock::onFilter( 'wpml_object_id' )
+			->with( (string) $product_id, 'product', true )
+		    ->reply( $tr_product_id );
+
+		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
+
+		$subject = new WPML_Elementor_Translate_IDs( $debug_backtrace );
+
+		$this->assertEquals(
+			$expected,
+			$subject->translate_product_ids( $data, $post_id )
+		);
+
+	}
+
 }
