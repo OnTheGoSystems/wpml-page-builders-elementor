@@ -42,6 +42,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 		 * `$sub_name` gives a context for the `$sub_id`, it can be either:
 		 * - `child_of`
 		 * - `in_{taxonomy}`
+		 * - `in_{taxonomy}_children`
 		 * - `{post_type}`
 		 * - `{taxonomy}`
 		 */
@@ -53,7 +54,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 			if ( 'child_of' === $sub_name ) {
 				$element_type = get_post_type( $sub_id );
 			} elseif ( 0 === strpos( $sub_name, 'in_' ) ) {
-				$element_type = preg_replace( '/^in_/', '', $sub_name );
+				$element_type = preg_replace( '/^in_|_children$/', '', $sub_name );
 			}
 
 			$sub_id = $this->translate_id( $sub_id, $element_type );
