@@ -1,5 +1,7 @@
 <?php
 
+use WPML\FP\Obj;
+
 /**
  * Class WPML_Elementor_Translate_IDs
  */
@@ -25,6 +27,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 			'translate_template_id'
 		) );
 		add_filter( 'elementor/frontend/builder_content_data', array( $this, 'translate_global_widget_ids' ), 10, 2 );
+		add_filter( 'elementor/frontend/builder_content_data', array( $this, 'translate_product_ids' ), 10, 2 );
 	}
 
 	public function translate_theme_location_template_id( $template_id ) {
@@ -105,6 +108,24 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	}
 
 	/**
+	 * @param array $data_array
+	 * @param int   $post_id
+	 *
+	 * @return array
+	 */
+	public function translate_product_ids( $data_array, $post_id ) {
+		foreach ( $data_array as &$data ) {
+			if ( Obj::prop( 'elType', $data ) === 'widget' && Obj::prop( 'widgetType', $data ) === 'wc-add-to-cart' ) {
+				$data['settings']['product_id'] = $this->translate_id( $data['settings']['product_id'] );
+			}
+
+			$data['elements'] = $this->translate_product_ids( $data['elements'], $post_id );
+		}
+
+		return $data_array;
+	}
+
+	/**
 	 * @param int    $element_id
 	 * @param string $element_type
 	 *
@@ -123,4 +144,5 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 
 		return $translated_id;
 	}
+
 }
