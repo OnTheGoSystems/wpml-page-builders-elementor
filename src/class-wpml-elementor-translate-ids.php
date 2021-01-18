@@ -1,6 +1,7 @@
 <?php
 
 use WPML\FP\Obj;
+use function WPML\FP\partialRight;
 
 /**
  * Class WPML_Elementor_Translate_IDs
@@ -113,15 +114,26 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	 * @return array
 	 */
 	public function translate_product_ids( $data_array, $post_id ) {
-		foreach ( $data_array as &$data ) {
-			if ( Obj::prop( 'elType', $data ) === 'widget' && Obj::prop( 'widgetType', $data ) === 'wc-add-to-cart' ) {
-				$data['settings']['product_id'] = $this->translate_id( $data['settings']['product_id'] );
+		$translateProductId = function( $data ) {
+			if (
+				Obj::prop( 'elType', $data ) === 'widget'
+				&& Obj::prop( 'widgetType', $data ) === 'wc-add-to-cart'
+			) {
+				return Obj::over( Obj::lensPath( [ 'settings', 'product_id' ] ), [ $this, 'translate_id' ], $data );
 			}
 
-			$data['elements'] = $this->translate_product_ids( $data['elements'], $post_id );
-		}
+			return $data;
+		};
 
-		return $data_array;
+		$applyRecursivelyOnElements = Obj::over(
+			Obj::lensProp( 'elements' ),
+			partialRight( [ $this, 'translate_product_ids' ], $post_id )
+		);
+
+		return wpml_collect( $data_array )
+			->map( $translateProductId )
+			->map( $applyRecursivelyOnElements )
+			->toArray();
 	}
 
 	/**
@@ -130,7 +142,7 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	 *
 	 * @return int
 	 */
-	private function translate_id( $element_id, $element_type = null ) {
+	public function translate_id( $element_id, $element_type = null ) {
 		if ( ! $element_type || $element_type === "any_child_of" ) {
 			$element_type = get_post_type( $element_id );
 		}
