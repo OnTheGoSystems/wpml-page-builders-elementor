@@ -1,5 +1,7 @@
 <?php
 
+use WPML\FP\Obj;
+
 /**
  * Class WPML_Elementor_Translate_IDs
  */
@@ -112,11 +114,10 @@ class WPML_Elementor_Translate_IDs implements IWPML_Action {
 	 */
 	public function translate_product_ids( $data_array, $post_id ) {
 		foreach ( $data_array as &$data ) {
-			if ( isset( $data['elType'] ) && 'widget' === $data['elType'] ) {
-				if ( 'wc-add-to-cart' === $data['widgetType'] ) {
-					$data['settings']['product_id'] = $this->translate_id( $data['settings']['product_id'] );
-				}
+			if ( Obj::prop( 'elType', $data ) === 'widget' && Obj::prop( 'widgetType', $data ) === 'wc-add-to-cart' ) {
+				$data['settings']['product_id'] = $this->translate_id( $data['settings']['product_id'] );
 			}
+
 			$data['elements'] = $this->translate_product_ids( $data['elements'], $post_id );
 		}
 
