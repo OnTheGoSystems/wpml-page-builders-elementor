@@ -409,26 +409,36 @@ class Test_WPML_Elementor_Translate_IDs extends OTGS_TestCase {
 		$product_id    = 456;
 		$tr_product_id = 789;
 
-		$data = [ [
-			'id' => '4a3eaf7',
-			'elType' => 'column',
-			'elements' => [ [
-				'id' => '4a3ed07',
-				'elType' => 'widget',
-				'settings' => [ 'product_id' => $product_id ],
-				'elements' => [],
-				'widgetType' => 'wc-add-to-cart',
-			] ],
-		] ];
+		$data = [
+			[
+				'id'       => '4a3eaf7',
+				'elType'   => 'section',
+				'elements' => [
+					[
+						'id'       => '456fc2',
+						'elType'   => 'column',
+						'elements' => [
+							[
+								'id'         => '4a3ed07',
+								'elType'     => 'widget',
+								'settings'   => [ 'product_id' => $product_id ],
+								'elements'   => [],
+								'widgetType' => 'wc-add-to-cart',
+							],
+						],
+					],
+				],
+			],
+		];
 
 		$expected = $data;
-		$expected[0]['elements'][0]['settings']['product_id'] = $tr_product_id;
+		$expected[0]['elements'][0]['elements'][0]['settings']['product_id'] = $tr_product_id;
 
 		\WP_Mock::userFunction( 'get_post_type', [ 'args' => $product_id, 'return' => 'product' ] );
 
 		\WP_Mock::onFilter( 'wpml_object_id' )
 			->with( (string) $product_id, 'product', true )
-		    ->reply( $tr_product_id );
+			->reply( $tr_product_id );
 
 		$debug_backtrace = \Mockery::mock( '\WPML\Utils\DebugBackTrace' );
 
