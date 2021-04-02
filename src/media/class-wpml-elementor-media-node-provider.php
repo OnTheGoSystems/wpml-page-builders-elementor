@@ -44,6 +44,10 @@ class WPML_Elementor_Media_Node_Provider {
 					$node = new WPML_Elementor_Media_Node_Image_Gallery( $this->media_translate );
 					break;
 
+				case 'gallery':
+					$node = new WPML_Elementor_Media_Node_Gallery( $this->media_translate );
+					break;
+
 				case 'image-carousel':
 					$node = new WPML_Elementor_Media_Node_Image_Carousel( $this->media_translate );
 					break;
