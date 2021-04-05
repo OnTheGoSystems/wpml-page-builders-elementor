@@ -8,12 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update composer version
+        run: sudo composer self-update --stable
+
       - uses: nanasess/setup-php@master
         with:
           php-version: '7.4'
-
-      - name: Check composer version
-        run: composer --version
 
       - name: Set github token for composer
         run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
