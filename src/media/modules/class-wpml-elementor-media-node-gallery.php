@@ -1,6 +1,8 @@
 <?php
 
-class WPML_Elementor_Media_Node_Gallery extends \WPML_Elementor_Media_Node {
+namespace WPML\PB\Elementor\Media\Modules;
+
+class Gallery extends \WPML_Elementor_Media_Node {
 
 	/**
 	 * @param array $settings

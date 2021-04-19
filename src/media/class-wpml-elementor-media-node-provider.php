@@ -1,5 +1,7 @@
 <?php
 
+use WPML\PB\Elementor\Media\Modules\Gallery;
+
 class WPML_Elementor_Media_Node_Provider {
 
 	/** @var WPML_Page_Builders_Media_Translate $media_translate */
@@ -45,7 +47,7 @@ class WPML_Elementor_Media_Node_Provider {
 					break;
 
 				case 'gallery':
-					$node = new WPML_Elementor_Media_Node_Gallery( $this->media_translate );
+					$node = new Gallery( $this->media_translate );
 					break;
 
 				case 'image-carousel':
