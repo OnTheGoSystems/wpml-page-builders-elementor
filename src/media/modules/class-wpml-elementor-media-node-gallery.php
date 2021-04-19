@@ -13,7 +13,7 @@ class Gallery extends \WPML_Elementor_Media_Node {
 	 */
 	public function translate( $settings, $target_lang, $source_lang ) {
 
-		if ( is_array( $settings['gallery'] ) ) {
+		if ( isset( $settings['gallery'] ) && is_array( $settings['gallery'] ) ) {
 			foreach( $settings['gallery'] as $id => $image ) {
 				$settings['gallery'][ $id ] = $this->translate_image_array( $image, $target_lang, $source_lang );
 			}
