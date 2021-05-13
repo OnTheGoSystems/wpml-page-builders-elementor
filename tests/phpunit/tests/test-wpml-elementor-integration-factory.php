@@ -32,6 +32,7 @@ class Test_WPML_Elementor_Integration_Factory extends OTGS_TestCase {
 			                     \WPML\PB\Elementor\Hooks\GutenbergCleanup::class,
 			                     \WPML\PB\Elementor\Hooks\Frontend::class,
 			                     \WPML\PB\Elementor\Config\Factory::class,
+			                     \WPML\PB\Elementor\Hooks\LandingPages::class,
 		                     ) );
 
 		$string_registration = \Mockery::mock( 'overload:WPML_PB_String_Registration' );
