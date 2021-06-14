@@ -38,6 +38,8 @@ class Test_WPML_Elementor_Media_Node_Provider extends OTGS_TestCase {
 			'wp-widget-media_image'   => array( 'wp-widget-media_image', 'WPML_Elementor_Media_Node_WP_Widget_Media_Image' ),
 			'wp-widget-media_gallery' => array( 'wp-widget-media_gallery', 'WPML_Elementor_Media_Node_WP_Widget_Media_Gallery' ),
 			'background-images'       => array( 'all_nodes', \WPML\PB\Elementor\Media\Modules\AllNodes::class ),
+			'video-playlist'          => array( 'video-playlist', \WPML\PB\Elementor\Media\Modules\VideoPlaylist::class ),
+			'hotspot'                 => array( 'hotspot', \WPML\PB\Elementor\Media\Modules\Hotspot::class ),
 		);
 	}
 
