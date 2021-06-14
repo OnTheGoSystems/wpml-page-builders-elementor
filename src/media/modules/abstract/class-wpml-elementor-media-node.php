@@ -51,7 +51,7 @@ abstract class WPML_Elementor_Media_Node {
 	 *
 	 * @return mixed
 	 */
-	private function translate_image_array( $image, $lang, $source_lang ) {
+	public function translate_image_array( $image, $lang, $source_lang ) {
 		if ( isset( $image['id'] ) && $image['id'] ) {
 			$image['id'] = $this->media_translate->translate_id( $image['id'], $lang );
 		}
