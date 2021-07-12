@@ -66,6 +66,10 @@ class WPML_Elementor_Media_Node_Provider {
 					$node = new \WPML\PB\Elementor\Media\Modules\AllNodes( $this->media_translate );
 					break;
 
+				case 'video':
+					$node = new \WPML\PB\Elementor\Media\Modules\Video( $this->media_translate );
+					break;
+
 				case 'video-playlist':
 					$node = new \WPML\PB\Elementor\Media\Modules\VideoPlaylist( $this->media_translate );
 					break;
