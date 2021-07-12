@@ -2,48 +2,18 @@
 
 namespace WPML\PB\Elementor\Media\Modules;
 
+require_once __DIR__ . '/abstract/Test_WPML_Elementor_Media_Node_With_Image_Property.php';
+
 /**
  * @group media
  */
-class TestHotspot extends \OTGS_TestCase {
+class TestHotspot extends \Test_WPML_Elementor_Media_Node_With_Image_Property {
 
-	/**
-	 * @test
-	 */
-	public function itShouldTranslate() {
-		$targetLang   = 'fr';
-		$sourceLang   = 'en';
-		$url          = 'https://example.com/my-image.jpg';
-		$urlConverted = 'https://example.com/my-image-converted.jpg';
-		$id           = 123;
-		$idConverted  = 456;
+	protected function get_image_property() {
+		return 'image';
+	}
 
-		$getSettings = function( $url, $id ) {
-			return [
-				'foo'   => 'bar',
-				'image' => [
-					'url' => $url,
-					'id'  => $id,
-				],
-			];
-		};
-
-		$mediaTranslate = $this->getMockBuilder( \WPML_Page_Builders_Media_Translate::class )
-		                       ->setMethods( [ 'translate_id', 'translate_image_url' ] )
-		                       ->disableOriginalConstructor()->getMock();
-
-		$mediaTranslate->method( 'translate_id' )
-		               ->with( $id, $targetLang )
-		               ->willReturn( $idConverted );
-		$mediaTranslate->method( 'translate_image_url' )
-		               ->with( $url, $targetLang, $sourceLang )
-		               ->willReturn( $urlConverted );
-
-		$subject = new Hotspot( $mediaTranslate );
-
-		$this->assertEquals(
-			$getSettings( $urlConverted, $idConverted ),
-			$subject->translate( $getSettings( $url, $id ), $targetLang, $sourceLang )
-		);
+	protected function get_subject( $media_translate ) {
+		return new Hotspot( $media_translate );
 	}
 }
