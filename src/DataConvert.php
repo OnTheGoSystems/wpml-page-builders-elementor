@@ -2,6 +2,8 @@
 
 namespace WPML\PB\Elementor;
 
+use WPML\FP\Obj;
+
 class DataConvert {
 
 	/**
@@ -19,6 +21,7 @@ class DataConvert {
 	 * @return array
 	 */
 	public static function unserialize( $data ) {
-		return json_decode( is_array( $data ) ? $data[0] : $data, true );
+		$maybeEncoded = is_array( $data ) ? Obj::prop( 0, $data ) : $data;
+		return is_string( $maybeEncoded ) ? json_decode( $maybeEncoded, true ) : $data;
 	}
 }
