@@ -6,6 +6,7 @@ use tad\FunctionMocker\FunctionMocker;
 use WPML\FP\Fns;
 use WPML\LIB\WP\PostMock;
 use WPML\LIB\WP\Post;
+use WPML\LIB\WP\WPDBMock;
 use WPML_Elementor_Data_Settings;
 
 /**
@@ -15,11 +16,13 @@ use WPML_Elementor_Data_Settings;
 class TestGutenbergCleanup extends \OTGS_TestCase {
 
 	use PostMock;
+	use WPDBMock;
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->setUpPostMock();
+		$this->setUpWPDBMock();
 
 		\WP_Mock::passthruFunction( 'wp_slash' );
 		\WP_Mock::userFunction( 'wp_json_encode', [
