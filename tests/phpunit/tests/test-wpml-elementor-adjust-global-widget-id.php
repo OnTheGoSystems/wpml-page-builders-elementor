@@ -132,7 +132,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		$element_factory->shouldReceive( 'create_post' )->with( $global_id )->andReturn( $global_element );
 
 		\WP_Mock::userFunction( 'get_post_meta', array(
-			'args'   => array( $post_id, '_elementor_data' ),
+			'args'   => array( $post_id, '_elementor_data', true ),
 			'return' => 'post meta'
 		) );
 
@@ -208,7 +208,7 @@ class Test_WPML_Elementor_Adjust_Global_Widget_ID extends OTGS_TestCase {
 		$element_factory->shouldReceive( 'create_post' )->with( $global_id )->andReturn( $global_element );
 
 		\WP_Mock::userFunction( 'get_post_meta', array(
-			'args'   => array( $post_id, '_elementor_data' ),
+			'args'   => array( $post_id, '_elementor_data', true ),
 			'return' => array(),
 		) );
 

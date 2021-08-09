@@ -50,7 +50,8 @@ class WPML_Elementor_Adjust_Global_Widget_ID {
 
 		$custom_field_data = get_post_meta(
 			$post_id,
-			$this->elementor_settings->get_meta_field()
+			$this->elementor_settings->get_meta_field(),
+			true
 		);
 
 		if ( ! $custom_field_data ) {
