@@ -1,3 +1,7 @@
+# This package has been merged into the [WPML Page Builders](https://git.onthegosystems.com/glue-plugins/wpml/wpml-page-builders) addon.
+
+----
+
 # wpml-page-builders-elementor
 A library used by [WPML](https://wpml.org) for handling [Elementor](https://wpml.org/documentation/plugins-compatibility/elementor/).
 
